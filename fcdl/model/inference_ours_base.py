@@ -216,7 +216,6 @@ class InferenceOursBase(Inference, metaclass=ABCMeta):
         state_feature = self.extract_state_feature(feature)
         
         bs = state_feature.size(1)
-        logger.info(f"bs: {bs}")
         if self.use_gt_global_mask:
             global_mask = self.gt_global_mask.clone().repeat(bs, 1, 1)
             prob = global_mask
@@ -224,10 +223,10 @@ class InferenceOursBase(Inference, metaclass=ABCMeta):
             local_mask = global_mask
         else:
             local_mask, prob = self.local_causal_model(state_feature, action_feature, current_pred_step, training=self.training)
-            logger.info(f"local_mask: {local_mask.shape}")
-            logger.info(f"prob: {prob.shape}")
-            logger.info(f"state_feature: {state_feature.shape}")
-            logger.info(f"action_feature: {action_feature.shape}")
+            # logger.info(f"local_mask: {local_mask.shape}")
+            # logger.info(f"prob: {prob.shape}")
+            # logger.info(f"state_feature: {state_feature.shape}")
+            # logger.info(f"action_feature: {action_feature.shape}")
             if not self.training:
                 prob = (prob > 0.5).float()
             prob = prob.detach()
