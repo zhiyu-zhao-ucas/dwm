@@ -6,6 +6,8 @@ import numpy as np
 import torch
 
 import wandb
+from tqdm import tqdm
+from loguru import logger
 
 np.set_printoptions(precision=3, suppress=True)
 torch.set_printoptions(precision=3, sci_mode=False)
@@ -16,6 +18,7 @@ from fcdl.model.inference_gnn import InferenceGNN
 from fcdl.model.inference_mlp import InferenceMLP
 from fcdl.model.inference_ncd import InferenceNCD
 from fcdl.model.inference_ours_masking import InferenceOursMask
+from fcdl.model.inference_dwm import InferenceDWM
 from fcdl.model.model_based import ModelBased
 from fcdl.model.random_policy import RandomPolicy
 from fcdl.utils.replay_buffer import ReplayBuffer
@@ -51,7 +54,9 @@ def ood_evaluation_chemical(params, inference, obs_batch, actions_batch, next_ob
             wandb_name = f"test/{test_env_name}/inference"
             for k, v in ood_eval_detail.items():
                 test_detail[f"{wandb_name}/{k}"] = v
-    wandb.log(test_detail, step+1)
+    
+    if not getattr(params, "mute_wandb", False):
+        wandb.log(test_detail, step+1)
     inference.encoder.chemical_train = True
 
 def test_policy_evaluation(params, inference, policy, step):
@@ -132,7 +137,8 @@ def test_policy_evaluation_chemical(params, inference, policy, step):
             test_detail[f"{wandb_name}/success_ratio"] = success_ratio
         if is_vecenv:
             env.close()
-    wandb.log(test_detail, step+1)
+    if not getattr(params, "mute_wandb", False):
+        wandb.log(test_detail, step+1)
     inference.encoder.chemical_train = True
 
 def train(params):
@@ -155,12 +161,24 @@ def train(params):
             params.goal_keys.append(f"target_obj{i}")
 
         env_specific_type = params.env_params.chemical_env_params.local_causal_rule
-    wandb.init(project=f'{env_name}-{env_specific_type}',
-               name=f'{params.training_params.inference_algo}-{time.strftime("%m%d_%H-%M-%S")}',
-               config=dict(params),
-               dir=params.wandb_dir)
-
-    params.rslts_dir = params.wandb_dir + f"{env_name}/{wandb.run.id}/"
+    
+    # Check if wandb should be muted
+    params.mute_wandb = getattr(params.training_params, "mute_wandb", False)
+    
+    if not params.mute_wandb:
+        wandb.init(project=f'{env_name}-{env_specific_type}',
+                name=f'{params.training_params.inference_algo}-{time.strftime("%m%d_%H-%M-%S")}',
+                config=dict(params),
+                dir=params.wandb_dir)
+    else:
+        # Create a dummy run ID for directory naming when wandb is muted
+        class DummyRun:
+            def __init__(self):
+                self.id = f"muted-{time.strftime('%m%d_%H-%M-%S')}"
+    if not params.mute_wandb:
+        params.rslts_dir = params.wandb_dir + f"{env_name}/{wandb.run.id}/"
+    else:
+        params.rslts_dir = os.path.join(params.wandb_dir, f"{env_name}/{DummyRun().id}/")
     os.makedirs(params.rslts_dir)
     torch.save(dict(params), os.path.join(params.rslts_dir, "params"))
     load_dir = None
@@ -195,6 +213,7 @@ def train(params):
     inference_algo = params.training_params.inference_algo
 
     
+    logger.info(f"Using inference algorithm: {inference_algo}")
     if inference_algo == "mlp":
         Inference = InferenceMLP
     elif inference_algo == "gnn":
@@ -207,11 +226,14 @@ def train(params):
         Inference = InferenceOursMask
     elif "ours" in inference_algo:
         Inference = InferenceOursMask
+    elif inference_algo == "dwm":
+        Inference = InferenceDWM
     else:
         raise NotImplementedError
     inference = Inference(encoder, params)
 
-    wandb.watch(inference, log="gradients", log_freq=100)
+    if not params.mute_wandb:
+        wandb.watch(inference, log="gradients", log_freq=100)
 
     rl_algo = params.training_params.rl_algo
     is_task_learning = rl_algo == "model_based"
@@ -251,11 +273,12 @@ def train(params):
     episode_step = np.zeros(num_env) if is_vecenv else 0
     is_train = (np.random.rand(num_env) if is_vecenv else np.random.rand()) < train_prop
     
-    for step in range(start_step, total_steps):
+    for step in tqdm(range(start_step, total_steps)):
         params.step = step
         is_init_stage = step < training_params.init_steps
-        print(f"{step + 1}/{total_steps}, is_init_stage: {is_init_stage}")
-        wandb.log({"init_stage": float(is_init_stage)}, step+1)
+        # print(f"{step + 1}/{total_steps}, is_init_stage: {is_init_stage}")
+        if not params.mute_wandb:
+            wandb.log({"init_stage": float(is_init_stage)}, step+1)
         loss_details = {"inference": [],
                         "inference_eval": [],
                         "inference_eval_rl": [],
@@ -269,11 +292,12 @@ def train(params):
         if is_vecenv and done.any():
         
             success = success | np.stack([info[i]["success"] for i in range(num_env)])
-            wandb.log({
-                "policy_stat/episode_reward": episode_reward.mean(),
-                "episode_num": episode_num,
-                "policy_stat/success": float(success.mean())
-            }, step+1)
+            if not params.mute_wandb:
+                wandb.log({
+                    "policy_stat/episode_reward": episode_reward.mean(),
+                    "episode_num": episode_num,
+                    "policy_stat/success": float(success.mean())
+                }, step+1)
             for i, done_ in enumerate(done):
                 if not done_:
                     continue
@@ -286,17 +310,18 @@ def train(params):
         elif not is_vecenv and done:
             obs = env.reset()
 
-            if is_task_learning:
-                wandb.log({
-                    "policy_stat/episode_reward": episode_reward,
-                    "policy_stat/success": float(success),
-                    "episode_num": episode_num,
-                }, step+1)
-            else:
-                wandb.log({
+            if not params.mute_wandb:
+                if is_task_learning:
+                    wandb.log({
                         "policy_stat/episode_reward": episode_reward,
+                        "policy_stat/success": float(success),
                         "episode_num": episode_num,
-                }, step+1)
+                    }, step+1)
+                else:
+                    wandb.log({
+                            "policy_stat/episode_reward": episode_reward,
+                            "episode_num": episode_num,
+                    }, step+1)
             is_train = np.random.rand() < train_prop
             episode_reward = 0
             episode_step = 0
@@ -312,7 +337,8 @@ def train(params):
             action = policy.act(obs)
         next_obs, env_reward, done, info = env.step(action)
         n_samples += num_env
-        wandb.log({"n_samples": n_samples}, step+1)
+        if not params.mute_wandb:
+            wandb.log({"n_samples": n_samples}, step+1)
         
         if is_task_learning and not is_vecenv:
             success = success or info["success"]
@@ -334,6 +360,7 @@ def train(params):
                 for i_grad_step in range(inference_gradient_steps):
                     obs_batch, actions_batch, next_obses_batch, _ = \
                         replay_buffer.sample_inference(inference_params.batch_size, "train")
+                    # logger.info(f"start training inference, step: {step}, i_grad_step: {i_grad_step}, inference: {inference}")
                     train_loss_detail = inference.update(obs_batch, actions_batch, next_obses_batch)
                     loss_details["inference"].append(train_loss_detail)
 
@@ -358,9 +385,10 @@ def train(params):
                     module_loss_detail = {k: [dic[k].item() for dic in module_loss_detail if k in dic]
                                         for k in keys if k not in ["priority"]}
                 for loss_name, loss_values in module_loss_detail.items():
-                    wandb.log({
-                                "{}/{}".format(module_name, loss_name): np.mean(loss_values),
-                    }, step+1)
+                    if not params.mute_wandb:
+                        wandb.log({
+                                    "{}/{}".format(module_name, loss_name): np.mean(loss_values),
+                        }, step+1)
 
             if (step + 1) % training_params.saving_freq == 0:
                 easy_step = int((step + 1) / 1000)

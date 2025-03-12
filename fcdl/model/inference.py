@@ -5,6 +5,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
+from loguru import logger
 
 from torch.distributions.normal import Normal
 from torch.distributions.distribution import Distribution
@@ -326,6 +327,7 @@ class Inference(nn.Module):
         return loss_detail
 
     def train(self, training=True):
+        logger.info(f"Inference train")
         self.training = training
 
     def eval(self):

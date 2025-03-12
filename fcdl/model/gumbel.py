@@ -5,6 +5,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.nn.init as init
+from loguru import logger
 
 from .nearest_embed import NearestEmbed, NearestEmbedEMA
 
@@ -122,7 +123,7 @@ class VQVAEGumbelMatrixLatent(torch.nn.Module):
         self.code_dim = params.ours_params.code_dim
         self.codebook_size = params.ours_params.codebook_size
 
-        if 'ours' in self.ours_type:
+        if 'ours' or 'dwm' in self.ours_type:
             enc_fc_dims = params.ours_params.vq_encode_fc_dims
             dec_fc_dims = params.ours_params.vq_decode_fc_dims
             
@@ -149,6 +150,7 @@ class VQVAEGumbelMatrixLatent(torch.nn.Module):
             self.apply(kaiming_init)
 
             self.ema = params.ours_params.vqvae_ema
+            logger.info(f"Set up EMB")
             if self.ema:
                 decay = params.ours_params.ema
                 self.emb = NearestEmbedEMA(self.codebook_size, self.code_dim, decay=decay)

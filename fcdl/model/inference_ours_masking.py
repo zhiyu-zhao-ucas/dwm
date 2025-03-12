@@ -1,11 +1,13 @@
 import torch
 import torch.nn.functional as F
+from loguru import logger
 
 from .inference_ours_base import InferenceOursBase
 from .inference_utils import forward_network, reset_layer
 
 class InferenceOursMask(InferenceOursBase):
     def __init__(self, encoder, params):
+        logger.info("InferenceOursMask")
         super(InferenceOursMask, self).__init__(encoder, params)
 
     def init_model(self):

@@ -4,6 +4,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.distributions.one_hot_categorical import OneHotCategorical
+from loguru import logger
 
 from .gumbel import VQVAEGumbelMatrixLatent
 from .inference import Inference
@@ -13,6 +14,7 @@ from .inference_utils import forward_network, forward_network_batch, reset_layer
 class InferenceOursBase(Inference, metaclass=ABCMeta):
     def __init__(self, encoder, params):
         self.is_eval = True
+        logger.info("InferenceOursBase")
         super(InferenceOursBase, self).__init__(encoder, params)
 
     def init_model(self):
@@ -39,6 +41,7 @@ class InferenceOursBase(Inference, metaclass=ABCMeta):
         if self.use_gt_global_mask:
             self.get_gt_global_mask(self.num_state_var, self.num_action_variable)
         else:
+            logger.info("set up local causal model")
             self.local_causal_model = VQVAEGumbelMatrixLatent(self.params, feature_dim, action_dim, num_state_var, self.num_action_variable, self.continuous_state, fc_dims, device)
 
         self.action_feature_weights = nn.ParameterList()
@@ -206,10 +209,14 @@ class InferenceOursBase(Inference, metaclass=ABCMeta):
         else: 
             sampling_num = self.eval_local_mask_sampling_num
         
+        # logger.info(f"action: {action.shape}")
+        # logger.info(f"feature: {len(feature)}")
+        # logger.info(f"feature[0]: {feature[0].shape}")
         action_feature = self.extract_action_feature(action)
         state_feature = self.extract_state_feature(feature)
         
         bs = state_feature.size(1)
+        logger.info(f"bs: {bs}")
         if self.use_gt_global_mask:
             global_mask = self.gt_global_mask.clone().repeat(bs, 1, 1)
             prob = global_mask
@@ -217,6 +224,10 @@ class InferenceOursBase(Inference, metaclass=ABCMeta):
             local_mask = global_mask
         else:
             local_mask, prob = self.local_causal_model(state_feature, action_feature, current_pred_step, training=self.training)
+            logger.info(f"local_mask: {local_mask.shape}")
+            logger.info(f"prob: {prob.shape}")
+            logger.info(f"state_feature: {state_feature.shape}")
+            logger.info(f"action_feature: {action_feature.shape}")
             if not self.training:
                 prob = (prob > 0.5).float()
             prob = prob.detach()
