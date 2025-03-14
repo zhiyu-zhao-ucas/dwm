@@ -261,6 +261,7 @@ class VQVAEGumbelMatrixLatent(torch.nn.Module):
             assert self.emb.training is False
         if pred_step == 0: 
             self.reset_loss()
+        # logger.info(f"feature: {feature.shape}, action: {action.shape}")
         log_alpha, z_e, emb = self.forward_fcs(feature, action)
         prob = torch.sigmoid(log_alpha)
         if training and not self.is_freeze:

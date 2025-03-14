@@ -3,6 +3,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from loguru import logger
 
 
 class IdentityEncoder(nn.Module):
@@ -32,7 +33,7 @@ class IdentityEncoder(nn.Module):
                    for obs_i, obs_i_dim in zip(obs, self.feature_inner_dim)]
         return obs
 
-    def forward(self, obs, detach=False):
+    def forward(self, obs, detach=False, info=None):
         if self.continuous_state:
             obs = torch.cat([obs[k] for k in self.keys], dim=-1)
             return obs

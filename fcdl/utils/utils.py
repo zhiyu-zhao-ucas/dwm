@@ -262,3 +262,12 @@ def get_start_step_from_model_loading(params):
     else:
         start_step = 0
     return start_step
+
+def calculate_entropy(inference, obs, action):
+    obs_processed = postprocess_obs(obs)
+    obs_proceseed_dict = {k: torch.from_numpy(v).to(inference.device) for k, v in obs_processed.items()}
+    action_tensor = torch.from_numpy(np.array(action)).to(inference.device)
+    with torch.no_grad():
+        local_mask, log_prob = inference.eval_local_mask(obs_proceseed_dict, action_tensor)
+    entropy = -torch.sum(torch.exp(log_prob) * log_prob, dim=(-1, -2)).squeeze()
+    return entropy

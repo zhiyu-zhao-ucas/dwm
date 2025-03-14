@@ -73,6 +73,8 @@ class InferenceDWM(InferenceOursMask):
         return loss_detail
     
     def get_local_mask(self, feature, actions, training=True):
+        # logger.info(f"features: {len(feature)}, features[0]: {feature[0].shape}")
+        # logger.info(f"actions: {actions.shape}")
         if not self.continuous_action:
             actions = F.one_hot(actions.squeeze(dim=-1), self.action_dim).float()
         actions = torch.unbind(actions, dim=-2)
@@ -93,6 +95,15 @@ class InferenceDWM(InferenceOursMask):
         log_probs = torch.stack(log_probs)
         
         return local_masks, log_probs
+
+    def eval_local_mask(self, obses, actions):
+        features = self.encoder(obses)
+        if len(actions.shape) < 2:
+            # logger.info(f"actions: {actions.shape}")
+            actions = actions.view(-1, 1, 1)
+        local_masks, log_probs = self.get_local_mask(features, actions, training=False)
+        return local_masks, log_probs
+        
 
     # def forward_with_feature(self, feature, actions, **kwargs):
     #     if not self.continuous_action:

@@ -5,6 +5,7 @@ import random
 import re
 from collections import OrderedDict
 from dataclasses import dataclass
+from loguru import logger
 
 import numpy as np
 import torch
@@ -831,6 +832,8 @@ class Chemical(gym.Env):
         """
         color_ = torch.zeros(self.num_colors, device=self.device)
         color_[color_id] = 1
+        # print(f"Intervening on object {obj_id} with color {color_id}")
+        # print(f"Current color: {self.object_colors[obj_id]}")
         self.object_to_color[obj_id] = color_
         self.object_colors[obj_id] = color_id
         self.sample_variables(obj_id)
@@ -841,6 +844,7 @@ class Chemical(gym.Env):
     def step(self, action: int):
         obj_id = action // self.num_colors
         color_id = action % self.num_colors
+        # print(f"Intervening on object {obj_id} with color {color_id}")
         self.translate(obj_id, color_id)
 
         if self.continuous_pos:

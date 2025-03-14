@@ -19,13 +19,14 @@ from fcdl.model.inference_mlp import InferenceMLP
 from fcdl.model.inference_ncd import InferenceNCD
 from fcdl.model.inference_ours_masking import InferenceOursMask
 from fcdl.model.inference_dwm import InferenceDWM
-from fcdl.model.model_based import ModelBased
+from fcdl.model.model_based import ModelBased, ModelBasedEntropy
 from fcdl.model.random_policy import RandomPolicy
 from fcdl.utils.replay_buffer import ReplayBuffer
 from fcdl.utils.utils import (TrainingParams, get_env, get_single_env,
                              get_start_step_from_model_loading,
                              override_params_from_cli_args,
                              set_seed_everywhere, update_obs_act_spec)
+from fcdl.utils.utils import postprocess_obs, calculate_entropy
 
 
 
@@ -240,6 +241,8 @@ def train(params):
     init_policy = RandomPolicy(params)
     if rl_algo == "random":
         policy = RandomPolicy(params)
+    elif rl_algo == "model_based" and inference_algo == "dwm":
+        policy = ModelBasedEntropy(encoder, inference, params)
     elif rl_algo == "model_based":
         policy = ModelBased(encoder, inference, params)
     else:
@@ -336,6 +339,12 @@ def train(params):
         else:
             action = policy.act(obs)
         next_obs, env_reward, done, info = env.step(action)
+        if inference_algo == "dwm":
+            # Now use the function
+            if inference_algo == "dwm":
+                entropy = calculate_entropy(inference, obs, action)
+                env_reward = env_reward + 0.1 * entropy.cpu().numpy()
+                env_reward = env_reward + 0.1 * entropy.cpu().numpy()
         n_samples += num_env
         if not params.mute_wandb:
             wandb.log({"n_samples": n_samples}, step+1)

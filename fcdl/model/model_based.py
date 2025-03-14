@@ -7,8 +7,9 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torch.distributions.categorical import Categorical
 from torch.distributions.normal import Normal
+from loguru import logger
 
-from ..utils.utils import to_numpy, preprocess_obs, postprocess_obs
+from ..utils.utils import to_numpy, preprocess_obs, postprocess_obs, calculate_entropy
 
 
 class ActionDistribution:
@@ -396,3 +397,89 @@ class ModelBased(nn.Module):
             checkpoint = torch.load(path, map_location=device)
             self.load_my_state_dict(checkpoint["model"])                # only load reward predictor
             self.optimizer.load_state_dict(checkpoint["optimizer"])
+
+
+class ModelBasedEntropy(ModelBased):
+    def __init__(self, encoder, inference, params):
+        super(ModelBasedEntropy, self).__init__(encoder, inference, params)
+
+    def cem(self, obs):
+        # cross-entropy method
+        n_candidate = self.n_candidate
+        inference = self.inference
+
+        with torch.no_grad():
+            raw_obs = obs
+            obs = postprocess_obs(preprocess_obs(obs, self.params))
+            obs = {k: torch.from_numpy(v).to(self.device) for k, v in obs.items()}
+            feature = self.encoder(obs)
+
+            # assumed the goal is fixed in the episode
+            goal_feature = self.extract_goal_feature(obs)
+
+            feature = self.repeat_feature(feature, n_candidate)
+            goal_feature = self.repeat_feature(goal_feature, (n_candidate, self.n_horizon_step))
+            if self.num_env >= 2:
+                if isinstance(feature, list):
+                    feature = [feature_i.permute(1, 0, 2).reshape(n_candidate * self.num_env, -1)
+                               for feature_i in feature]
+                else:
+                    feature = feature.permute(1, 0, 2).reshape(n_candidate * self.num_env, -1)
+                
+                if goal_feature is not None:
+                    goal_feature = goal_feature.permute(2, 0, 1, 3).reshape(n_candidate * self.num_env, self.n_horizon_step, -1)
+
+            iter_mean_history = {f"t{t}, d{d}": [] for t in range(self.n_horizon_step) for d in range(self.action_dim)}
+            iter_std_history = {f"t{t}, d{d}": [] for t in range(self.n_horizon_step) for d in range(self.action_dim)}
+            for i in range(self.n_iter):
+                if isinstance(self.action_dist, list):
+                    actions = torch.cat([action_dist.sample(n_candidate) for action_dist in self.action_dist], dim=0)
+                    # logger.info(f"action_dist.sample(n_candidate): {self.action_dist[0].sample(n_candidate).shape}")
+                else:
+                    actions = self.action_dist.sample(n_candidate)  # (n_candidate, n_horizon_step, action_dim)
+
+                # (n_candidate, n_horizon_step, 1)
+                pred_next_dist = inference.forward_with_feature(feature, actions)
+                pred_next_feature = inference.sample_from_distribution(pred_next_dist)
+                # pred_rewards = self.ground_truth_reward(pred_next_feature, actions, goal_feature)
+                pred_rewards = self.calculate_entropy(raw_obs, actions)
+                if self.num_env == 1:
+                    self.action_dist.update(actions, pred_rewards)
+                else:
+                    pred_rewards = pred_rewards.reshape(self.num_env, n_candidate, self.n_horizon_step, 1)
+                    if self.continuous_state:
+                        actions = actions.reshape(self.num_env, n_candidate, self.n_horizon_step, self.action_dim)
+                    else:
+                        actions = actions.reshape(self.num_env, n_candidate, self.n_horizon_step, 1)
+                    for i in range(self.num_env):
+                        self.action_dist[i].update(actions[i], pred_rewards[i])
+
+                # Log the mean and std of the action distribution
+                if self.params.continuous_action:
+                    if self.params.stage == 'train' and (self.params.step + 1) % self.params.training_params.plot_freq == 0:
+                        if self.num_env == 1:
+                            dist = self.action_dist.dist
+                        else:
+                            dist = self.action_dist[0].dist
+                        for t in range(self.n_horizon_step):
+                            for d in range(self.action_dim):
+                                iter_mean_history[f"t{t}, d{d}"].append(dist.mean[t, d].item())
+                                iter_std_history[f"t{t}, d{d}"].append(dist.stddev[t, d].item())
+            
+        if self.num_env == 1:
+            action = self.action_dist.get_action()
+        else:
+            action = np.stack([action_dist.get_action() for action_dist in self.action_dist])
+
+        return action
+    
+    def calculate_entropy(self, obs, action):
+        obs_processed = postprocess_obs(obs)
+        obs_proceseed_dict = {k: torch.from_numpy(v).to(self.inference.device).repeat(self.n_candidate, 1) for k, v in obs_processed.items()}
+        action_tensor = action
+        # logger.info(f"action_tensor: {action_tensor.shape}")
+        # logger.info(f"obs_proceseed_dict: {obs_proceseed_dict['obj0'].shape}")
+        with torch.no_grad():
+            local_mask, log_prob = self.inference.eval_local_mask(obs_proceseed_dict, action_tensor)
+        entropy = -torch.sum(torch.exp(log_prob) * log_prob, dim=(-1, -2)).squeeze()
+        return entropy

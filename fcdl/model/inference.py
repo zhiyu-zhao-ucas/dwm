@@ -267,7 +267,7 @@ class Inference(nn.Module):
         obs, actions, next_obses, _ = self.preprocess(obs, actions, next_obses)
         if len(actions.shape) == 2: actions = actions.unsqueeze(-1)
         with torch.no_grad():
-            feature = self.encoder(obs)
+            feature = self.encoder(obs, info=info_batch)
             next_feature = self.encoder.get_clean_obs(next_obses)
 
             pred_next_dist = self.forward_with_feature(feature, actions)
