@@ -54,7 +54,45 @@ def ood_evaluation_chemical(params, inference, obs_batch, actions_batch, next_ob
             ood_eval_detail = inference.ood_prediction(obs_batch, actions_batch, next_obses_batch, info_batch)
             wandb_name = f"test/{test_env_name}/inference"
             for k, v in ood_eval_detail.items():
+                # Convert numpy types to Python native types for JSON serialization
+                if isinstance(v, (np.float32, np.float64, np.int32, np.int64)):
+                    v = float(v)
                 test_detail[f"{wandb_name}/{k}"] = v
+    
+    # Save to file
+    import os
+    import json
+    
+    # Create ood_data directory if it doesn't exist
+    os.makedirs("ood_data", exist_ok=True)
+    
+    algo = params.training_params.inference_algo
+    seed = params.seed
+    filename = f"ood_data/{algo}-{seed}.json"
+    
+    # Create a record with step information
+    record = {
+        "step": step,
+        "timestamp": time.strftime("%Y-%m-%d %H:%M:%S")
+    }
+    record.update(test_detail)
+    
+    # Load existing data if file exists
+    existing_data = []
+    if os.path.exists(filename):
+        try:
+            with open(filename, "r") as f:
+                existing_data = json.load(f)
+                if not isinstance(existing_data, list):
+                    existing_data = [existing_data]
+        except:
+            pass
+    
+    existing_data.append(record)
+    
+    # Save to file using JSON format
+    with open(filename, "w") as f:
+        json.dump(existing_data, f, indent=2)
     
     if not getattr(params, "mute_wandb", False):
         wandb.log(test_detail, step+1)
@@ -167,8 +205,12 @@ def train(params):
     params.mute_wandb = getattr(params.training_params, "mute_wandb", False)
     
     if not params.mute_wandb:
+        # wandb.init(project=f'{env_name}-{env_specific_type}',
+        #         name=f'{params.training_params.inference_algo}-{time.strftime("%m%d_%H-%M-%S")}',
+        #         config=dict(params),
+        #         dir=params.wandb_dir)
         wandb.init(project=f'{env_name}-{env_specific_type}',
-                name=f'{params.training_params.inference_algo}-{time.strftime("%m%d_%H-%M-%S")}',
+                name=f'{params.training_params.inference_algo}-{params.seed}',
                 config=dict(params),
                 dir=params.wandb_dir)
     else:
