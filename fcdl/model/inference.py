@@ -42,8 +42,8 @@ class Inference(nn.Module):
 
         self.to(device)
         self.optimizer = optim.Adam(self.parameters(), lr=inference_params.lr)
-
-        self.load(params.training_params.load_inference, device)
+        if not params.training_params.inference_algo == 'ncd':
+            self.load(params.training_params.load_inference, device)
         self.train()
     
     def get_gt_global_mask(self, num_state_variable, num_action_variable):
@@ -327,7 +327,7 @@ class Inference(nn.Module):
         return loss_detail
 
     def train(self, training=True):
-        logger.info(f"Inference train")
+        # logger.info(f"Inference train")
         self.training = training
 
     def eval(self):

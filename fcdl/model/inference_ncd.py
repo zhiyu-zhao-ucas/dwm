@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import os
 
 from .gumbel import GumbelMatrix_NCD
 from .inference_ours_masking import InferenceOursMask
@@ -98,3 +99,10 @@ class InferenceNCD(InferenceOursMask):
         self.local_causal_model.training = False
         self.local_causal_model.eval()
         return InferenceOursMask.eval_prediction(self, obs, actions, next_obses, info_batch)
+    
+    # def load(self, path, device):
+    #     if path is not None and os.path.exists(path):
+    #         print("inference loaded", path)
+    #         checkpoint = torch.load(path, map_location=device)
+    #         self.load_state_dict(checkpoint["model"])
+    #         self.optimizer.load_state_dict(checkpoint["optimizer"])

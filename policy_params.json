@@ -43,6 +43,8 @@
         "total_test_episode_num": 10,
         "saving_freq": 5000,
         "plot_freq": 1000,
+        "zero_shot": false,
+        "zero_shot_total_test_episode_num": 64,
         "mute_wandb": false,
         "replay_buffer_params": {
             "capacity": 1000000,

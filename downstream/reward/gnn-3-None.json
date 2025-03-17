@@ -1,0 +1,322 @@
+[
+  {
+    "step": 499,
+    "timestamp": "2025-03-15 15:15:09",
+    "test/test1/policy/episode_reward_mean": 7.525,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 6.0,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 7.375,
+    "test/test3/policy/success_ratio": 0.1
+  },
+  {
+    "step": 999,
+    "timestamp": "2025-03-15 15:16:54",
+    "test/test1/policy/episode_reward_mean": 6.9625,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 6.8,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 7.85,
+    "test/test3/policy/success_ratio": 0.0
+  },
+  {
+    "step": 1499,
+    "timestamp": "2025-03-15 15:31:03",
+    "test/test1/policy/episode_reward_mean": 6.3625,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 6.7,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 7.175,
+    "test/test3/policy/success_ratio": 0.0
+  },
+  {
+    "step": 1999,
+    "timestamp": "2025-03-15 15:45:10",
+    "test/test1/policy/episode_reward_mean": 5.9375,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 6.450000000000001,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 6.05,
+    "test/test3/policy/success_ratio": 0.0
+  },
+  {
+    "step": 2499,
+    "timestamp": "2025-03-15 15:59:18",
+    "test/test1/policy/episode_reward_mean": 7.5625,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 6.383333333333333,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 6.1,
+    "test/test3/policy/success_ratio": 0.0
+  },
+  {
+    "step": 2999,
+    "timestamp": "2025-03-15 16:13:30",
+    "test/test1/policy/episode_reward_mean": 6.6375,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 7.55,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 7.45,
+    "test/test3/policy/success_ratio": 0.0
+  },
+  {
+    "step": 3499,
+    "timestamp": "2025-03-15 16:27:48",
+    "test/test1/policy/episode_reward_mean": 6.2875,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 7.650000000000001,
+    "test/test2/policy/success_ratio": 0.1,
+    "test/test3/policy/episode_reward_mean": 5.4,
+    "test/test3/policy/success_ratio": 0.0
+  },
+  {
+    "step": 3999,
+    "timestamp": "2025-03-15 16:42:01",
+    "test/test1/policy/episode_reward_mean": 7.5875,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 6.15,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 7.25,
+    "test/test3/policy/success_ratio": 0.1
+  },
+  {
+    "step": 4499,
+    "timestamp": "2025-03-15 16:55:56",
+    "test/test1/policy/episode_reward_mean": 7.15,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 6.199999999999999,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 5.85,
+    "test/test3/policy/success_ratio": 0.0
+  },
+  {
+    "step": 4999,
+    "timestamp": "2025-03-15 17:10:04",
+    "test/test1/policy/episode_reward_mean": 6.6875,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 6.7,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 7.225,
+    "test/test3/policy/success_ratio": 0.0
+  },
+  {
+    "step": 5499,
+    "timestamp": "2025-03-15 17:24:17",
+    "test/test1/policy/episode_reward_mean": 6.4375,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 7.516666666666666,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 7.35,
+    "test/test3/policy/success_ratio": 0.0
+  },
+  {
+    "step": 5999,
+    "timestamp": "2025-03-15 17:38:22",
+    "test/test1/policy/episode_reward_mean": 6.175,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 6.4333333333333345,
+    "test/test2/policy/success_ratio": 0.1,
+    "test/test3/policy/episode_reward_mean": 7.25,
+    "test/test3/policy/success_ratio": 0.0
+  },
+  {
+    "step": 6499,
+    "timestamp": "2025-03-15 17:52:35",
+    "test/test1/policy/episode_reward_mean": 7.2625,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 7.016666666666666,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 8.45,
+    "test/test3/policy/success_ratio": 0.1
+  },
+  {
+    "step": 6999,
+    "timestamp": "2025-03-15 18:06:35",
+    "test/test1/policy/episode_reward_mean": 7.3125,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 5.999999999999999,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 6.525,
+    "test/test3/policy/success_ratio": 0.1
+  },
+  {
+    "step": 7499,
+    "timestamp": "2025-03-15 18:20:48",
+    "test/test1/policy/episode_reward_mean": 6.1625,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 7.15,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 6.8,
+    "test/test3/policy/success_ratio": 0.0
+  },
+  {
+    "step": 7999,
+    "timestamp": "2025-03-15 18:34:55",
+    "test/test1/policy/episode_reward_mean": 6.8125,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 7.366666666666667,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 6.575,
+    "test/test3/policy/success_ratio": 0.0
+  },
+  {
+    "step": 8499,
+    "timestamp": "2025-03-15 18:49:02",
+    "test/test1/policy/episode_reward_mean": 6.4625,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 6.333333333333334,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 6.15,
+    "test/test3/policy/success_ratio": 0.0
+  },
+  {
+    "step": 8999,
+    "timestamp": "2025-03-15 19:03:14",
+    "test/test1/policy/episode_reward_mean": 6.6625,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 6.05,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 8.2,
+    "test/test3/policy/success_ratio": 0.0
+  },
+  {
+    "step": 9499,
+    "timestamp": "2025-03-15 19:17:19",
+    "test/test1/policy/episode_reward_mean": 6.0375,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 6.466666666666667,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 7.625,
+    "test/test3/policy/success_ratio": 0.0
+  },
+  {
+    "step": 9999,
+    "timestamp": "2025-03-15 19:31:29",
+    "test/test1/policy/episode_reward_mean": 6.575,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 6.516666666666666,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 7.2,
+    "test/test3/policy/success_ratio": 0.0
+  },
+  {
+    "step": 10499,
+    "timestamp": "2025-03-15 19:45:25",
+    "test/test1/policy/episode_reward_mean": 6.925,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 6.4833333333333325,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 6.225,
+    "test/test3/policy/success_ratio": 0.1
+  },
+  {
+    "step": 10999,
+    "timestamp": "2025-03-15 19:59:44",
+    "test/test1/policy/episode_reward_mean": 6.3375,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 6.783333333333333,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 6.275,
+    "test/test3/policy/success_ratio": 0.0
+  },
+  {
+    "step": 11499,
+    "timestamp": "2025-03-15 20:13:54",
+    "test/test1/policy/episode_reward_mean": 6.0875,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 5.8,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 5.275,
+    "test/test3/policy/success_ratio": 0.0
+  },
+  {
+    "step": 11999,
+    "timestamp": "2025-03-15 20:28:01",
+    "test/test1/policy/episode_reward_mean": 6.9625,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 6.333333333333332,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 7.425,
+    "test/test3/policy/success_ratio": 0.1
+  },
+  {
+    "step": 12499,
+    "timestamp": "2025-03-15 20:42:12",
+    "test/test1/policy/episode_reward_mean": 6.9875,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 6.066666666666667,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 6.325,
+    "test/test3/policy/success_ratio": 0.0
+  },
+  {
+    "step": 12999,
+    "timestamp": "2025-03-15 20:56:21",
+    "test/test1/policy/episode_reward_mean": 6.6875,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 5.2333333333333325,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 6.975,
+    "test/test3/policy/success_ratio": 0.0
+  },
+  {
+    "step": 13499,
+    "timestamp": "2025-03-15 21:10:28",
+    "test/test1/policy/episode_reward_mean": 6.4875,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 6.616666666666667,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 6.3,
+    "test/test3/policy/success_ratio": 0.0
+  },
+  {
+    "step": 13999,
+    "timestamp": "2025-03-15 21:24:45",
+    "test/test1/policy/episode_reward_mean": 6.9125,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 6.15,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 5.95,
+    "test/test3/policy/success_ratio": 0.0
+  },
+  {
+    "step": 14499,
+    "timestamp": "2025-03-15 21:38:39",
+    "test/test1/policy/episode_reward_mean": 7.125,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 6.2333333333333325,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 6.05,
+    "test/test3/policy/success_ratio": 0.0
+  },
+  {
+    "step": 14999,
+    "timestamp": "2025-03-15 21:49:32",
+    "test/test1/policy/episode_reward_mean": 7.425,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 5.599999999999999,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 7.175,
+    "test/test3/policy/success_ratio": 0.0
+  },
+  {
+    "step": 15499,
+    "timestamp": "2025-03-15 22:00:21",
+    "test/test1/policy/episode_reward_mean": 6.2375,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 6.733333333333332,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 7.15,
+    "test/test3/policy/success_ratio": 0.1
+  },
+  {
+    "step": 15999,
+    "timestamp": "2025-03-15 22:11:04",
+    "test/test1/policy/episode_reward_mean": 5.95,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 6.216666666666667,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 6.075,
+    "test/test3/policy/success_ratio": 0.0
+  }
+]

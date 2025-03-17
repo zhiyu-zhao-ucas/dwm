@@ -1,0 +1,12 @@
+[
+  {
+    "step": 0,
+    "timestamp": "2025-03-16 05:18:25",
+    "test/test1/policy/episode_reward_mean": 7.182142857142857,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 6.221428571428571,
+    "test/test2/policy/success_ratio": 0.0,
+    "test/test3/policy/episode_reward_mean": 6.9035714285714285,
+    "test/test3/policy/success_ratio": 0.05714285714285714
+  }
+]
