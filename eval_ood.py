@@ -170,7 +170,7 @@ def plot_learning_curves(results, save_dir='result/plots'):
         plt.ylabel('Accuracy')
         plt.legend(loc='lower right')
         plt.tight_layout()
-        plt.savefig(os.path.join(save_dir, f'{test_name}_comparison.png'))
+        plt.savefig(os.path.join(save_dir, f'{test_name}_comparison.pdf'))
         plt.close()
 
 def plot_comparison_bar_charts(summary_df, save_dir='result/plots'):
@@ -215,7 +215,7 @@ def plot_comparison_bar_charts(summary_df, save_dir='result/plots'):
     plt.grid(True, linestyle='--', alpha=0.7, axis='y')
     
     plt.tight_layout()
-    plt.savefig(os.path.join(save_dir, 'algorithm_comparison.png'))
+    plt.savefig(os.path.join(save_dir, 'algorithm_comparison.pdf'))
     plt.close()
     
     # Create a summary table

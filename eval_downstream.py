@@ -122,10 +122,10 @@ def plot_aggregate_metrics(all_metrics, save_dir="figures/downstream"):
     bars = plt.bar(x, avg_rewards, yerr=std_rewards, width=0.6, color=colors, capsize=5)
     
     # Add values on top of bars
-    for i, bar in enumerate(bars):
-        height = bar.get_height()
-        plt.text(bar.get_x() + bar.get_width()/2., height + 0.3,
-                 f'{avg_rewards[i]:.2f}', ha='center', va='bottom')
+    # for i, bar in enumerate(bars):
+    #     height = bar.get_height()
+    #     plt.text(bar.get_x() + bar.get_width()/2., height + 0.3,
+    #              f'{avg_rewards[i]:.2f}', ha='center', va='bottom')
     
     plt.xlabel("Algorithm")
     plt.ylabel("Average Episode Reward")
@@ -133,7 +133,7 @@ def plot_aggregate_metrics(all_metrics, save_dir="figures/downstream"):
     plt.xticks(x, transformed_env_names, rotation=45, ha="right")
     # plt.xticks(x, env_names, rotation=45, ha="right")
     plt.tight_layout()
-    plt.savefig(f"{save_dir}/aggregate_rewards_bar.png")
+    plt.savefig(f"{save_dir}/aggregate_rewards_bar.pdf")
     plt.close()
     
     # Plot success ratios bar chart
@@ -141,10 +141,10 @@ def plot_aggregate_metrics(all_metrics, save_dir="figures/downstream"):
     bars = plt.bar(x, avg_success_ratios, yerr=std_success_ratios, width=0.6, color=colors, capsize=5)
     
     # Add values on top of bars
-    for i, bar in enumerate(bars):
-        height = bar.get_height()
-        plt.text(bar.get_x() + bar.get_width()/2., height + 0.02,
-                 f'{avg_success_ratios[i]:.2f}', ha='center', va='bottom')
+    # for i, bar in enumerate(bars):
+    #     height = bar.get_height()
+    #     plt.text(bar.get_x() + bar.get_width()/2., height + 0.02,
+    #              f'{avg_success_ratios[i]:.2f}', ha='center', va='bottom')
     
     plt.xlabel("Algorithm")
     plt.ylabel("Average Success Ratio")
@@ -152,7 +152,7 @@ def plot_aggregate_metrics(all_metrics, save_dir="figures/downstream"):
     plt.xticks(x, transformed_env_names, rotation=45, ha="right")
     plt.ylim(0, 1.05)  # Success ratio is between 0 and 1
     plt.tight_layout()
-    plt.savefig(f"{save_dir}/aggregate_success_bar.png")
+    plt.savefig(f"{save_dir}/aggregate_success_bar.pdf")
     plt.close()
 
 def plot_per_test_rewards(all_metrics, save_dir="figures/downstream"):
@@ -201,10 +201,10 @@ def plot_per_test_rewards(all_metrics, save_dir="figures/downstream"):
         bars = ax.bar(x, test_rewards, yerr=test_std_rewards, width=0.6, color=colors, capsize=5)
         
         # Add values on top of bars
-        for i, bar in enumerate(bars):
-            height = bar.get_height()
-            ax.text(bar.get_x() + bar.get_width()/2., height + 0.3,
-                   f'{test_rewards[i]:.2f}', ha='center', va='bottom', fontsize=10)
+        # for i, bar in enumerate(bars):
+        #     height = bar.get_height()
+        #     ax.text(bar.get_x() + bar.get_width()/2., height + 0.3,
+        #            f'{test_rewards[i]:.2f}', ha='center', va='bottom', fontsize=10)
         
         ax.set_title(f"{test_key.upper()}")
         ax.set_xticks(x)
@@ -212,12 +212,12 @@ def plot_per_test_rewards(all_metrics, save_dir="figures/downstream"):
     
     # Common labels
     fig.suptitle("Zero-Shot Downstream Rewards by Test", fontsize=16)
-    fig.text(0.5, 0.01, "Algorithm", ha='center', fontsize=14)
-    fig.text(0.01, 0.5, "Episode Reward", va='center', rotation='vertical', fontsize=14)
+    # fig.text(0.5, 0.01, "Algorithm", ha='center', fontsize=14)
+    # fig.text(0.01, 0.5, "Episode Reward", va='center', rotation='vertical', fontsize=14)
     
     plt.tight_layout()
     plt.subplots_adjust(top=0.88, bottom=0.2)
-    plt.savefig(f"{save_dir}/rewards_all_tests.png")
+    plt.savefig(f"{save_dir}/rewards_all_tests.pdf")
     plt.close()
 
 def main():
