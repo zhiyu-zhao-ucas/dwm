@@ -43,7 +43,7 @@ def load_data_from_json_files(data_dir='ood_data'):
                 parts = filename.split('.')[0].split('-')
                 raw_algo = parts[0]
                 algo = format_algorithm_name(raw_algo)
-                if "dwm_" in raw_algo:
+                if not "dwm" in raw_algo:
                     continue
                 seed = parts[1]
                 key = f"{algo}-{seed}"
@@ -171,8 +171,9 @@ def plot_learning_curves(results, save_dir='result/plots'):
         plt.xlabel('Step')
         plt.ylabel('Accuracy')
         plt.legend(loc='lower right')
+        plt.ylim(0, 1)
         plt.tight_layout()
-        plt.savefig(os.path.join(save_dir, f'{test_name}_comparison.pdf'))
+        plt.savefig(os.path.join(save_dir, f'{test_name}_ablation_comparison.pdf'))
         plt.close()
 
 def plot_comparison_bar_charts(summary_df, save_dir='result/plots'):
@@ -217,7 +218,8 @@ def plot_comparison_bar_charts(summary_df, save_dir='result/plots'):
     plt.grid(True, linestyle='--', alpha=0.7, axis='y')
     
     plt.tight_layout()
-    plt.savefig(os.path.join(save_dir, 'algorithm_comparison.pdf'))
+    plt.ylim(0, 0.8)
+    plt.savefig(os.path.join(save_dir, 'algorithm_ablation_comparison.pdf'))
     plt.close()
     
     # Create a summary table

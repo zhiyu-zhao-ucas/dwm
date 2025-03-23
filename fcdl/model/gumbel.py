@@ -270,6 +270,7 @@ class VQVAEGumbelMatrixLatent(torch.nn.Module):
             sample = (prob > 0.5).float().unsqueeze(0)
         
         self.loss_function(prob, z_e, emb)
+        # logger.info(f"prob grad: {prob.requires_grad}, z_e grad: {z_e.requires_grad}, emb grad: {emb.requires_grad}")
         return sample, prob
 
 class GumbelMatrix_NCD(VQVAEGumbelMatrixLatent):

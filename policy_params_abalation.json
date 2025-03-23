@@ -109,7 +109,7 @@
         "grad_clip_norm": 20000,
         "eval_batch_size": 256,
         "use_gt_global_mask": false,
-        "causal_coef": 0.1,
+        "causal_coef": 0.0,
         "mlp_params": {
             "fc_dims": [1024, 1024, 1024]
         },
@@ -127,7 +127,6 @@
         "lr": 1e-4,
         "n_reward_step": 1,
         "discount": 0.995,
-        "reward_coef": 1.0,
         "model_based_params": {
             "fc_dims": [32, 32],
             "activations": ["relu", "relu"],

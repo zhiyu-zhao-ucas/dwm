@@ -41,6 +41,7 @@ class InferenceDWM(InferenceOursMask):
         # features_stack = torch.stack(features)
         # logger.info(f"features_stack: {features_stack.shape}")
         local_masks, log_probs = self.get_local_mask(features, action_single, training=True)
+        logger.info(f"log_probs: {log_probs.requires_grad}")
         # logger.info(f"local_masks: {local_masks.shape}")
         # logger.info(f"log_probs: {log_probs.min()}, {log_probs.max()}")
         diff = torch.abs(next_features_stack_single - torch.stack(features)).sum(dim=-1)
@@ -56,8 +57,10 @@ class InferenceDWM(InferenceOursMask):
         # logger.info(f"action_taken: {action_taken[:3]}")
         # logger.info(f"log_probs: {log_probs.shape}")
         selected_log_probs = log_probs[0, node_indices, batch_indices, action_taken.squeeze(dim=-1)]
-        log_probs_mean = -0.1 * selected_log_probs.mean()
-        # logger.info(f"log_probs_mean: {log_probs_mean}")
+        if self.params.inference_params.causal_coef == 0.0:
+            selected_log_probs = torch.zeros_like(selected_log_probs)
+        log_probs_mean = -self.params.inference_params.causal_coef * selected_log_probs.mean()
+        logger.info(f"log_probs_mean: {log_probs_mean.requires_grad}, selected_log_probs.mean(): {selected_log_probs.mean().requires_grad}")
         loss_detail['log_probs_mean'] = log_probs_mean
         
         if self.learn_codebook:

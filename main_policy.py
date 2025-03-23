@@ -269,7 +269,7 @@ def train(params):
         Inference = InferenceOursMask
     elif "ours" in inference_algo:
         Inference = InferenceOursMask
-    elif inference_algo == "dwm":
+    elif "dwm" in inference_algo:
         Inference = InferenceDWM
     else:
         raise NotImplementedError
@@ -283,7 +283,7 @@ def train(params):
     init_policy = RandomPolicy(params)
     if rl_algo == "random":
         policy = RandomPolicy(params)
-    elif rl_algo == "model_based" and inference_algo == "dwm":
+    elif rl_algo == "model_based" and "dwm" in inference_algo:
         policy = ModelBasedEntropy(encoder, inference, params)
     elif rl_algo == "model_based":
         policy = ModelBased(encoder, inference, params)
@@ -381,9 +381,9 @@ def train(params):
         else:
             action = policy.act(obs)
         next_obs, env_reward, done, info = env.step(action)
-        if inference_algo == "dwm":
+        if "dwm" in inference_algo:
             # Now use the function
-            if inference_algo == "dwm":
+            if "dwm" in inference_algo:
                 entropy = calculate_entropy(inference, obs, action)
                 env_reward = env_reward + 0.1 * entropy.cpu().numpy()
                 env_reward = env_reward + 0.1 * entropy.cpu().numpy()
