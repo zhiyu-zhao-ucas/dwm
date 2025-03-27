@@ -45,23 +45,29 @@ class InferenceDWM(InferenceOursMask):
         # logger.info(f"log_probs: {log_probs.requires_grad}")
         # logger.info(f"local_masks: {local_masks.shape}")
         # logger.info(f"log_probs: {log_probs.min()}, {log_probs.max()}")
+        logger.info(f"log_probs: {log_probs.shape}")
         diff = torch.abs(next_features_stack_single - torch.stack(features)).sum(dim=-1)
-        changed_nodes = (diff > 1e-3).nonzero(as_tuple=True)
+        logger.info(f"next_features_stack_single - torch.stack(features): {(next_features_stack_single - torch.stack(features)).shape}")
+        logger.info(f"torch.stack(features): {torch.stack(features).shape}")
+        # logger.info(f"next_features_stack_single: {next_features_stack_single}")
+        logger.info(f"diff: {diff}")
+        changed_nodes = (diff < 1e-3).nonzero(as_tuple=True)
+        logger.info(f"changed_nodes: {changed_nodes}")
         # logger.info(f"diff: {diff.shape}")
         # logger.info(f"changed_nodes: {changed_nodes}")
         batch_indices = changed_nodes[0]
         node_indices = changed_nodes[1]
         action_taken = action_single[node_indices].long() // self.params.env_params.chemical_env_params.num_colors
-        # logger.info(f"action_taken: {action_taken.shape}")
+        logger.info(f"action_taken: {action_taken}")
         # logger.info(f"batch_indices: {batch_indices[:3]}")
         # logger.info(f"node_indices: {node_indices[:3]}")
         # logger.info(f"action_taken: {action_taken[:3]}")
-        # logger.info(f"log_probs: {log_probs.shape}")
+        logger.info(f"log_probs: {log_probs.shape}")
         selected_log_probs = log_probs[0, node_indices, batch_indices, action_taken.squeeze(dim=-1)]
-        if self.params.inference_params.causal_coef == 0.0 or (self.count / self.params.training_params.total_steps < 2/3):
+        if self.params.inference_params.causal_coef == 0.0 or (self.count / self.params.training_params.total_steps < 1000):
             selected_log_probs = torch.zeros_like(selected_log_probs)
             logger.info(f"self.params.inference_params.causal_coef: {self.params.inference_params.causal_coef}")
-        log_probs_mean = -self.params.inference_params.causal_coef * selected_log_probs.mean()
+        log_probs_mean = self.params.inference_params.causal_coef * selected_log_probs.mean()
         loss_detail['log_probs_mean'] = log_probs_mean / (self.params.inference_params.causal_coef + 1e-8)
         
         if self.learn_codebook:
