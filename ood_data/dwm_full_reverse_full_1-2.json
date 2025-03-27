@@ -1,0 +1,16 @@
+[
+  {
+    "step": 1499,
+    "timestamp": "2025-03-27 13:41:43",
+    "test/test1/inference/accuracy": 0.430419921875,
+    "test/test2/inference/accuracy": 0.3987630208333333,
+    "test/test3/inference/accuracy": 0.457763671875
+  },
+  {
+    "step": 1999,
+    "timestamp": "2025-03-27 13:48:27",
+    "test/test1/inference/accuracy": 0.414794921875,
+    "test/test2/inference/accuracy": 0.4186197916666667,
+    "test/test3/inference/accuracy": 0.442138671875
+  }
+]
