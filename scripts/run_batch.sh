@@ -10,13 +10,13 @@ fi
 echo "Detected $GPU_COUNT GPUs"
 
 # Create a single session
-SESSION_NAME="main_policy"
+SESSION_NAME="batch_full_9"
 tmux new-session -d -s "$SESSION_NAME" -n "init" "echo 'Initializing session'; read"
 
 window_index=0
 gpu_index=0
 
-for algo in dwm; do
+for algo in dwm_full_9; do
     for seed in 1 2 3; do
         # Create a unique window name
         WINDOW_NAME="${algo}_${seed}"
@@ -28,9 +28,10 @@ for algo in dwm; do
         
         # Create a new window in the existing session
         tmux new-window -t "$SESSION_NAME:$window_index" -n "$WINDOW_NAME" \
-            "python main_policy.py \
+            "source $(conda info --base)/etc/profile.d/conda.sh && conda activate fcdl && python main_policy.py \
             --training_params.inference_algo=$algo --cuda_id=$current_gpu --seed=$seed \
             --training_params.mute_wandb=false \
+            --inference_params.causal_coef=0.009 \
             --training_params.zero_shot=true;
             echo \"Finished $WINDOW_NAME\"; read"
         
@@ -41,3 +42,10 @@ done
 echo "All jobs started in tmux session: $SESSION_NAME"
 echo "Use 'tmux attach -t $SESSION_NAME' to view the session."
 echo "Once attached, use 'Ctrl+B n' to go to the next window or 'Ctrl+B NUMBER' to go to a specific window."
+# Attach to the tmux session if not already in a tmux session
+if [ -z "$TMUX" ]; then
+    echo "Attaching to tmux session: $SESSION_NAME"
+    tmux attach -t "$SESSION_NAME"
+else
+    echo "Already in a tmux session. Use 'tmux switch-client -t $SESSION_NAME' to switch."
+fi

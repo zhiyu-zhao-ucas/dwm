@@ -254,8 +254,8 @@ def main():
     print(f"Saved summary data to ood_summary.csv")
     
     # Plot learning curves
-    plot_learning_curves(results, 'result/plots')
-    print(f"Saved learning curves to plots directory")
+    # plot_learning_curves(results, 'result/plots')
+    # print(f"Saved learning curves to plots directory")
     
     # Plot comparison bar charts and create summary table
     summary_table = plot_comparison_bar_charts(summary_df, 'result/plots')

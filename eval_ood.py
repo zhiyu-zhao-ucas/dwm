@@ -18,6 +18,8 @@ def format_algorithm_name(algo_name):
         return "DWM (ours)"
     elif algo_name.lower() == "ours":
         return "FCDL"
+    elif "3e" in algo_name:
+        return "DWM (OURS)"
     else:
         return algo_name.upper()
 
@@ -43,7 +45,7 @@ def load_data_from_json_files(data_dir='ood_data'):
                 parts = filename.split('.')[0].split('-')
                 raw_algo = parts[0]
                 algo = format_algorithm_name(raw_algo)
-                if "dwm_" in raw_algo:
+                if "dwm_" in raw_algo and "new" not in raw_algo and "full" not in raw_algo or "not" in raw_algo:
                     continue
                 seed = parts[1]
                 key = f"{algo}-{seed}"
@@ -56,13 +58,24 @@ def load_data_from_json_files(data_dir='ood_data'):
     return results
 
 def extract_metrics(data):
-    """Extract the final accuracy metrics for each test set."""
-    # Get the last entry which should have the final results
+    """Extract the accuracy metrics at step 14999 for each test set."""
     if not data:
         return None
     
-    last_entry = data[-1]
+    # Look for step 14999
+    for entry in data:
+        if entry.get('step') == 14999:
+            return {
+                'test1': entry.get('test/test1/inference/accuracy', None),
+                'test2': entry.get('test/test2/inference/accuracy', None),
+                'test3': entry.get('test/test3/inference/accuracy', None),
+                'step': entry.get('step', None),
+                'timestamp': entry.get('timestamp', None)
+            }
     
+    # If step 14999 not found, return the last entry
+    print("Warning: Step 14999 not found, using last entry instead.")
+    last_entry = data[-1]
     return {
         'test1': last_entry.get('test/test1/inference/accuracy', None),
         'test2': last_entry.get('test/test2/inference/accuracy', None),
@@ -252,8 +265,8 @@ def main():
     print(f"Saved summary data to ood_summary.csv")
     
     # Plot learning curves
-    plot_learning_curves(results, 'result/plots')
-    print(f"Saved learning curves to plots directory")
+    # plot_learning_curves(results, 'result/plots')
+    # print(f"Saved learning curves to plots directory")
     
     # Plot comparison bar charts and create summary table
     summary_table = plot_comparison_bar_charts(summary_df, 'result/plots')

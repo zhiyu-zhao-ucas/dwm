@@ -10,6 +10,7 @@ class InferenceDWM(InferenceOursMask):
     def __init__(self, encoder, params):
         logger.info("InferenceDWM")
         super(InferenceDWM, self).__init__(encoder, params)
+        self.count = 0
 
     def update(self, obses, actions, next_obses, eval=False):
         self.is_eval = eval
@@ -41,7 +42,7 @@ class InferenceDWM(InferenceOursMask):
         # features_stack = torch.stack(features)
         # logger.info(f"features_stack: {features_stack.shape}")
         local_masks, log_probs = self.get_local_mask(features, action_single, training=True)
-        logger.info(f"log_probs: {log_probs.requires_grad}")
+        # logger.info(f"log_probs: {log_probs.requires_grad}")
         # logger.info(f"local_masks: {local_masks.shape}")
         # logger.info(f"log_probs: {log_probs.min()}, {log_probs.max()}")
         diff = torch.abs(next_features_stack_single - torch.stack(features)).sum(dim=-1)
@@ -57,14 +58,14 @@ class InferenceDWM(InferenceOursMask):
         # logger.info(f"action_taken: {action_taken[:3]}")
         # logger.info(f"log_probs: {log_probs.shape}")
         selected_log_probs = log_probs[0, node_indices, batch_indices, action_taken.squeeze(dim=-1)]
-        if self.params.inference_params.causal_coef == 0.0:
+        if self.params.inference_params.causal_coef == 0.0 or (self.count / self.params.training_params.total_steps < 2/3):
             selected_log_probs = torch.zeros_like(selected_log_probs)
+            logger.info(f"self.params.inference_params.causal_coef: {self.params.inference_params.causal_coef}")
         log_probs_mean = -self.params.inference_params.causal_coef * selected_log_probs.mean()
-        logger.info(f"log_probs_mean: {log_probs_mean.requires_grad}, selected_log_probs.mean(): {selected_log_probs.mean().requires_grad}")
-        loss_detail['log_probs_mean'] = log_probs_mean
+        loss_detail['log_probs_mean'] = log_probs_mean / (self.params.inference_params.causal_coef + 1e-8)
         
         if self.learn_codebook:
-            ours_loss = self.local_causal_model.total_loss()
+            ours_loss = self.local_causal_model.total_loss() + log_probs_mean
             loss = loss + ours_loss
             loss_detail['reg_loss']= self.local_causal_model.reg_loss.mean()
             loss_detail['vq_loss']= self.local_causal_model.vq_loss.mean()
@@ -72,6 +73,7 @@ class InferenceDWM(InferenceOursMask):
 
         if not eval:
             self.backprop(loss, loss_detail)
+        self.count += 1
 
         return loss_detail
     

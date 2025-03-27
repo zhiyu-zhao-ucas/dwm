@@ -1,0 +1,23 @@
+[
+  {
+    "step": 1499,
+    "timestamp": "2025-03-25 10:07:17",
+    "test/test1/inference/accuracy": 0.43115234375,
+    "test/test2/inference/accuracy": 0.3712565104166667,
+    "test/test3/inference/accuracy": 0.432373046875
+  },
+  {
+    "step": 1999,
+    "timestamp": "2025-03-25 10:43:46",
+    "test/test1/inference/accuracy": 0.60107421875,
+    "test/test2/inference/accuracy": 0.384765625,
+    "test/test3/inference/accuracy": 0.43359375
+  },
+  {
+    "step": 2499,
+    "timestamp": "2025-03-25 11:20:05",
+    "test/test1/inference/accuracy": 0.607666015625,
+    "test/test2/inference/accuracy": 0.3821614583333333,
+    "test/test3/inference/accuracy": 0.429931640625
+  }
+]

@@ -109,7 +109,7 @@
         "grad_clip_norm": 20000,
         "eval_batch_size": 256,
         "use_gt_global_mask": false,
-        "causal_coef": 0.1,
+        "causal_coef": 0.0001,
         "mlp_params": {
             "fc_dims": [1024, 1024, 1024]
         },
