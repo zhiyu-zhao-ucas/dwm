@@ -64,11 +64,11 @@ def ood_evaluation_chemical(params, inference, obs_batch, actions_batch, next_ob
     import json
     
     # Create ood_data directory if it doesn't exist
-    os.makedirs("ood_data", exist_ok=True)
+    os.makedirs("ood_data1", exist_ok=True)
     
     algo = params.training_params.inference_algo
     seed = params.seed
-    filename = f"ood_data/{algo}-{seed}.json"
+    filename = f"ood_data1/{algo}-{seed}.json"
     
     # Create a record with step information
     record = {
@@ -86,6 +86,10 @@ def ood_evaluation_chemical(params, inference, obs_batch, actions_batch, next_ob
                 if not isinstance(existing_data, list):
                     existing_data = [existing_data]
         except:
+            pass
+    else:
+        # Create the file if it doesn't exist
+        with open(filename, "w") as f:
             pass
     
     existing_data.append(record)

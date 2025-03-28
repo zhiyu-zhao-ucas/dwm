@@ -10,13 +10,13 @@ fi
 echo "Detected $GPU_COUNT GPUs"
 
 # Create a single session
-SESSION_NAME="batch_full_reverse_1"
+SESSION_NAME="dwm"
 tmux new-session -d -s "$SESSION_NAME" -n "init" "echo 'Initializing session'; read"
 
 window_index=0
-gpu_index=3
+gpu_index=0
 
-for algo in dwm_full_reverse_full_1; do
+for algo in dwm ours ncd gnn mlp oracle; do
     for seed in 1 2 3; do
         # Create a unique window name
         WINDOW_NAME="${algo}_${seed}"
