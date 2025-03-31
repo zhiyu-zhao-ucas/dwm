@@ -26,3 +26,4 @@ dependencies:
     - open3d
     - wandb
     - pytest
+    - loguru

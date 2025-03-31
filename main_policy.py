@@ -64,11 +64,11 @@ def ood_evaluation_chemical(params, inference, obs_batch, actions_batch, next_ob
     import json
     
     # Create ood_data directory if it doesn't exist
-    os.makedirs("ood_data1", exist_ok=True)
+    os.makedirs("ood_data", exist_ok=True)
     
     algo = params.training_params.inference_algo
     seed = params.seed
-    filename = f"ood_data1/{algo}-{seed}.json"
+    filename = f"ood_data/{algo}-{seed}.json"
     
     # Create a record with step information
     record = {
@@ -287,12 +287,13 @@ def train(params):
     init_policy = RandomPolicy(params)
     if rl_algo == "random":
         policy = RandomPolicy(params)
-    elif rl_algo == "model_based" and "dwm" in inference_algo:
+    elif rl_algo == "model_based" and "dwm" in inference_algo and "reward" not in inference_algo:
         policy = ModelBasedEntropy(encoder, inference, params)
     elif rl_algo == "model_based":
         policy = ModelBased(encoder, inference, params)
     else:
         raise NotImplementedError
+    logger.info(f"Using policy: {policy}")
 
 
     training_params = params.training_params
@@ -456,6 +457,7 @@ def train(params):
             params.stage = 'test'
             test_policy_evaluation(params, inference, policy, step)
             params.stage = 'train'
+    inference.save(os.path.join(model_dir, "inference_final"))
 
 if __name__ == "__main__":
     params = TrainingParams(training_params_fname="policy_params.json", train=True)

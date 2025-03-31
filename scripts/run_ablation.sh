@@ -10,7 +10,7 @@ fi
 echo "Detected $GPU_COUNT GPUs"
 
 # Create a single session
-SESSION_NAME="main_policy"
+SESSION_NAME="dwm_wo_causal_loss"
 tmux new-session -d -s "$SESSION_NAME" -n "init" "echo 'Initializing session'; read"
 
 window_index=0
@@ -31,7 +31,7 @@ for algo in dwm_wo_causal_loss; do
             "source $(conda info --base)/etc/profile.d/conda.sh && conda activate fcdl && python main_policy.py \
             --training_params.inference_algo=$algo --cuda_id=$current_gpu --seed=$seed \
             --training_params.mute_wandb=false \
-            --inference_params.causal_coef=10.0 \
+            --inference_params.causal_coef=0.0 \
             --training_params.zero_shot=true;
             echo \"Finished $WINDOW_NAME\"; read"
         

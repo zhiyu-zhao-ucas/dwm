@@ -16,7 +16,7 @@ tmux new-session -d -s "$SESSION_NAME" -n "init" "echo 'Initializing session'; r
 window_index=0
 gpu_index=0
 
-for algo in ncd; do
+for algo in dwm ours ncd gnn mlp; do
     for seed in 1 2 3; do
         # Create a unique window name
         WINDOW_NAME="${algo}_${seed}"
@@ -31,7 +31,7 @@ for algo in ncd; do
             "python downstream.py \
             --training_params.inference_algo=$algo --cuda_id=$current_gpu --seed=$seed \
             --training_params.mute_wandb=true \
-            --training_params.load_inference=\"data1/iwhwang/causal_rl/Chemical/${algo}-${seed}/trained_models/inference_15k\" \
+            --training_params.load_inference=\"data3/iwhwang/causal_rl/Chemical/${algo}-${seed}/trained_models/inference_final\" \
             --training_params.zero_shot=true;
             echo \"Finished $WINDOW_NAME\"; read"
         
