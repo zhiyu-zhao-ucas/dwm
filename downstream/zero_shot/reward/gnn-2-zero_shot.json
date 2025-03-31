@@ -8,5 +8,15 @@
     "test/test2/policy/success_ratio": 0.0,
     "test/test3/policy/episode_reward_mean": 5.928571428571429,
     "test/test3/policy/success_ratio": 0.0
+  },
+  {
+    "step": 0,
+    "timestamp": "2025-03-30 02:20:05",
+    "test/test1/policy/episode_reward_mean": 6.617857142857143,
+    "test/test1/policy/success_ratio": 0.0,
+    "test/test2/policy/episode_reward_mean": 5.9452380952380945,
+    "test/test2/policy/success_ratio": 0.014285714285714285,
+    "test/test3/policy/episode_reward_mean": 5.814285714285714,
+    "test/test3/policy/success_ratio": 0.0
   }
 ]
