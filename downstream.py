@@ -331,6 +331,8 @@ def train(params):
         Inference = InferenceOursMask
     elif inference_algo == "dwm":
         Inference = InferenceDWM
+    elif "dwm" in inference_algo:
+        Inference = InferenceDWM
     else:
         raise NotImplementedError
     if inference_algo == "ncd":
