@@ -40,6 +40,8 @@ def group_by_algorithm(all_metrics):
     for env_name, metrics in all_metrics.items():
         # Extract algorithm name (assuming format is {algo}-{seed})
         algo_name = re.sub(r'-\d+$', '', env_name)
+        # if algo_name.startswith("dwm_"):
+        #     continue
         
         if algo_name not in algo_metrics:
             algo_metrics[algo_name] = {}
@@ -72,6 +74,14 @@ def plot_aggregate_metrics(all_metrics, save_dir="figures/downstream"):
     os.makedirs(save_dir, exist_ok=True)
     
     env_names = list(all_metrics.keys())
+    # raw_name = [name for name in env_names if "dwm_" not in name]
+    # ablation_name = [name for name in env_names if "dwm_" in name]
+    # raw_name = sorted(raw_name)
+    # ablation_name = sorted(ablation_name)
+    # env_names = raw_name + ablation_name
+    env_names = sorted(env_names)  # Sort environment names for consistent ordering
+    # Sort environments by their names
+    
     
     # Calculate average values for each environment
     avg_rewards = []
@@ -167,6 +177,12 @@ def plot_per_test_rewards(all_metrics, save_dir="figures/downstream"):
     
     # Set display names for algorithms
     env_display_names = {}
+    # raw_name = [name for name in env_names if "dwm_" not in name]
+    # ablation_name = [name for name in env_names if "dwm_" in name]
+    # raw_name = sorted(raw_name)
+    # ablation_name = sorted(ablation_name)
+    # env_names = raw_name + ablation_name
+    env_names = sorted(env_names)  # Sort environment names for consistent ordering
     for i, env_name in enumerate(env_names):
         if env_name == 'dwm':
             env_display_names[env_name] = 'DWM (ours)'
@@ -220,6 +236,78 @@ def plot_per_test_rewards(all_metrics, save_dir="figures/downstream"):
     plt.savefig(f"{save_dir}/rewards_all_tests.pdf")
     plt.close()
 
+
+def plot_per_test_success_rates(all_metrics, save_dir="figures/downstream"):
+    """Plot success rates for each test (test1, test2, test3) as subplots in a single figure."""
+    os.makedirs(save_dir, exist_ok=True)
+    
+    env_names = list(all_metrics.keys())
+    test_keys = set()
+    for metrics in all_metrics.values():
+        test_keys.update(metrics.keys())
+    test_keys = sorted(list(test_keys))  # Sort test keys (test1, test2, test3, etc.)
+    
+    # Set display names for algorithms
+    env_display_names = {}
+    # raw_name = [name for name in env_names if "dwm_" not in name]
+    # ablation_name = [name for name in env_names if "dwm_" in name]
+    # raw_name = sorted(raw_name)
+    # ablation_name = sorted(ablation_name)
+    # env_names = raw_name + ablation_name
+    env_names = sorted(env_names)  # Sort environment names for consistent ordering
+    for i, env_name in enumerate(env_names):
+        if env_name == 'dwm':
+            env_display_names[env_name] = 'DWM (ours)'
+        elif env_name == 'ours':
+            env_display_names[env_name] = 'FCDL'
+        else:
+            env_display_names[env_name] = env_name.upper()
+    
+    transformed_env_names = [env_display_names[env_name] for env_name in env_names]
+    colors = plt.cm.tab10(np.linspace(0, 1, len(env_names)))
+    
+    # Create a single figure with subplots for each test
+    fig, axes = plt.subplots(1, len(test_keys), figsize=(18, 6), sharey=True)
+    
+    for idx, test_key in enumerate(test_keys):
+        test_rewards = []
+        test_std_rewards = []
+        
+        for env_name in env_names:
+            metrics = all_metrics[env_name]
+            if test_key in metrics and metrics[test_key]["success"]:
+                rewards = metrics[test_key]["success"]
+                test_rewards.append(np.mean(rewards))
+                test_std_rewards.append(np.std(rewards) if len(rewards) > 1 else 0)
+            else:
+                test_rewards.append(0)  # No data for this test
+                test_std_rewards.append(0)
+        
+        # Plot rewards bar chart for this test in the corresponding subplot
+        ax = axes[idx]
+        x = np.arange(len(env_names))
+        bars = ax.bar(x, test_rewards, yerr=test_std_rewards, width=0.6, color=colors, capsize=5)
+        
+        # Add values on top of bars
+        # for i, bar in enumerate(bars):
+        #     height = bar.get_height()
+        #     ax.text(bar.get_x() + bar.get_width()/2., height + 0.3,
+        #            f'{test_rewards[i]:.2f}', ha='center', va='bottom', fontsize=10)
+        
+        ax.set_title(f"{test_key.upper()}")
+        ax.set_xticks(x)
+        ax.set_xticklabels(transformed_env_names, rotation=45, ha="right")
+    
+    # Common labels
+    fig.suptitle("Zero-Shot Downstream Success Rates by Test", fontsize=16)
+    # fig.text(0.5, 0.01, "Algorithm", ha='center', fontsize=14)
+    # fig.text(0.01, 0.5, "Episode Reward", va='center', rotation='vertical', fontsize=14)
+    
+    plt.tight_layout()
+    plt.subplots_adjust(top=0.88, bottom=0.2)
+    plt.savefig(f"{save_dir}/success_rates_all_tests.pdf")
+    plt.close()
+
 def main():
     data_dir = "downstream/zero_shot/reward"
     save_dir = "results/downstream"
@@ -254,6 +342,9 @@ def main():
     
     # Plot per test rewards as subplots in a single figure
     plot_per_test_rewards(algo_metrics, save_dir=save_dir)
+
+    # Plot per test success rates as subplots in a single figure
+    plot_per_test_success_rates(algo_metrics, save_dir=save_dir)
     
     print(f"Plots saved to {save_dir}")
 

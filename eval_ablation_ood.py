@@ -234,6 +234,25 @@ def plot_comparison_bar_charts(summary_df, save_dir='result/plots'):
     
     return summary_table
 
+def create_summary_table(summary_df):
+    """
+    根据各算法的最终测试 accuracies 构建一个 summary table，
+    包括各测试集的平均值和标准差。
+    """
+    mean_data = summary_df.groupby('algorithm')[['test1_acc', 'test2_acc', 'test3_acc']].mean()
+    std_data = summary_df.groupby('algorithm')[['test1_acc', 'test2_acc', 'test3_acc']].std()
+    
+    summary_table = pd.DataFrame({
+        'test1_mean': mean_data['test1_acc'],
+        'test1_std': std_data['test1_acc'],
+        'test2_mean': mean_data['test2_acc'],
+        'test2_std': std_data['test2_acc'],
+        'test3_mean': mean_data['test3_acc'],
+        'test3_std': std_data['test3_acc'],
+    })
+    
+    return summary_table
+
 def main():
     # Create plots directory
     plots_dir = Path('result/plots')
@@ -253,18 +272,13 @@ def main():
     summary_df.to_csv('result/csv/ood_summary.csv', index=False)
     print(f"Saved summary data to ood_summary.csv")
     
-    # Plot learning curves
-    # plot_learning_curves(results, 'result/plots')
-    # print(f"Saved learning curves to plots directory")
+    # 绘制对比柱状图（这部分中也返回了 summary_table，但这里另外获取一个 summary_table 供打印）
+    summary_table = create_summary_table(summary_df)
+    summary_table.to_csv('result/csv/ood_summary_table.csv')
+    print(f"Saved summary table to ood_summary_table.csv")
     
-    # Plot comparison bar charts and create summary table
-    summary_table = plot_comparison_bar_charts(summary_df, 'result/plots')
-    summary_table.to_csv('result/csv/ood_comparison.csv')
-    print(f"Saved comparison data to ood_comparison.csv")
-    
-    # Print the summary table
     print("\nAlgorithm Performance Summary:")
-    pd.set_option('display.precision', 4)
+    pd.set_option('display.precision', 3)
     print(summary_table)
     
     print("\nEvaluation complete!")

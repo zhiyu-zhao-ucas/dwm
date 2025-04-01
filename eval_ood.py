@@ -45,8 +45,8 @@ def load_data_from_json_files(data_dir='ood_data'):
                 parts = filename.split('.')[0].split('-')
                 raw_algo = parts[0]
                 algo = format_algorithm_name(raw_algo)
-                # if "dwm_" in raw_algo and "new" not in raw_algo and "full" not in raw_algo or "not" in raw_algo:
-                #     continue
+                if "dwm_" in raw_algo:
+                    continue
                 seed = parts[1]
                 key = f"{algo}-{seed}"
                 
@@ -156,8 +156,7 @@ def plot_learning_curves(results, save_dir='result/plots'):
         
         # Plot each algorithm's data
         for algo_idx, algo in enumerate(algorithms):
-            runs = algo_data[algo]
-            
+            runs = algo_data[algo]            
             # Group by seed to calculate mean and std
             steps = None
             all_accs = []
@@ -251,7 +250,7 @@ def main():
     plots_dir.mkdir(exist_ok=True)
     
     # Load data from JSON files
-    results = load_data_from_json_files('ood_data1')
+    results = load_data_from_json_files('ood_data')
     
     if not results:
         print("No data found in the ood_data directory.")
