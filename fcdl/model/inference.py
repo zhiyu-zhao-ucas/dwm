@@ -6,6 +6,7 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 from loguru import logger
+import traceback
 
 from torch.distributions.normal import Normal
 from torch.distributions.distribution import Distribution
@@ -159,6 +160,7 @@ class Inference(nn.Module):
                     log_prob_i = dist_i.log_prob(val_i)
                     log_prob_i = log_prob_i.squeeze(dim=-1)
                 else:
+                    # logger.info(f"dist_i: {dist_i.logits.shape}, val_i: {val_i.shape}")
                     log_prob_i = dist_i.log_prob(val_i)
                 log_prob.append(log_prob_i)
             return torch.stack(log_prob, dim=-1)
@@ -198,6 +200,8 @@ class Inference(nn.Module):
                 next_feature = next_feature.detach()
             else:
                 next_feature = [next_feature_i.detach() for next_feature_i in next_feature]
+            # logger.info(f"next_feature: {len(next_feature)}, next_feature[0]: {next_feature[0].shape}")
+            # logger.info(f"traceback stack: {traceback.extract_stack()}")
             pred_loss = -self.log_prob_from_distribution(pred_dist, next_feature)
         
         if not keep_variable_dim:
@@ -274,7 +278,7 @@ class Inference(nn.Module):
             pred_loss = self.prediction_loss_from_dist(pred_next_dist, next_feature, keep_variable_dim=True)
             loss_detail = {}
 
-            if self.params.env_params.env_name == "Chemical":
+            if self.params.env_params.env_name in ["Chemical", "Physical"]:
                 if self.encoder.chemical_train:
                     match_type = self.encoder.chemical_match_type_train
                 else:

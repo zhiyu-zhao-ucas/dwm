@@ -3,6 +3,7 @@
 import logging
 import numpy as np
 from multiprocessing import Process, Pipe, shared_memory
+from loguru import logger
 
 
 def worker(remote, parent_remote, env_fn_wrapper):

@@ -6,12 +6,14 @@ import sys
 import time
 from copy import deepcopy
 from typing import Any
+from loguru import logger
 
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
 
 from ..env.chemical_env import Chemical
+from ..env.physical_env import Physical
 from .multiprocessing_env import SubprocVecEnv
 
 
@@ -52,6 +54,8 @@ class TrainingParams(AttrDict):
         if train:
             if training_params_fname == "policy_params.json":
                 sub_dirname = "task" if training_params.rl_algo == "model_based" else "dynamics"
+            elif training_params_fname == "physical_params.json":
+                sub_dirname = "physical" if training_params.rl_algo == "model_based" else "dynamics"
             else:
                 raise NotImplementedError
 
@@ -60,6 +64,9 @@ class TrainingParams(AttrDict):
 
             self.replay_buffer_dir = None
             if training_params_fname == "policy_params.json" and training_params.replay_buffer_params.saving_freq:
+                self.replay_buffer_dir = os.path.join(repo_path, "replay_buffer", experiment_dirname)
+                os.makedirs(self.replay_buffer_dir)
+            elif training_params_fname == "physical_params.json" and training_params.replay_buffer_params.saving_freq:
                 self.replay_buffer_dir = os.path.join(repo_path, "replay_buffer", experiment_dirname)
                 os.makedirs(self.replay_buffer_dir)
 
@@ -216,8 +223,15 @@ def get_single_env(params, load_dir=None, test_idx=None, env_idx=None):
         if env_idx is not None:
             copied_env_params.name += f"_{str(env_idx)}"
         env = Chemical(copied_params, load_dir)
+    elif env_name == "Physical":
+        copied_params = deepcopy(params)
+        if env_idx is not None:
+            # Add environment index to name if needed for physical env
+            if hasattr(copied_params.env_params.physical_env_params, 'name'):
+                copied_params.env_params.physical_env_params.name += f"_{str(env_idx)}"
+        env = Physical(copied_params)
     else:
-        raise ValueError("Unknown env_name: {}".format(env_name))
+        raise ValueError(f"Unknown env_name: {env_name}")
 
     return env
 
@@ -234,7 +248,9 @@ def get_env(params, load_dir=None, test_idx=None):
     if num_env == 1:
         return get_single_env(params, load_dir, test_idx)
     else:
-        assert "Chemical" == env_name
+        # Support vectorized environments for both Chemical and Physical
+        if env_name not in ["Chemical", "Physical"]:
+            raise ValueError(f"Vectorized environment not supported for: {env_name}")
         return SubprocVecEnv([get_subproc_env(params, load_dir, test_idx, env_idx) for env_idx in range(num_env)])
 
 

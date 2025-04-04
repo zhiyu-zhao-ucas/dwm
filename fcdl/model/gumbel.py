@@ -93,6 +93,7 @@ class VQVAEGumbelMatrixLatent(torch.nn.Module):
         self.action_dim = action_dim
         self.num_action_var = num_action_var
         self.num_state_var = num_state_var
+        # logger.info(f"num_state_var: {self.num_state_var}, num_action_var: {self.num_action_var}")
         final_dim = feature_dim + 1
         self.final_dim = final_dim
         self.device = device
@@ -129,6 +130,7 @@ class VQVAEGumbelMatrixLatent(torch.nn.Module):
             
             encs = nn.Sequential()
             in_dim = self.input_dim
+            # logger.info(f"input_dim: {self.input_dim}, code_dim: {self.code_dim}")
             for idx, out_dim in enumerate(enc_fc_dims):
                 encs.add_module(f"fc_{idx}", nn.Linear(in_dim, out_dim, bias=False))
                 encs.add_module(f"bn_{idx}", nn.BatchNorm1d(out_dim))
@@ -230,13 +232,16 @@ class VQVAEGumbelMatrixLatent(torch.nn.Module):
         self.commit_loss_list.append((emb.detach() - z_e).pow(2).mean())
     
     def preprocess_ours_mask(self, feature, action):
+        # logger.info(f"feature: {feature.shape}, action: {action.shape}")
         x = torch.cat([feature, action], dim=0)
+        # logger.info(f"x: {x.shape}")
         x = x.permute(1, 0, 2)
         x = x.reshape(x.size(0), -1)
         return x
 
     def forward_fcs(self, feature, action):
         x = self.preprocess(feature, action)
+        # logger.info(f"x: {x.shape}")
         z_e = self.encode(x)
         if self.ema:
             z_q, code_index = self.emb(z_e)

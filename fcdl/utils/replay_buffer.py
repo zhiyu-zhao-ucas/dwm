@@ -3,6 +3,8 @@ import time
 import torch
 import numpy as np
 
+from loguru import logger
+
 from ..utils.utils import preprocess_obs, postprocess_obs, rgetattr
 
 
@@ -142,6 +144,8 @@ class ReplayBuffer:
         elif type == "ood":
             if self.params.env_params.env_name == "Chemical":
                 is_local_sample = (take(self.root_color, idx, idx + n_step + 1) == 0).all()
+            elif self.params.env_params.env_name == "Physical":
+                pass
             else:
                 raise NotImplementedError
         else:
@@ -220,6 +224,7 @@ class ReplayBuffer:
         else:
             raise NotImplementedError
 
+        # logger.info(f"n_step: {n_step}, type: {type}, use_part: {use_part}")
         idxes = self.sample_idx(batch_size, n_step, type, use_part)
         obses, actions, rewards, dones, next_obses, info = self.construct_transition(idxes, n_step, type)
         return obses, actions, rewards, dones, next_obses, idxes, info
