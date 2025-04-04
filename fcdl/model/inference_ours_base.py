@@ -26,6 +26,7 @@ class InferenceOursBase(Inference, metaclass=ABCMeta):
 
         self.action_dim = action_dim = params.action_dim
         self.feature_dim = feature_dim = self.encoder.feature_dim
+        # logger.info(f"feature_dim: {feature_dim}")
         self.feature_inner_dim = self.params.feature_inner_dim
 
         device = self.device
@@ -37,12 +38,19 @@ class InferenceOursBase(Inference, metaclass=ABCMeta):
         fc_dims = ours_params.feature_fc_dims
 
         num_state_var = feature_dim
-        self.num_state_var = num_state_var
+        # logger.info(f"num_state_var: {num_state_var}")
+        if self.params.env_params.env_name == "Physical":
+            self.num_state_var = num_state_var // 2
+        else:
+            self.num_state_var = num_state_var
         if self.use_gt_global_mask:
             self.get_gt_global_mask(self.num_state_var, self.num_action_variable)
         else:
             logger.info("set up local causal model")
-            self.local_causal_model = VQVAEGumbelMatrixLatent(self.params, feature_dim, action_dim, num_state_var, self.num_action_variable, self.continuous_state, fc_dims, device)
+            if self.params.env_params.env_name == "Physical":
+                self.local_causal_model = VQVAEGumbelMatrixLatent(self.params, feature_dim, action_dim, self.num_state_var, self.num_action_variable, self.continuous_state, fc_dims, device)
+            else:
+                self.local_causal_model = VQVAEGumbelMatrixLatent(self.params, feature_dim, action_dim, num_state_var, self.num_action_variable, self.continuous_state, fc_dims, device)
 
         self.action_feature_weights = nn.ParameterList()
         self.action_feature_biases = nn.ParameterList()
@@ -147,7 +155,10 @@ class InferenceOursBase(Inference, metaclass=ABCMeta):
             reshaped_feature = []
             for f_i in feature:
                 f_i = f_i.unsqueeze(0)
+                # logger.info(f"f_i: {f_i.shape}")
                 reshaped_feature.append(f_i)
+            # logger.info(f"reshaped_feature: {len(reshaped_feature)}")
+            # logger.info(f"reshaped_feature[0]: {reshaped_feature[0].shape}")
             x = forward_network_batch(reshaped_feature,
                                         self.state_feature_1st_layer_weights,
                                         self.state_feature_1st_layer_biases)
@@ -196,7 +207,9 @@ class InferenceOursBase(Inference, metaclass=ABCMeta):
         current_pred_step = 0
         for action in actions:
             dist = self.forward_step(feature, action, current_pred_step)
+            # logger.info(f"dist[0].logits.shape: {dist[0].logits.shape}")
             feature = self.sample_from_distribution(dist)
+            # logger.info(f"feature: {feature[0].shape}")
             dists.append(dist)
             current_pred_step += 1
         dists = self.stack_dist(dists)

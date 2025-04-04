@@ -8,6 +8,7 @@ import torch.optim as optim
 from torch.distributions.categorical import Categorical
 from torch.distributions.normal import Normal
 from loguru import logger
+from copy import deepcopy
 
 from ..utils.utils import to_numpy, preprocess_obs, postprocess_obs, calculate_entropy
 
@@ -167,6 +168,8 @@ class ModelBased(nn.Module):
             if self.goal_keys:
                 self.goal_inner_dim = np.concatenate([params.obs_dims[key] for key in self.goal_keys])
             goal_dim = np.sum(self.goal_inner_dim)
+        logger.info(f"self.goal_inner_dim: {self.goal_inner_dim}, self.feature_inner_dim: {self.feature_inner_dim}, self.goal_inner_dim == self.feature_inner_dim: {self.goal_inner_dim == self.feature_inner_dim}")
+        self.goal_inner_dim = deepcopy(self.feature_inner_dim)
 
         goal_dim = goal_dim.astype(np.int32)
 
@@ -245,6 +248,28 @@ class ModelBased(nn.Module):
                     continue
                 match = (current_color_i == target_color_i).all(dim=-1, keepdim=True)
                 num_matches = num_matches + match
+            pred_reward = num_matches
+        elif env_name == "Physical":
+            # Extract current object positions from feature
+            current_pos = []
+            idx = 0
+            for i, feature_inner_dim_i in enumerate(self.feature_inner_dim):
+                current_pos.append(feature[..., idx:idx + feature_inner_dim_i])
+                idx += feature_inner_dim_i
+            
+            # Extract target positions from goal_feature
+            target_pos = []
+            idx = 0
+            for i, goal_inner_dim_i in enumerate(self.goal_inner_dim):
+                target_pos.append(goal_feature[..., idx:idx + goal_inner_dim_i])
+                idx += goal_inner_dim_i
+            
+            # Count the number of objects that are at their target positions
+            num_matches = 0
+            for i, (current_pos_i, target_pos_i) in enumerate(zip(current_pos, target_pos)):
+                match = (current_pos_i == target_pos_i).all(dim=-1, keepdim=True)
+                num_matches = num_matches + match
+            
             pred_reward = num_matches
         else:
             raise NotImplementedError

@@ -6,6 +6,8 @@ import gym
 from collections import OrderedDict
 from dataclasses import dataclass
 from gym.utils import seeding
+from loguru import logger
+import traceback
 
 import skimage
 import matplotlib
@@ -79,6 +81,10 @@ class Physical(gym.Env):
         self.num_weights = physical_env_params.num_weights
         if self.num_weights is None:
             self.num_weights = num_objects
+        feature_inner_dim = []
+        feature_inner_dim.extend([self.width * self.height] * self.num_objects)  # For x and y coordinates
+        self.feature_inner_dim = np.array(feature_inner_dim)
+        self.num_action_variable = 1
 
         self.np_random = None
 
@@ -327,7 +333,7 @@ class Physical(gym.Env):
         self.objects[obj_id] = Object(
             pos=obj.pos+offset, weight=obj.weight)
 
-    def step(self, action: int):
+    def step(self, action: int, fix=False):
         directions = [Coord(0, 0),
                       Coord(-1, 0),
                       Coord(0, 1),
@@ -337,7 +343,8 @@ class Physical(gym.Env):
         direction = action % 5
         obj_id = action // 5
 
-        self.cur_step += 1
+        if not fix:
+            self.cur_step += 1
         done = self.cur_step >= self.max_steps
 
         for i in range(self.num_rand_objects):
@@ -398,7 +405,7 @@ class Physical(gym.Env):
 
         for i in range(num_steps):
             move = np.random.choice(self.num_objects * 5)
-            self.step(move)
+            self.step(move, fix=True)
 
         target_objects = self.objects.copy()
         self.objects = objects

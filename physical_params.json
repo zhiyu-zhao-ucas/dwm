@@ -1,0 +1,144 @@
+{
+    "info": "physical_dynamics",
+    "obs_keys": ["obj0", "obj1", "obj2", "obj3", "obj4"],
+    "goal_keys": ["target_obj0", "target_obj1", "target_obj2", "target_obj3", "target_obj4"],
+    "seed": -1,
+    "cuda_id": 0,
+    "wandb_dir": "./data/physical_experiment/",
+    "loglevel": "INFO",
+    "ours_params": {
+        "feature_fc_dims": [128, 128],
+        "generative_fc_dims": [128, 128],
+        "vq_encode_fc_dims": [128, 64],
+        "vq_decode_fc_dims": [32],
+        "ncd_fc_dims": [128, 128],
+        "code_labeling": false,
+        "vqvae_ema": true,
+        "ema": 0.99,
+        "codebook_size": 16,
+        "code_dim": 16,
+        "reg_coef": 0.001,
+        "vq_coef": 1.0,
+        "commit_coef": 0.25,
+        "local_mask_sampling_num": 1,
+        "eval_local_mask_sampling_num": 1
+    },
+    "training_params": {
+        "inference_algo": "dwm",
+        "rl_algo": "model_based",
+        "load_id": "",
+        "load_inference": "",
+        "load_model_based": "",
+        "load_policy": "",
+        "load_replay_buffer": "",
+        "total_steps": 15000,
+        "init_steps": 1000,
+        "random_action_steps": 1000,
+        "inference_gradient_steps": 1,
+        "inference_update_freq": 1,
+        "policy_update_freq": 1,
+        "test_freq": 1000,
+        "ood_eval_freq": 1000,
+        "ood_eval_batch_size": 512,
+        "total_test_episode_num": 10,
+        "saving_freq": 5000,
+        "plot_freq": 1000,
+        "mute_wandb": false,
+        "replay_buffer_params": {
+            "capacity": 1000000,
+            "max_sample_time": 128,
+            "saving_freq": 0
+        }
+    },
+    "env_params": {
+        "env_name": "Physical",
+        "num_env": 10,
+        "physical_env_params": {
+            "gt_local_mask": true,
+            "use_position": true,
+            "num_objects": 5,
+            "num_rand_objects": 0,
+            "num_weights": 5,
+            "width": 5,
+            "height": 5,
+            "continuous_pos": true,
+            "render_type": "human",
+            "dense_reward": false,
+            "max_steps": 25,
+            "mode": "sdandard",
+            "num_action_variable": 1,
+            "test_params": [
+                {
+                    "name": "test1"
+                },
+                {
+                    "name": "test2"
+                },
+                {
+                    "name": "test3"
+                }
+            ]
+        }
+    },
+    "encoder_params": {
+        "encoder_type": "identity"
+    },
+    "inference_params": {
+        "learn_action": false,
+        "learn_upper": false,
+        "learn_std": false,
+        "n_pred_step": 3,
+        "batch_size": 256,
+        "lr": 1e-4,
+        "eval_freq": 1000,
+        "train_prop": 0.9,
+        "residual": false,
+        "log_std_min": -10,
+        "log_std_max": -5,
+        "grad_clip_norm": 20000,
+        "eval_batch_size": 256,
+        "use_gt_global_mask": false,
+        "causal_coef": 0.0001,
+        "mlp_params": {
+            "fc_dims": [1024, 1024, 1024]
+        },
+        "gnn_params": {
+            "node_attr_dim": 256,
+            "edge_attr_dim": 256,
+            "embedder_dims": [],
+            "edge_net_dims": [512, 512, 512],
+            "node_net_dims": [512, 512, 512],
+            "projector_dims": []
+        },
+        "cmi_params": {
+            "feature_fc_dims": [64, 64],
+            "generative_fc_dims": [64, 64],
+            "causal_pred_reward_weight": 0.0,
+            "pred_diff_reward_weight": 1.0,
+            "eval_tau": 0.999,
+            "eval_freq": 10,
+            "eval_steps": 1,
+            "eval_batch_size": 32,
+            "CMI_threshold": 0.02
+        }
+    },
+    "policy_params": {
+        "batch_size": 128,
+        "lr": 1e-4,
+        "n_reward_step": 1,
+        "discount": 0.995,
+        "reward_coef": 1.0,
+        "model_based_params": {
+            "fc_dims": [32, 32],
+            "activations": ["relu", "relu"],
+            "planner_type": "cem",
+            "std_scale": 1.0,
+            "n_horizon_step": 3,
+            "n_iter": 5,
+            "n_candidate": 64,
+            "n_top_candidate": 32,
+            "action_noise": 0.03,
+            "action_noise_eps": 0.05
+        }
+    }
+}

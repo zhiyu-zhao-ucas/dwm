@@ -16,7 +16,11 @@ class InferenceDWM(InferenceOursMask):
         self.is_eval = eval
         assert not self.training == self.is_eval
         features = self.encoder(obses)
+        # logger.info(f"obses: {obses['obj0'].shape}")
+        # logger.info(f"features: {len(features)}, features[0]: {features[0].shape}")
         next_features = self.encoder(next_obses)
+        # logger.info(f"next_obses: {next_obses['obj0'].shape}")
+        # logger.info(f"next_features: {len(next_features)}, next_features[0]: {next_features[0].shape}")
         pred_next_dist = self.forward_with_feature(features, actions)
 
         masked_pred_loss = self.prediction_loss_from_dist(pred_next_dist, next_features)
@@ -37,6 +41,8 @@ class InferenceDWM(InferenceOursMask):
         # logger.info(f"next_features[0]: {next_features[0].shape}")
         action_single = actions[:, 0, :].unsqueeze(dim=-1)
         # logger.info(f"action_single: {action_single.shape}")
+        # logger.info(f"next_features: {len(next_features)}, next_features[0]: {next_features[0].shape}")
+        # logger.info(f"torch.stack(next_features): {torch.stack(next_features).shape}")
         next_features_stack_single = torch.stack(next_features)[:, :, 0, :]
         # logger.info(f"next_features_stack_single: {next_features_stack_single.shape}")
         # features_stack = torch.stack(features)
@@ -57,11 +63,16 @@ class InferenceDWM(InferenceOursMask):
         # logger.info(f"changed_nodes: {changed_nodes}")
         batch_indices = changed_nodes[0]
         node_indices = changed_nodes[1]
-        action_taken = action_single[node_indices].long() // self.params.env_params.chemical_env_params.num_colors
+        if "Chemical" in self.params.env_params.env_name:
+            action_taken = action_single[node_indices].long() // self.params.env_params.chemical_env_params.num_colors
+        else:
+            action_taken = action_single[node_indices].long().cpu() // 5
+        # logger.info(f"action_single: {action_single}, action_single.shape: {action_single.shape}")
         # logger.info(f"action_taken: {action_taken}")
         # logger.info(f"batch_indices: {batch_indices[:3]}")
         # logger.info(f"node_indices: {node_indices[:3]}")
         # logger.info(f"action_taken: {action_taken[:3]}")
+        # logger.info(f"action_taken_max: {action_taken.max()}, action_taken_min: {action_taken.min()}")
         # logger.info(f"log_probs: {log_probs.shape}")
         selected_log_probs = log_probs[0, node_indices, batch_indices, action_taken.squeeze(dim=-1)]
         # if self.params.inference_params.causal_coef == 0.0 or (self.count / self.params.training_params.total_steps < -1):
@@ -97,6 +108,8 @@ class InferenceDWM(InferenceOursMask):
             action_feature = self.extract_action_feature(action)
             state_feature = self.extract_state_feature(feature)
 
+            # logger.info(f"action_feature: {action_feature.shape}")
+            # logger.info(f"state_feature: {state_feature.shape}")
             bs = state_feature.size(1)
             local_mask, prob = self.local_causal_model(state_feature, action_feature, current_pred_step, training=training)
             local_masks.append(local_mask)
@@ -112,6 +125,7 @@ class InferenceDWM(InferenceOursMask):
         if len(actions.shape) < 2:
             # logger.info(f"actions: {actions.shape}")
             actions = actions.view(-1, 1, 1)
+        # logger.info(f"features: {features}")
         local_masks, log_probs = self.get_local_mask(features, actions, training=False)
         return local_masks, log_probs
         
