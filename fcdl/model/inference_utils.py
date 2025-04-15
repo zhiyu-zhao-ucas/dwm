@@ -1,5 +1,6 @@
 import numpy as np
 from collections import deque, OrderedDict
+from loguru import logger
 
 import torch
 import torch.nn as nn
@@ -21,6 +22,9 @@ def forward_network(input, weights, biases, activation=F.relu):
     """
     x = input
     for i, (w, b) in enumerate(zip(weights, biases)):
+        # logger.info(f"Layer {i}: x: {x.shape}, w: {w.shape}, b:{b.shape}")
+        if x.type() != w.type():
+            x = x.float()
         x = torch.bmm(x, w) + b
         if (i < len(weights) - 1) and activation:
             x = activation(x)

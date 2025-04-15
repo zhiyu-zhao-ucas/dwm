@@ -1,4 +1,12 @@
-for seed in 1 2 3; do
+for seed in 1; do
     python main_policy.py \
-        --training_params.inference_algo=ours --cuda_id=3 --seed=$seed
+        --training_params.inference_algo=ours --cuda_id=0 --seed=$seed
 done
+# for seed in 1 2 3; do
+#     python main_policy.py \
+#         --training_params.inference_algo=ncd --cuda_id=0 --seed=$seed
+# done
+# for seed in 1; do
+#     python main_policy.py \
+#         --training_params.inference_algo=mlp --cuda_id=0 --seed=$seed
+# done

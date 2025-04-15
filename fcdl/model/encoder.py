@@ -44,7 +44,23 @@ class IdentityEncoder(nn.Module):
     def forward(self, obs, detach=False, info=None):
         if self.continuous_state:
             obs = torch.cat([obs[k] for k in self.keys], dim=-1)
+            if not getattr(self, "chemical_train", True):
+                assert self.params.env_params.env_name == "Causal"
+                test_scale = self.chemical_test_scale
+                test_level = self.chemical_test_level
+                if self.params.env_params.env_name == "Causal":
+                    # logger.info(f"test_level: {test_level}, test_scale: {test_scale}")
+                    if test_level == 0:
+                        noise_variable_list = [0, 1]
+                    elif test_level == 1:
+                        noise_variable_list = [0, 1, 2]
+                    elif test_level == 2:
+                        noise_variable_list = [0, 1, 2, 3]
+                    for i in noise_variable_list:
+                        # logger.info(f"i: {i}, noise_variable_list: {noise_variable_list}, obs[i]: {obs[i]}")
+                        obs[i] = obs[i] * torch.randn_like(obs[i]) * test_scale
             return obs
+
         else:
             if "Physical" in self.params.env_params.env_name:
                 # logger.info(f"obs: {obs}")
@@ -101,89 +117,8 @@ class IdentityEncoder(nn.Module):
                     for i in noise_variable_list:
                         # logger.info(f"i: {i}, noise_variable_list: {noise_variable_list}, obs[i]: {obs[i]}")
                         obs[i] = obs[i] * torch.randn_like(obs[i]) * test_scale
-                    return obs
+                        return obs
             else: return obs
-
-    # def forward(self, obs, detach=False, info=None):
-    #     if self.continuous_state:
-    #         obs = torch.cat([obs[k] for k in self.keys], dim=-1)
-    #         return obs
-    #     else:
-    #         # logger.info(f"obs: {obs}")
-    #         obs = [obs_k_i
-    #                for k in self.keys
-    #                for obs_k_i in torch.unbind(obs[k], dim=-1)]
-    #         # logger.info(f"obs: {len(obs)}, obs: {obs}")
-    #         if "Physical" in self.params.env_params.env_name:
-    #             # for Physical env, we need to concatenate the even and odd features
-    #             # logger.debug(f"obs: {len(obs)}, obs[0]: {obs[0]}")
-    #             # 检查是否处理的是三维张量（带批次维度）
-    #             if len(obs[0].shape) > 1 and obs[0].shape[0] > 1:  # 批处理模式
-    #                 batch_size = obs[0].shape[0]
-    #                 logger.info(f"batch_size: {batch_size}")
-    #                 device = obs[0].device
-                    
-    #                 # 单独处理每个批次元素
-    #                 results = []
-    #                 for b in range(batch_size):
-    #                     batch_even = torch.vstack([t[b] for t in obs[::2]]).cpu()
-    #                     batch_odd = torch.vstack([t[b] for t in obs[1::2]]).cpu()
-                        
-    #                     # 按原方式组合坐标
-    #                     batch_new = batch_even * self.params.env_params.physical_env_params.width + batch_odd
-    #                     results.append(batch_new)
-                    
-    #                 # 重新组合为批次
-    #                 obs = torch.stack(results).to(device)
-    #             else:
-    #                 # 原来的二维张量处理代码
-    #                 obs_even = torch.vstack(obs[::2]).cpu()
-    #                 obs_odd = torch.vstack(obs[1::2]).cpu()
-    #                 new_obs = torch.tensor(obs_even) * self.params.env_params.physical_env_params.width + torch.tensor(obs_odd)
-    #                 obs = new_obs.to(obs[0].device)
-    #             # logger.info(f"obs: {obs}")
-    #             # obs = [torch.cat([obs_even_item, obs_odd_item], dim=-1) for obs_even_item, obs_odd_item in zip(obs_even, obs_odd)]
-    #         obs = [F.one_hot(obs_i.long(), obs_i_dim).float() if obs_i_dim > 1 else obs_i.unsqueeze(dim=-1)
-    #                for obs_i, obs_i_dim in zip(obs, self.feature_inner_dim)]
-    #         # if "Physical" in self.params.env_params.env_name:
-    #         #     # for Physical env, we need to concatenate the even and odd features
-    #         #     obs_even = obs[::2]
-    #         #     obs_odd = obs[1::2]
-    #         #     obs = [torch.cat([obs_even_item, obs_odd_item], dim=-1) for obs_even_item, obs_odd_item in zip(obs_even, obs_odd)]
-
-    #         # overwrite some observations for out-of-distribution evaluation
-    #         if not getattr(self, "chemical_train", True):
-    #             assert self.params.env_params.env_name in ["Chemical", "Physical"]
-    #             if self.params.env_params.env_name == "Chemical":
-    #                 assert self.params.env_params.chemical_env_params.continuous_pos
-    #             else:
-    #                 assert self.params.env_params.physical_env_params.continuous_pos
-    #             test_scale = self.chemical_test_scale
-    #             test_level = self.chemical_test_level
-    #             if "Chemical" in self.params.env_params.env_name:
-    #                 if test_level == 0:
-    #                     noise_variable_list = [1, 2] # number of noisy nodes = 2
-    #                 elif test_level == 1:
-    #                     noise_variable_list = [1, 2, 3, 4] # number of noisy nodes = 4
-    #                 elif test_level == 2:
-    #                     noise_variable_list = [1, 2, 3, 4, 5, 6] # number of noisy nodes = 6
-    #             elif "Physical" in self.params.env_params.env_name:
-    #                 if test_level == 0:
-    #                     noise_variable_list = [1]
-    #                 elif test_level == 1:
-    #                     noise_variable_list = [1, 2]
-    #                 elif test_level == 2:
-    #                     noise_variable_list = [1, 2, 3]
-    #             self.chemical_match_type_test = list(set(self.chemical_match_type_train) - set(noise_variable_list))
-                
-    #             if test_scale == 0:
-    #                 return obs
-    #             else:
-    #                 for i in noise_variable_list:
-    #                     # logger.info(f"i: {i}, noise_variable_list: {noise_variable_list}, obs[i]: {obs[i]}")
-    #                     obs[i] = obs[i] * torch.randn_like(obs[i]) * test_scale
-    #                 return obs
-    #         else: return obs
 
 
 _AVAILABLE_ENCODERS = {"identity": IdentityEncoder}

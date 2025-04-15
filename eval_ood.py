@@ -187,8 +187,11 @@ def plot_learning_curves(results, save_dir='result/plots'):
         plt.savefig(os.path.join(save_dir, f'{test_name}_comparison.pdf'))
         plt.close()
 
-def plot_comparison_bar_charts(summary_df, save_dir='result/plots'):
-    """Plot bar charts comparing the performance of different algorithms with colored bars."""
+def plot_comparison_bar_charts(summary_df, save_dir='result/plots', is_causal=False):
+    """
+    Plot bar charts comparing the performance of different algorithms with colored bars.
+    For causal models (potentially with negative log probabilities), use horizontal bar charts.
+    """
     os.makedirs(save_dir, exist_ok=True)
     
     # Calculate mean and std for each algorithm and test
@@ -201,32 +204,64 @@ def plot_comparison_bar_charts(summary_df, save_dir='result/plots'):
     
     plt.figure(figsize=(15, 6))
     
-    # Test 1 comparison
-    plt.subplot(1, 3, 1)
-    plt.title('Test1 Accuracy Comparison')
-    bars = plt.bar(mean_data.index, mean_data['test1_acc'], yerr=std_data['test1_acc'], 
-                  capsize=5, color=colors)
-    plt.xticks(rotation=45)
-    plt.ylabel('Accuracy')
-    plt.grid(True, linestyle='--', alpha=0.7, axis='y')
-    
-    # Test 2 comparison
-    plt.subplot(1, 3, 2)
-    plt.title('Test2 Accuracy Comparison')
-    bars = plt.bar(mean_data.index, mean_data['test2_acc'], yerr=std_data['test2_acc'], 
-                  capsize=5, color=colors)
-    plt.xticks(rotation=45)
-    plt.ylabel('Accuracy')
-    plt.grid(True, linestyle='--', alpha=0.7, axis='y')
-    
-    # Test 3 comparison
-    plt.subplot(1, 3, 3)
-    plt.title('Test3 Accuracy Comparison')
-    bars = plt.bar(mean_data.index, mean_data['test3_acc'], yerr=std_data['test3_acc'], 
-                  capsize=5, color=colors)
-    plt.xticks(rotation=45)
-    plt.ylabel('Accuracy')
-    plt.grid(True, linestyle='--', alpha=0.7, axis='y')
+    if not is_causal:
+        # Standard vertical bar charts for positive accuracy values
+        # Test 1 comparison
+        plt.subplot(1, 3, 1)
+        plt.title('Test1 Accuracy Comparison')
+        bars = plt.bar(mean_data.index, mean_data['test1_acc'], yerr=std_data['test1_acc'], 
+                      capsize=5, color=colors)
+        plt.xticks(rotation=45)
+        plt.ylabel('Accuracy')
+        plt.grid(True, linestyle='--', alpha=0.7, axis='y')
+        
+        # Test 2 comparison
+        plt.subplot(1, 3, 2)
+        plt.title('Test2 Accuracy Comparison')
+        bars = plt.bar(mean_data.index, mean_data['test2_acc'], yerr=std_data['test2_acc'], 
+                      capsize=5, color=colors)
+        plt.xticks(rotation=45)
+        plt.ylabel('Accuracy')
+        plt.grid(True, linestyle='--', alpha=0.7, axis='y')
+        
+        # Test 3 comparison
+        plt.subplot(1, 3, 3)
+        plt.title('Test3 Accuracy Comparison')
+        bars = plt.bar(mean_data.index, mean_data['test3_acc'], yerr=std_data['test3_acc'], 
+                      capsize=5, color=colors)
+        plt.xticks(rotation=45)
+        plt.ylabel('Accuracy')
+        plt.grid(True, linestyle='--', alpha=0.7, axis='y')
+    else:
+        # Horizontal bar charts for log probabilities (negative values)
+        # Test 1 comparison
+        # Standard vertical bar charts for positive accuracy values
+        # Test 1 comparison
+        plt.subplot(1, 3, 1)
+        plt.title('Test1 Accuracy Comparison')
+        bars = plt.bar(mean_data.index, - mean_data['test1_acc'], yerr=std_data['test1_acc'], 
+                      capsize=5, color=colors)
+        plt.xticks(rotation=45)
+        plt.ylabel('Accuracy')
+        plt.grid(True, linestyle='--', alpha=0.7, axis='y')
+        
+        # Test 2 comparison
+        plt.subplot(1, 3, 2)
+        plt.title('Test2 Accuracy Comparison')
+        bars = plt.bar(mean_data.index, - mean_data['test2_acc'], yerr=std_data['test2_acc'], 
+                      capsize=5, color=colors)
+        plt.xticks(rotation=45)
+        plt.ylabel('Accuracy')
+        plt.grid(True, linestyle='--', alpha=0.7, axis='y')
+        
+        # Test 3 comparison
+        plt.subplot(1, 3, 3)
+        plt.title('Test3 Accuracy Comparison')
+        bars = plt.bar(mean_data.index, - mean_data['test3_acc'], yerr=std_data['test3_acc'], 
+                      capsize=5, color=colors)
+        plt.xticks(rotation=45)
+        plt.ylabel('Accuracy')
+        plt.grid(True, linestyle='--', alpha=0.7, axis='y')
     
     plt.tight_layout()
     plt.savefig(os.path.join(save_dir, 'algorithm_comparison.pdf'))
@@ -249,11 +284,17 @@ def main():
     plots_dir = Path('result/plots')
     plots_dir.mkdir(exist_ok=True)
     
+    # Define data directory
+    data_dir = 'ood_data/Causal'
+    
     # Load data from JSON files
-    results = load_data_from_json_files('ood_data')
+    results = load_data_from_json_files(data_dir)
+    
+    # Check if we're dealing with causal data (for plotting format)
+    is_causal = 'causal' in data_dir.lower()
     
     if not results:
-        print("No data found in the ood_data directory.")
+        print(f"No data found in the {data_dir} directory.")
         return
     
     # Create a summary DataFrame
@@ -268,7 +309,7 @@ def main():
     # print(f"Saved learning curves to plots directory")
     
     # Plot comparison bar charts and create summary table
-    summary_table = plot_comparison_bar_charts(summary_df, 'result/plots')
+    summary_table = plot_comparison_bar_charts(summary_df, 'result/plots', is_causal=is_causal)
     summary_table.to_csv('result/csv/ood_comparison.csv')
     print(f"Saved comparison data to ood_comparison.csv")
     

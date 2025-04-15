@@ -26,7 +26,6 @@ class InferenceOursBase(Inference, metaclass=ABCMeta):
 
         self.action_dim = action_dim = params.action_dim
         self.feature_dim = feature_dim = self.encoder.feature_dim
-        # logger.info(f"feature_dim: {feature_dim}")
         self.feature_inner_dim = self.params.feature_inner_dim
 
         device = self.device
@@ -38,7 +37,6 @@ class InferenceOursBase(Inference, metaclass=ABCMeta):
         fc_dims = ours_params.feature_fc_dims
 
         num_state_var = feature_dim
-        # logger.info(f"num_state_var: {num_state_var}")
         if self.params.env_params.env_name == "Physical":
             self.num_state_var = num_state_var // 2
         else:
@@ -138,27 +136,32 @@ class InferenceOursBase(Inference, metaclass=ABCMeta):
     def extract_action_feature(self, action):
         if self.num_action_variable == 1:
             action = action.unsqueeze(dim=0)
+        elif self.params.env_params.env_name == "Causal":
+            action = action.unsqueeze(dim=0)                                    # (1, bs, action_dim)
+            if len(action.shape) > 3:
+                action = action[:, :, 0, :]                                     # (action_dim, feature_dim, bs)
+            action = action.permute(2, 1, 0)                                     # (action_dim, feature_dim, bs)
         else:
             action = action.permute(1, 0)
             action = action.unsqueeze(dim=-1)
+        # logger.info(f"action: {action.shape}")
         action_feature = forward_network(action, self.action_feature_weights, self.action_feature_biases)
         action_feature = F.relu(action_feature)
         return action_feature
 
     def extract_state_feature(self, feature):
         if self.continuous_state:
-            x = feature.transpose(0, 1)
-            x = x.unsqueeze(-1)
+            bs = feature.shape[0]
+            x = feature.transpose(0, 1)                                     # (feature_dim, bs)
+            # x = x.repeat(feature_dim, 1, 1)                                 # (feature_dim, feature_dim, bs)
+            x = x.view(-1, bs, 1)                    # (feature_dim * feature_dim, bs, 1)
             x = forward_network(x, self.state_feature_1st_layer_weights, self.state_feature_1st_layer_biases)
             x = F.relu(x)
         else:
             reshaped_feature = []
             for f_i in feature:
                 f_i = f_i.unsqueeze(0)
-                # logger.info(f"f_i: {f_i.shape}")
                 reshaped_feature.append(f_i)
-            # logger.info(f"reshaped_feature: {len(reshaped_feature)}")
-            # logger.info(f"reshaped_feature[0]: {reshaped_feature[0].shape}")
             x = forward_network_batch(reshaped_feature,
                                         self.state_feature_1st_layer_weights,
                                         self.state_feature_1st_layer_biases)
@@ -176,7 +179,8 @@ class InferenceOursBase(Inference, metaclass=ABCMeta):
                 mu, log_std = x.unbind(dim=-1)
             else:
                 mu = x.squeeze(-1)
-                log_std = torch.ones_like(mu)
+                log_std = torch.zeros_like(mu)
+                # log_std = torch.ones_like(mu)
             return self.normal_helper(mu, residual_base, log_std)
         else:
             x = F.relu(x)
@@ -207,9 +211,7 @@ class InferenceOursBase(Inference, metaclass=ABCMeta):
         current_pred_step = 0
         for action in actions:
             dist = self.forward_step(feature, action, current_pred_step)
-            # logger.info(f"dist[0].logits.shape: {dist[0].logits.shape}")
             feature = self.sample_from_distribution(dist)
-            # logger.info(f"feature: {feature[0].shape}")
             dists.append(dist)
             current_pred_step += 1
         dists = self.stack_dist(dists)
@@ -222,9 +224,6 @@ class InferenceOursBase(Inference, metaclass=ABCMeta):
         else: 
             sampling_num = self.eval_local_mask_sampling_num
         
-        # logger.info(f"action: {action.shape}")
-        # logger.info(f"feature: {len(feature)}")
-        # logger.info(f"feature[0]: {feature[0].shape}")
         action_feature = self.extract_action_feature(action)
         state_feature = self.extract_state_feature(feature)
         
@@ -236,10 +235,6 @@ class InferenceOursBase(Inference, metaclass=ABCMeta):
             local_mask = global_mask
         else:
             local_mask, prob = self.local_causal_model(state_feature, action_feature, current_pred_step, training=self.training)
-            # logger.info(f"local_mask: {local_mask.shape}")
-            # logger.info(f"prob: {prob.shape}")
-            # logger.info(f"state_feature: {state_feature.shape}")
-            # logger.info(f"action_feature: {action_feature.shape}")
             if not self.training:
                 prob = (prob > 0.5).float()
             prob = prob.detach()
