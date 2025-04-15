@@ -37,6 +37,8 @@ class Inference(nn.Module):
         self.env_name = params.env_params.env_name
         self.use_gt_global_mask = params.inference_params.use_gt_global_mask
         self.num_action_variable = params.num_action_variable
+        if self.params.env_params.env_name == 'Causal':
+            self.num_action_variable = 4
 
         self.init_model()
         self.reset_params()
@@ -295,6 +297,15 @@ class Inference(nn.Module):
                 accuracy = torch.stack(accuracy, dim=-1)
                 accuracy = to_numpy(accuracy)
                 loss_detail["accuracy"] = accuracy.mean()
+            elif self.params.env_params.env_name == "Causal":
+                assert isinstance(pred_next_dist, Normal)
+                # logger.info(f"pred_next_dist: {pred_next_dist.mean.shape}, next_feature: {next_feature.shape}")
+                accuracy = pred_next_dist.log_prob(next_feature).mean(dim=-1)
+                accuracy = to_numpy(accuracy)
+                distance = torch.norm(pred_next_dist.mean - next_feature, dim=-1)
+                distance = to_numpy(distance)
+                loss_detail["accuracy"] = accuracy.mean()
+                loss_detail["distance"] = distance.mean()
             else:
                 raise NotImplementedError
         return loss_detail

@@ -146,6 +146,8 @@ class ReplayBuffer:
                 is_local_sample = (take(self.root_color, idx, idx + n_step + 1) == 0).all()
             elif self.params.env_params.env_name == "Physical":
                 pass
+            elif self.params.env_params.env_name == "Causal":
+                pass
             else:
                 raise NotImplementedError
         else:

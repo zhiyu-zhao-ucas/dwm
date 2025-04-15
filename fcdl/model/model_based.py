@@ -271,6 +271,11 @@ class ModelBased(nn.Module):
                 num_matches = num_matches + match
             
             pred_reward = num_matches
+        elif env_name == "Causal":
+            pos1 = feature[:, :, 4:7]
+            pos2 = feature[:, :, 7:10]
+            dist = torch.norm(pos1 - pos2, dim=-1, keepdim=True)
+            pred_reward = 1 - torch.tanh(5 * dist)
         else:
             raise NotImplementedError
 

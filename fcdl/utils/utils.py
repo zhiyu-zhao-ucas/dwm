@@ -8,6 +8,15 @@ from copy import deepcopy
 from typing import Any
 from loguru import logger
 
+try:
+    import robosuite as suite
+    from robosuite.controllers import load_controller_config
+    ROBOSUITE_AVAILABLE = True
+except ImportError:
+    ROBOSUITE_AVAILABLE = False
+    print("Warning: robosuite not installed. Causal environment will not be available.")
+
+
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
@@ -56,6 +65,8 @@ class TrainingParams(AttrDict):
                 sub_dirname = "task" if training_params.rl_algo == "model_based" else "dynamics"
             elif training_params_fname == "physical_params.json":
                 sub_dirname = "physical" if training_params.rl_algo == "model_based" else "dynamics"
+            elif training_params_fname == "causal_params.json":
+                sub_dirname = "causal" if training_params.rl_algo == "model_based" else "dynamics"
             else:
                 raise NotImplementedError
 
@@ -230,6 +241,36 @@ def get_single_env(params, load_dir=None, test_idx=None, env_idx=None):
             if hasattr(copied_params.env_params.physical_env_params, 'name'):
                 copied_params.env_params.physical_env_params.name += f"_{str(env_idx)}"
         env = Physical(copied_params)
+    elif env_name == "Causal":
+        causal_env_params = env_params.causal_env_params
+        env = suite.make(env_name="CausalMagneticTest",
+                robots="UR5e",
+                controller_configs=load_controller_config(default_controller="OSC_POSITION"),
+                gripper_types="RethinkGripper",
+                has_renderer=False,
+                has_offscreen_renderer=False,
+                use_camera_obs=False,
+                ignore_done=False,
+                control_freq=1,
+                horizon=25,
+                reward_scale=1.0,
+                num_movable_objects=1,
+                num_unmovable_objects=1)
+        # env = suite.make(env_name="CausalMagnetic",
+        #                 robots="UR5e",
+        #                 controller_configs=load_controller_config(default_controller="OSC_POSITION"),
+        #                 gripper_types="RethinkGripper",
+        #                 has_renderer=False,
+        #                 has_offscreen_renderer=False,
+        #                 use_camera_obs=False,
+        #                 ignore_done=False,
+        #                 control_freq=10,
+        #                 horizon=250,
+        #                 reward_scale=1.0,
+        #                 num_movable_objects=1,
+        #                 num_unmovable_objects=1,
+        #                 num_random_objects=1,
+        #                 num_markers=3)
     else:
         raise ValueError(f"Unknown env_name: {env_name}")
 
@@ -248,8 +289,10 @@ def get_env(params, load_dir=None, test_idx=None):
     if num_env == 1:
         return get_single_env(params, load_dir, test_idx)
     else:
+        if env_name == "Causal":
+            return SubprocVecEnv([get_subproc_env(params, load_dir, test_idx, env_idx) for env_idx in range(num_env)])
         # Support vectorized environments for both Chemical and Physical
-        if env_name not in ["Chemical", "Physical"]:
+        elif env_name not in ["Chemical", "Physical"]:
             raise ValueError(f"Vectorized environment not supported for: {env_name}")
         return SubprocVecEnv([get_subproc_env(params, load_dir, test_idx, env_idx) for env_idx in range(num_env)])
 

@@ -40,8 +40,10 @@ def ood_evaluation(params, inference, obs_batch, actions_batch, next_obses_batch
             ood_evaluation_chemical(params, inference, obs_batch, actions_batch, next_obses_batch, info_batch, step)
         elif params.env_params.env_name == 'Physical':
             ood_evaluation_physical(params, inference, obs_batch, actions_batch, next_obses_batch, info_batch, step)
+        elif params.env_params.env_name == 'Causal':
+            ood_evaluation_causal(params, inference, obs_batch, actions_batch, next_obses_batch, info_batch, step)
         else:
-            pass
+            raise NotImplementedError(f"Unsupported env_name: {params.env_params.env_name}")
 
 def ood_evaluation_chemical(params, inference, obs_batch, actions_batch, next_obses_batch, info_batch, step):
     test_params = params.env_params.chemical_env_params.test_params
@@ -107,53 +109,126 @@ def ood_evaluation_chemical(params, inference, obs_batch, actions_batch, next_ob
         wandb.log(test_detail, step+1)
     inference.encoder.chemical_train = True
 
-def ood_evaluation_physical(params, inference, obs_batch, actions_batch, next_obses_batch, info_batch, step):
-    inference.eval()
-    with torch.no_grad():
-        ood_eval_detail = inference.ood_prediction(obs_batch, actions_batch, next_obses_batch, info_batch)
-        test_detail = {}
-        wandb_name = "test/physical/inference"
-        for k, v in ood_eval_detail.items():
-            # Convert numpy types to Python native types for JSON serialization
-            if isinstance(v, (np.float32, np.float64, np.int32, np.int64)):
-                v = float(v)
-            test_detail[f"{wandb_name}/{k}"] = v
-        
-        # Save to file
-        # Create ood_data directory if it doesn't exist
-        os.makedirs("ood_data", exist_ok=True)
-        
-        algo = params.training_params.inference_algo
-        seed = params.seed
-        filename = f"ood_data/{algo}-{seed}-physical.json"
-        
-        # Create a record with step information
-        record = {
-            "step": step,
-            "timestamp": time.strftime("%Y-%m-%d %H:%M:%S")
-        }
-        record.update(test_detail)
-        
-        # Load existing data if file exists
-        existing_data = []
-        if os.path.exists(filename):
-            try:
-                with open(filename, "r") as f:
-                    existing_data = json.load(f)
-                    if not isinstance(existing_data, list):
-                        existing_data = [existing_data]
-            except:
-                pass
-        
-        existing_data.append(record)
-        import json
-        
-        # Save to file using JSON format
+def ood_evaluation_causal(params, inference, obs_batch, actions_batch, next_obses_batch, info_batch, step):
+    test_params = params.env_params.chemical_env_params.test_params
+    test_scales = [100,]
+    inference.encoder.chemical_train = False
+    test_detail = {}
+    # "test1": number of noisy nodes = 2
+    # "test2": number of noisy nodes = 4
+    # "test3": number of noisy nodes = 6
+    for i, test_param in enumerate(test_params):
+        test_env_name = test_param.name
+        inference.encoder.chemical_test_level = i
+        for test_scale in test_scales:
+            inference.encoder.chemical_test_scale = test_scale
+            ood_eval_detail = inference.ood_prediction(obs_batch, actions_batch, next_obses_batch, info_batch)
+            wandb_name = f"test/{test_env_name}/inference"
+            for k, v in ood_eval_detail.items():
+                # Convert numpy types to Python native types for JSON serialization
+                if isinstance(v, (np.float32, np.float64, np.int32, np.int64)):
+                    v = float(v)
+                test_detail[f"{wandb_name}/{k}"] = v
+    
+    # Save to file
+    import os
+    import json
+    
+    # Create ood_data directory if it doesn't exist
+    os.makedirs(f"ood_data/{params.env_params.env_name}", exist_ok=True)
+    
+    algo = params.training_params.inference_algo
+    seed = params.seed
+    filename = f"ood_data/{params.env_params.env_name}/{algo}-{seed}.json"
+    
+    # Create a record with step information
+    record = {
+        "step": step,
+        "timestamp": time.strftime("%Y-%m-%d %H:%M:%S")
+    }
+    record.update(test_detail)
+    
+    # Load existing data if file exists
+    existing_data = []
+    if os.path.exists(filename):
+        try:
+            with open(filename, "r") as f:
+                existing_data = json.load(f)
+                if not isinstance(existing_data, list):
+                    existing_data = [existing_data]
+        except:
+            pass
+    else:
+        # Create the file if it doesn't exist
         with open(filename, "w") as f:
-            json.dump(existing_data, f, indent=2)
-        
-        if not getattr(params, "mute_wandb", False):
-            wandb.log(test_detail, step+1)
+            pass
+    
+    existing_data.append(record)
+    
+    # Save to file using JSON format
+    with open(filename, "w") as f:
+        json.dump(existing_data, f, indent=2)
+    
+    if not getattr(params, "mute_wandb", False):
+        wandb.log(test_detail, step+1)
+    inference.encoder.chemical_train = True
+
+def ood_evaluation_physical(params, inference, obs_batch, actions_batch, next_obses_batch, info_batch, step):
+    test_params = params.env_params.physical_env_params.test_params
+    test_scales = [100,]
+    inference.encoder.chemical_train = False
+    test_detail = {}
+    # "test1": number of noisy nodes = 2
+    # "test2": number of noisy nodes = 4
+    # "test3": number of noisy nodes = 6
+    for i, test_param in enumerate(test_params):
+        test_env_name = test_param.name
+        inference.encoder.chemical_test_level = i
+        for test_scale in test_scales:
+            inference.encoder.chemical_test_scale = test_scale
+            ood_eval_detail = inference.ood_prediction(obs_batch, actions_batch, next_obses_batch, info_batch)
+            wandb_name = f"test/{test_env_name}/inference"
+            for k, v in ood_eval_detail.items():
+                # Convert numpy types to Python native types for JSON serialization
+                if isinstance(v, (np.float32, np.float64, np.int32, np.int64)):
+                    v = float(v)
+                test_detail[f"{wandb_name}/{k}"] = v
+    # Save to file
+    import os
+    import json
+
+    # Create ood_data directory if it doesn't exist
+    os.makedirs("ood_data", exist_ok=True)
+    algo = params.training_params.inference_algo
+    seed = params.seed
+    filename = f"ood_data/{algo}-{seed}-physical.json"
+    # Create a record with step information
+    record = {
+        "step": step,
+        "timestamp": time.strftime("%Y-%m-%d %H:%M:%S")
+    }
+    record.update(test_detail)
+    # Load existing data if file exists
+    existing_data = []
+    if os.path.exists(filename):
+        try:
+            with open(filename, "r") as f:
+                existing_data = json.load(f)
+                if not isinstance(existing_data, list):
+                    existing_data = [existing_data]
+        except:
+            pass
+    else:
+        # Create the file if it doesn't exist
+        with open(filename, "w") as f:
+            pass
+    existing_data.append(record)
+    # Save to file using JSON format
+    with open(filename, "w") as f:
+        json.dump(existing_data, f, indent=2)
+    if not getattr(params, "mute_wandb", False):
+        wandb.log(test_detail, step+1)
+    inference.encoder.chemical_train = True
 
 def test_policy_evaluation(params, inference, policy, step):
     inference.eval()
@@ -314,6 +389,83 @@ def test_policy_evaluation_physical(params, inference, policy, step):
         wandb.log(test_detail, step+1)
     inference.encoder.chemical_train = True
 
+
+def test_policy_evaluation_causal(params, inference, policy, step):
+    test_params = params.env_params.causal_env_params.test_params
+    # "test1": number of noisy nodes = 2
+    # "test2": number of noisy nodes = 4
+    # "test3": number of noisy nodes = 6
+    test_scales = [100,]
+    num_env = params.env_params.num_env
+    is_vecenv = num_env > 1
+    training_params = params.training_params
+    inference.encoder.chemical_train = False
+    test_detail = {}
+    for i, test_param in enumerate(test_params):
+        test_env_name = test_param.name
+        logging.info("Testing %s", test_env_name)
+        env = get_env(params, test_idx=i)
+        inference.encoder.chemical_test_level = i
+        for test_scale in test_scales:
+            episode_num = 0
+            episode_reward = np.zeros(num_env) if is_vecenv else 0
+            episode_reward_mean = []
+            success = np.zeros(num_env, dtype=bool) if is_vecenv else False
+            success_hist = []
+            test_global_step = 0
+            inference.encoder.chemical_test_scale = test_scale
+            wandb_name = f"test/{test_env_name}/policy"
+            if is_vecenv:
+                obs = env.reset()
+                while episode_num < training_params.total_test_episode_num:
+                    action = policy.act(obs, deterministic=True)
+                    next_obs, env_reward, done, info = env.step(action)
+                    episode_reward += env_reward
+                    success = success | np.stack([info[i]["success"] for i in range(num_env)])
+                    obs = next_obs
+                    logger.info(f"done: {done}")
+                    if done.any():
+                        for i in range(num_env):
+                            if not done[i]:
+                                continue
+                            success_hist.append(success[i])
+                            episode_reward_mean.append(episode_reward[i])
+                            episode_reward[i] = 0
+                            success[i] = False
+                            episode_num += 1
+                    test_global_step += 1
+                    # logger.info(f"episode_reward_mean: {episode_reward_mean}")
+                    logging.info("Testing %s_s%s: test_global_step: %d, episode_num: %d, mean_episode_reward: %f", 
+                                test_env_name, test_scale, test_global_step, episode_num, np.mean(episode_reward_mean))
+            else:
+                obs = env.reset()
+                while episode_num < training_params.total_test_episode_num:
+                    action = policy.act(obs, deterministic=True)
+                    next_obs, env_reward, done, info = env.step(action)
+                    episode_reward += env_reward
+                    success = success or info["success"]
+                    obs = next_obs
+                    if done:
+                        success_hist.append(success)
+                        episode_reward_mean.append(episode_reward)
+                        episode_reward = 0
+                        success = False
+                        episode_num += 1
+                        obs = env.reset()
+                    test_global_step += 1
+                    logging.info("Testing %s_s%s: test_global_step: %d, episode_num: %d, mean_episode_reward: %f", 
+                                test_env_name, test_scale, test_global_step, episode_num, np.mean(episode_reward_mean))
+            episode_reward_mean = np.mean(episode_reward_mean, axis=0)
+            success_ratio = np.mean(success_hist, axis=0)
+            test_detail[f"{wandb_name}/episode_reward_mean"] = episode_reward_mean
+            test_detail[f"{wandb_name}/success_ratio"] = success_ratio
+        if is_vecenv:
+            env.close()
+    if not getattr(params, "mute_wandb", False):
+        wandb.log(test_detail, step+1)
+    inference.encoder.chemical_train = True
+
+
 def train(params):
     device = torch.device("cuda:{}".format(params.cuda_id) if torch.cuda.is_available() else "cpu")
     assert torch.cuda.is_available()
@@ -336,6 +488,8 @@ def train(params):
         env_specific_type = params.env_params.chemical_env_params.local_causal_rule
     elif env_name == "Physical":
         env_specific_type = "physical"
+    elif env_name == "Causal":
+        env_specific_type = "causal"
     else:
         raise NotImplementedError(f"Unsupported env_name: {env_name}")
     
@@ -427,7 +581,7 @@ def train(params):
         policy = ModelBased(encoder, inference, params)
     else:
         raise NotImplementedError
-    # logger.info(f"Using policy: {policy}")
+    logger.info(f"Using policy: {policy}")
 
 
     training_params = params.training_params
@@ -522,6 +676,7 @@ def train(params):
             action = policy.act(obs)
         # logger.info(f"env.cur_step: {env.cur_step}")
         next_obs, env_reward, done, info = env.step(action)
+        
         # logger.info(f"done: {done}")
         if "dwm" in inference_algo:
             # Now use the function
@@ -597,6 +752,6 @@ def train(params):
     inference.save(os.path.join(model_dir, "inference_final"))
 
 if __name__ == "__main__":
-    params = TrainingParams(training_params_fname="physical_params.json", train=True)
+    params = TrainingParams(training_params_fname="causal_params.json", train=True)
     override_params_from_cli_args(params)
     train(params)

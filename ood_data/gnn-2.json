@@ -187,5 +187,733 @@
     "test/test1/inference/accuracy": 0.3748779296875,
     "test/test2/inference/accuracy": 0.29833984375,
     "test/test3/inference/accuracy": 0.246826171875
+  },
+  {
+    "step": 1099,
+    "timestamp": "2025-04-10 08:46:04",
+    "test/test1/inference/accuracy": -3.1511683464050293,
+    "test/test2/inference/accuracy": -1.6218301057815552,
+    "test/test3/inference/accuracy": -1.8635309934616089
+  },
+  {
+    "step": 1199,
+    "timestamp": "2025-04-10 08:50:09",
+    "test/test1/inference/accuracy": -3.1425042152404785,
+    "test/test2/inference/accuracy": -2.1525368690490723,
+    "test/test3/inference/accuracy": -1.5621118545532227
+  },
+  {
+    "step": 1299,
+    "timestamp": "2025-04-10 08:54:11",
+    "test/test1/inference/accuracy": -1.143359661102295,
+    "test/test2/inference/accuracy": -2.1282296180725098,
+    "test/test3/inference/accuracy": -3.189016580581665
+  },
+  {
+    "step": 1399,
+    "timestamp": "2025-04-10 08:58:14",
+    "test/test1/inference/accuracy": -1.6794999837875366,
+    "test/test2/inference/accuracy": -4.108912944793701,
+    "test/test3/inference/accuracy": -2.3893942832946777
+  },
+  {
+    "step": 1499,
+    "timestamp": "2025-04-10 09:02:19",
+    "test/test1/inference/accuracy": -2.4675440788269043,
+    "test/test2/inference/accuracy": -2.8959929943084717,
+    "test/test3/inference/accuracy": -4.8999786376953125
+  },
+  {
+    "step": 1599,
+    "timestamp": "2025-04-10 09:06:24",
+    "test/test1/inference/accuracy": -2.821207046508789,
+    "test/test2/inference/accuracy": -1.659226417541504,
+    "test/test3/inference/accuracy": -1.224182367324829
+  },
+  {
+    "step": 1699,
+    "timestamp": "2025-04-10 09:10:27",
+    "test/test1/inference/accuracy": -1.8647383451461792,
+    "test/test2/inference/accuracy": -1.1112263202667236,
+    "test/test3/inference/accuracy": -2.9743587970733643
+  },
+  {
+    "step": 1799,
+    "timestamp": "2025-04-10 09:14:31",
+    "test/test1/inference/accuracy": -2.0977323055267334,
+    "test/test2/inference/accuracy": -2.1773486137390137,
+    "test/test3/inference/accuracy": -1.0978305339813232
+  },
+  {
+    "step": 1899,
+    "timestamp": "2025-04-10 09:18:36",
+    "test/test1/inference/accuracy": -1.9286397695541382,
+    "test/test2/inference/accuracy": -4.884596824645996,
+    "test/test3/inference/accuracy": -4.088883399963379
+  },
+  {
+    "step": 1999,
+    "timestamp": "2025-04-10 09:22:37",
+    "test/test1/inference/accuracy": -1.243532657623291,
+    "test/test2/inference/accuracy": -1.348729133605957,
+    "test/test3/inference/accuracy": -2.380239963531494
+  },
+  {
+    "step": 2099,
+    "timestamp": "2025-04-10 09:26:39",
+    "test/test1/inference/accuracy": -1.6986955404281616,
+    "test/test2/inference/accuracy": -3.5243167877197266,
+    "test/test3/inference/accuracy": -4.36860466003418
+  },
+  {
+    "step": 2199,
+    "timestamp": "2025-04-10 09:30:42",
+    "test/test1/inference/accuracy": -1.2874683141708374,
+    "test/test2/inference/accuracy": -1.4411877393722534,
+    "test/test3/inference/accuracy": -2.1176631450653076
+  },
+  {
+    "step": 2299,
+    "timestamp": "2025-04-10 09:34:47",
+    "test/test1/inference/accuracy": -2.271022319793701,
+    "test/test2/inference/accuracy": -1.6591997146606445,
+    "test/test3/inference/accuracy": -2.5888566970825195
+  },
+  {
+    "step": 2399,
+    "timestamp": "2025-04-10 09:38:54",
+    "test/test1/inference/accuracy": -1.5502458810806274,
+    "test/test2/inference/accuracy": -2.52958345413208,
+    "test/test3/inference/accuracy": -2.36911940574646
+  },
+  {
+    "step": 2499,
+    "timestamp": "2025-04-10 09:43:00",
+    "test/test1/inference/accuracy": -1.1905341148376465,
+    "test/test2/inference/accuracy": -1.4147865772247314,
+    "test/test3/inference/accuracy": -2.803596019744873
+  },
+  {
+    "step": 2599,
+    "timestamp": "2025-04-10 09:47:03",
+    "test/test1/inference/accuracy": -1.2858796119689941,
+    "test/test2/inference/accuracy": -2.375941514968872,
+    "test/test3/inference/accuracy": -3.0001304149627686
+  },
+  {
+    "step": 2699,
+    "timestamp": "2025-04-10 09:51:07",
+    "test/test1/inference/accuracy": -2.2035443782806396,
+    "test/test2/inference/accuracy": -2.6270976066589355,
+    "test/test3/inference/accuracy": -3.456156015396118
+  },
+  {
+    "step": 2799,
+    "timestamp": "2025-04-10 09:55:13",
+    "test/test1/inference/accuracy": -1.0534547567367554,
+    "test/test2/inference/accuracy": -2.2112579345703125,
+    "test/test3/inference/accuracy": -2.670989990234375
+  },
+  {
+    "step": 2899,
+    "timestamp": "2025-04-10 09:59:13",
+    "test/test1/inference/accuracy": -1.9168636798858643,
+    "test/test2/inference/accuracy": -2.698676347732544,
+    "test/test3/inference/accuracy": -2.158327102661133
+  },
+  {
+    "step": 2999,
+    "timestamp": "2025-04-10 10:03:15",
+    "test/test1/inference/accuracy": -1.7179932594299316,
+    "test/test2/inference/accuracy": -2.1211071014404297,
+    "test/test3/inference/accuracy": -2.658874988555908
+  },
+  {
+    "step": 3099,
+    "timestamp": "2025-04-10 10:07:14",
+    "test/test1/inference/accuracy": -2.093289852142334,
+    "test/test2/inference/accuracy": -3.691641330718994,
+    "test/test3/inference/accuracy": -2.5541982650756836
+  },
+  {
+    "step": 3199,
+    "timestamp": "2025-04-10 10:11:15",
+    "test/test1/inference/accuracy": -1.202111005783081,
+    "test/test2/inference/accuracy": -1.377756118774414,
+    "test/test3/inference/accuracy": -2.675640106201172
+  },
+  {
+    "step": 3299,
+    "timestamp": "2025-04-10 10:15:18",
+    "test/test1/inference/accuracy": -1.3937351703643799,
+    "test/test2/inference/accuracy": -2.0813164710998535,
+    "test/test3/inference/accuracy": -2.6862969398498535
+  },
+  {
+    "step": 3399,
+    "timestamp": "2025-04-10 10:19:22",
+    "test/test1/inference/accuracy": -1.8380084037780762,
+    "test/test2/inference/accuracy": -3.1404929161071777,
+    "test/test3/inference/accuracy": -2.703822612762451
+  },
+  {
+    "step": 3499,
+    "timestamp": "2025-04-10 10:23:27",
+    "test/test1/inference/accuracy": -1.856215476989746,
+    "test/test2/inference/accuracy": -1.7643390893936157,
+    "test/test3/inference/accuracy": -2.4221322536468506
+  },
+  {
+    "step": 3599,
+    "timestamp": "2025-04-10 10:27:31",
+    "test/test1/inference/accuracy": -1.6954433917999268,
+    "test/test2/inference/accuracy": -1.897239327430725,
+    "test/test3/inference/accuracy": -1.7288483381271362
+  },
+  {
+    "step": 3699,
+    "timestamp": "2025-04-10 10:31:31",
+    "test/test1/inference/accuracy": -1.0637376308441162,
+    "test/test2/inference/accuracy": -1.4036915302276611,
+    "test/test3/inference/accuracy": -1.712517261505127
+  },
+  {
+    "step": 3799,
+    "timestamp": "2025-04-10 10:35:34",
+    "test/test1/inference/accuracy": -1.748967170715332,
+    "test/test2/inference/accuracy": -3.1033825874328613,
+    "test/test3/inference/accuracy": -2.5609591007232666
+  },
+  {
+    "step": 3899,
+    "timestamp": "2025-04-10 10:39:38",
+    "test/test1/inference/accuracy": -2.605776786804199,
+    "test/test2/inference/accuracy": -2.763827323913574,
+    "test/test3/inference/accuracy": -3.2304458618164062
+  },
+  {
+    "step": 3999,
+    "timestamp": "2025-04-10 10:43:44",
+    "test/test1/inference/accuracy": -1.7190945148468018,
+    "test/test2/inference/accuracy": -2.1929616928100586,
+    "test/test3/inference/accuracy": -1.4300580024719238
+  },
+  {
+    "step": 4099,
+    "timestamp": "2025-04-10 10:47:44",
+    "test/test1/inference/accuracy": -1.5108146667480469,
+    "test/test2/inference/accuracy": -1.6609318256378174,
+    "test/test3/inference/accuracy": -2.691310405731201
+  },
+  {
+    "step": 4199,
+    "timestamp": "2025-04-10 10:51:45",
+    "test/test1/inference/accuracy": -2.469179153442383,
+    "test/test2/inference/accuracy": -2.3765711784362793,
+    "test/test3/inference/accuracy": -2.7837443351745605
+  },
+  {
+    "step": 4299,
+    "timestamp": "2025-04-10 10:55:47",
+    "test/test1/inference/accuracy": -1.3686408996582031,
+    "test/test2/inference/accuracy": -1.4139742851257324,
+    "test/test3/inference/accuracy": -2.687096118927002
+  },
+  {
+    "step": 4399,
+    "timestamp": "2025-04-10 10:59:50",
+    "test/test1/inference/accuracy": -1.0383610725402832,
+    "test/test2/inference/accuracy": -1.2031800746917725,
+    "test/test3/inference/accuracy": -1.9199312925338745
+  },
+  {
+    "step": 4499,
+    "timestamp": "2025-04-10 11:03:55",
+    "test/test1/inference/accuracy": -2.00239896774292,
+    "test/test2/inference/accuracy": -1.4810988903045654,
+    "test/test3/inference/accuracy": -2.4630613327026367
+  },
+  {
+    "step": 4599,
+    "timestamp": "2025-04-10 11:07:59",
+    "test/test1/inference/accuracy": -1.4799692630767822,
+    "test/test2/inference/accuracy": -2.4612843990325928,
+    "test/test3/inference/accuracy": -2.5299956798553467
+  },
+  {
+    "step": 4699,
+    "timestamp": "2025-04-10 11:12:00",
+    "test/test1/inference/accuracy": -1.3440160751342773,
+    "test/test2/inference/accuracy": -1.1650116443634033,
+    "test/test3/inference/accuracy": -2.4278512001037598
+  },
+  {
+    "step": 4799,
+    "timestamp": "2025-04-10 11:16:02",
+    "test/test1/inference/accuracy": -1.3166203498840332,
+    "test/test2/inference/accuracy": -1.4338979721069336,
+    "test/test3/inference/accuracy": -3.1512598991394043
+  },
+  {
+    "step": 4899,
+    "timestamp": "2025-04-10 11:20:04",
+    "test/test1/inference/accuracy": -1.3642545938491821,
+    "test/test2/inference/accuracy": -2.3482706546783447,
+    "test/test3/inference/accuracy": -2.348393678665161
+  },
+  {
+    "step": 4999,
+    "timestamp": "2025-04-10 11:24:04",
+    "test/test1/inference/accuracy": -1.2918874025344849,
+    "test/test2/inference/accuracy": -1.8718504905700684,
+    "test/test3/inference/accuracy": -1.4298107624053955
+  },
+  {
+    "step": 5099,
+    "timestamp": "2025-04-10 11:28:03",
+    "test/test1/inference/accuracy": -1.2583307027816772,
+    "test/test2/inference/accuracy": -1.982957124710083,
+    "test/test3/inference/accuracy": -1.6048479080200195
+  },
+  {
+    "step": 5199,
+    "timestamp": "2025-04-10 11:32:05",
+    "test/test1/inference/accuracy": -1.2536137104034424,
+    "test/test2/inference/accuracy": -2.8795535564422607,
+    "test/test3/inference/accuracy": -1.9005159139633179
+  },
+  {
+    "step": 5299,
+    "timestamp": "2025-04-10 11:36:09",
+    "test/test1/inference/accuracy": -1.1080485582351685,
+    "test/test2/inference/accuracy": -1.7715837955474854,
+    "test/test3/inference/accuracy": -2.563286066055298
+  },
+  {
+    "step": 5399,
+    "timestamp": "2025-04-10 11:40:15",
+    "test/test1/inference/accuracy": -2.2260279655456543,
+    "test/test2/inference/accuracy": -2.2339067459106445,
+    "test/test3/inference/accuracy": -3.0872976779937744
+  },
+  {
+    "step": 5499,
+    "timestamp": "2025-04-10 11:44:20",
+    "test/test1/inference/accuracy": -1.2886221408843994,
+    "test/test2/inference/accuracy": -1.7585220336914062,
+    "test/test3/inference/accuracy": -2.1280150413513184
+  },
+  {
+    "step": 5599,
+    "timestamp": "2025-04-10 11:48:25",
+    "test/test1/inference/accuracy": -1.4487111568450928,
+    "test/test2/inference/accuracy": -1.764378547668457,
+    "test/test3/inference/accuracy": -1.8884189128875732
+  },
+  {
+    "step": 5699,
+    "timestamp": "2025-04-10 11:52:30",
+    "test/test1/inference/accuracy": -1.5509212017059326,
+    "test/test2/inference/accuracy": -2.011687994003296,
+    "test/test3/inference/accuracy": -1.9883527755737305
+  },
+  {
+    "step": 5799,
+    "timestamp": "2025-04-10 11:56:34",
+    "test/test1/inference/accuracy": -1.360834002494812,
+    "test/test2/inference/accuracy": -2.352268695831299,
+    "test/test3/inference/accuracy": -1.6462008953094482
+  },
+  {
+    "step": 5899,
+    "timestamp": "2025-04-10 12:00:36",
+    "test/test1/inference/accuracy": -1.6686739921569824,
+    "test/test2/inference/accuracy": -2.244244337081909,
+    "test/test3/inference/accuracy": -2.1955835819244385
+  },
+  {
+    "step": 5999,
+    "timestamp": "2025-04-10 12:04:42",
+    "test/test1/inference/accuracy": -2.6767373085021973,
+    "test/test2/inference/accuracy": -2.842012882232666,
+    "test/test3/inference/accuracy": -1.9627935886383057
+  },
+  {
+    "step": 6099,
+    "timestamp": "2025-04-10 12:08:44",
+    "test/test1/inference/accuracy": -1.5290882587432861,
+    "test/test2/inference/accuracy": -1.851432204246521,
+    "test/test3/inference/accuracy": -1.8620061874389648
+  },
+  {
+    "step": 6199,
+    "timestamp": "2025-04-10 12:12:48",
+    "test/test1/inference/accuracy": -1.6152372360229492,
+    "test/test2/inference/accuracy": -2.5103015899658203,
+    "test/test3/inference/accuracy": -1.7292404174804688
+  },
+  {
+    "step": 6299,
+    "timestamp": "2025-04-10 12:16:50",
+    "test/test1/inference/accuracy": -1.5358941555023193,
+    "test/test2/inference/accuracy": -1.9813346862792969,
+    "test/test3/inference/accuracy": -1.787171721458435
+  },
+  {
+    "step": 6399,
+    "timestamp": "2025-04-10 12:20:52",
+    "test/test1/inference/accuracy": -1.2160706520080566,
+    "test/test2/inference/accuracy": -1.8654563426971436,
+    "test/test3/inference/accuracy": -1.9606802463531494
+  },
+  {
+    "step": 6499,
+    "timestamp": "2025-04-10 12:23:37",
+    "test/test1/inference/accuracy": -1.0548925399780273,
+    "test/test2/inference/accuracy": -1.7392427921295166,
+    "test/test3/inference/accuracy": -1.6212016344070435
+  },
+  {
+    "step": 6599,
+    "timestamp": "2025-04-10 12:26:01",
+    "test/test1/inference/accuracy": -1.6135704517364502,
+    "test/test2/inference/accuracy": -1.630312204360962,
+    "test/test3/inference/accuracy": -1.45930016040802
+  },
+  {
+    "step": 6699,
+    "timestamp": "2025-04-10 12:28:25",
+    "test/test1/inference/accuracy": -1.572503924369812,
+    "test/test2/inference/accuracy": -2.1043148040771484,
+    "test/test3/inference/accuracy": -2.1199119091033936
+  },
+  {
+    "step": 6799,
+    "timestamp": "2025-04-10 12:30:46",
+    "test/test1/inference/accuracy": -1.592667579650879,
+    "test/test2/inference/accuracy": -1.5841045379638672,
+    "test/test3/inference/accuracy": -1.424169659614563
+  },
+  {
+    "step": 6899,
+    "timestamp": "2025-04-10 12:33:10",
+    "test/test1/inference/accuracy": -1.2699987888336182,
+    "test/test2/inference/accuracy": -5.46683931350708,
+    "test/test3/inference/accuracy": -24.42733383178711
+  },
+  {
+    "step": 6999,
+    "timestamp": "2025-04-10 12:35:35",
+    "test/test1/inference/accuracy": -1.4408652782440186,
+    "test/test2/inference/accuracy": -2.335427761077881,
+    "test/test3/inference/accuracy": -1.6096367835998535
+  },
+  {
+    "step": 7099,
+    "timestamp": "2025-04-10 12:37:57",
+    "test/test1/inference/accuracy": -1.3706464767456055,
+    "test/test2/inference/accuracy": -1.3548123836517334,
+    "test/test3/inference/accuracy": -1.964062213897705
+  },
+  {
+    "step": 7199,
+    "timestamp": "2025-04-10 12:40:20",
+    "test/test1/inference/accuracy": -1.2634179592132568,
+    "test/test2/inference/accuracy": -1.3350629806518555,
+    "test/test3/inference/accuracy": -1.954820156097412
+  },
+  {
+    "step": 7299,
+    "timestamp": "2025-04-10 12:42:43",
+    "test/test1/inference/accuracy": -1.1715350151062012,
+    "test/test2/inference/accuracy": -1.2421646118164062,
+    "test/test3/inference/accuracy": -2.324124336242676
+  },
+  {
+    "step": 7399,
+    "timestamp": "2025-04-10 12:45:12",
+    "test/test1/inference/accuracy": -1.5238655805587769,
+    "test/test2/inference/accuracy": -1.619582176208496,
+    "test/test3/inference/accuracy": -1.3778610229492188
+  },
+  {
+    "step": 7499,
+    "timestamp": "2025-04-10 12:47:56",
+    "test/test1/inference/accuracy": -1.0108822584152222,
+    "test/test2/inference/accuracy": -2.463778495788574,
+    "test/test3/inference/accuracy": -9.972175598144531
+  },
+  {
+    "step": 7599,
+    "timestamp": "2025-04-10 12:51:33",
+    "test/test1/inference/accuracy": -1.3262845277786255,
+    "test/test2/inference/accuracy": -1.27613365650177,
+    "test/test3/inference/accuracy": -1.8198167085647583
+  },
+  {
+    "step": 7699,
+    "timestamp": "2025-04-10 12:55:35",
+    "test/test1/inference/accuracy": -1.3460618257522583,
+    "test/test2/inference/accuracy": -1.8717069625854492,
+    "test/test3/inference/accuracy": -25.656023025512695
+  },
+  {
+    "step": 7799,
+    "timestamp": "2025-04-10 12:59:37",
+    "test/test1/inference/accuracy": -1.6649770736694336,
+    "test/test2/inference/accuracy": -1.551350474357605,
+    "test/test3/inference/accuracy": -1.664435863494873
+  },
+  {
+    "step": 7899,
+    "timestamp": "2025-04-10 13:03:36",
+    "test/test1/inference/accuracy": -0.9904401898384094,
+    "test/test2/inference/accuracy": -1.7820165157318115,
+    "test/test3/inference/accuracy": -2.1308226585388184
+  },
+  {
+    "step": 7999,
+    "timestamp": "2025-04-10 13:07:35",
+    "test/test1/inference/accuracy": -1.6817939281463623,
+    "test/test2/inference/accuracy": -2.121774911880493,
+    "test/test3/inference/accuracy": -2.2767422199249268
+  },
+  {
+    "step": 8099,
+    "timestamp": "2025-04-10 13:11:38",
+    "test/test1/inference/accuracy": -1.3132684230804443,
+    "test/test2/inference/accuracy": -2.385791301727295,
+    "test/test3/inference/accuracy": -1.7883296012878418
+  },
+  {
+    "step": 8199,
+    "timestamp": "2025-04-10 13:15:42",
+    "test/test1/inference/accuracy": -1.3945058584213257,
+    "test/test2/inference/accuracy": -1.9640542268753052,
+    "test/test3/inference/accuracy": -1.8705722093582153
+  },
+  {
+    "step": 8299,
+    "timestamp": "2025-04-10 13:19:43",
+    "test/test1/inference/accuracy": -1.0998026132583618,
+    "test/test2/inference/accuracy": -1.3461796045303345,
+    "test/test3/inference/accuracy": -3.457637071609497
+  },
+  {
+    "step": 8399,
+    "timestamp": "2025-04-10 13:23:45",
+    "test/test1/inference/accuracy": -2.1332151889801025,
+    "test/test2/inference/accuracy": -2.045738935470581,
+    "test/test3/inference/accuracy": -1.6176069974899292
+  },
+  {
+    "step": 8499,
+    "timestamp": "2025-04-10 13:27:50",
+    "test/test1/inference/accuracy": -1.1419305801391602,
+    "test/test2/inference/accuracy": -1.5276846885681152,
+    "test/test3/inference/accuracy": -1.6484453678131104
+  },
+  {
+    "step": 8599,
+    "timestamp": "2025-04-10 13:31:49",
+    "test/test1/inference/accuracy": -1.8199660778045654,
+    "test/test2/inference/accuracy": -2.455366849899292,
+    "test/test3/inference/accuracy": -3.0179953575134277
+  },
+  {
+    "step": 8699,
+    "timestamp": "2025-04-10 13:35:50",
+    "test/test1/inference/accuracy": -1.8551937341690063,
+    "test/test2/inference/accuracy": -1.966772437095642,
+    "test/test3/inference/accuracy": -2.4250826835632324
+  },
+  {
+    "step": 8799,
+    "timestamp": "2025-04-10 13:39:51",
+    "test/test1/inference/accuracy": -4.440719127655029,
+    "test/test2/inference/accuracy": -1.5635043382644653,
+    "test/test3/inference/accuracy": -22.587160110473633
+  },
+  {
+    "step": 8899,
+    "timestamp": "2025-04-10 13:43:54",
+    "test/test1/inference/accuracy": -1.6886982917785645,
+    "test/test2/inference/accuracy": -1.3125219345092773,
+    "test/test3/inference/accuracy": -1.823641061782837
+  },
+  {
+    "step": 8999,
+    "timestamp": "2025-04-10 13:47:57",
+    "test/test1/inference/accuracy": -1.5968072414398193,
+    "test/test2/inference/accuracy": -1.5192173719406128,
+    "test/test3/inference/accuracy": -3.4972341060638428
+  },
+  {
+    "step": 9099,
+    "timestamp": "2025-04-10 13:51:55",
+    "test/test1/inference/accuracy": -4.857433795928955,
+    "test/test2/inference/accuracy": -4.777092933654785,
+    "test/test3/inference/accuracy": -9.054838180541992
+  },
+  {
+    "step": 9199,
+    "timestamp": "2025-04-10 13:55:59",
+    "test/test1/inference/accuracy": -27.14920425415039,
+    "test/test2/inference/accuracy": -28.065404891967773,
+    "test/test3/inference/accuracy": -15.255264282226562
+  },
+  {
+    "step": 9299,
+    "timestamp": "2025-04-10 14:00:00",
+    "test/test1/inference/accuracy": -1.438015103340149,
+    "test/test2/inference/accuracy": -1.329600214958191,
+    "test/test3/inference/accuracy": -1.4227790832519531
+  },
+  {
+    "step": 9399,
+    "timestamp": "2025-04-10 14:04:01",
+    "test/test1/inference/accuracy": -1.5220956802368164,
+    "test/test2/inference/accuracy": -1.9862959384918213,
+    "test/test3/inference/accuracy": -1.8983142375946045
+  },
+  {
+    "step": 9499,
+    "timestamp": "2025-04-10 14:08:06",
+    "test/test1/inference/accuracy": -1.5053175687789917,
+    "test/test2/inference/accuracy": -2.245098114013672,
+    "test/test3/inference/accuracy": -2.108513116836548
+  },
+  {
+    "step": 9599,
+    "timestamp": "2025-04-10 14:12:11",
+    "test/test1/inference/accuracy": -1.7621808052062988,
+    "test/test2/inference/accuracy": -2.0657193660736084,
+    "test/test3/inference/accuracy": -2.124077558517456
+  },
+  {
+    "step": 9699,
+    "timestamp": "2025-04-10 14:16:11",
+    "test/test1/inference/accuracy": -1.803945541381836,
+    "test/test2/inference/accuracy": -1.237555742263794,
+    "test/test3/inference/accuracy": -1.4908058643341064
+  },
+  {
+    "step": 9799,
+    "timestamp": "2025-04-10 14:20:12",
+    "test/test1/inference/accuracy": -1.8935561180114746,
+    "test/test2/inference/accuracy": -1.8530323505401611,
+    "test/test3/inference/accuracy": -2.305219888687134
+  },
+  {
+    "step": 9899,
+    "timestamp": "2025-04-10 14:24:14",
+    "test/test1/inference/accuracy": -1.8154786825180054,
+    "test/test2/inference/accuracy": -1.249715805053711,
+    "test/test3/inference/accuracy": -2.0011000633239746
+  },
+  {
+    "step": 9999,
+    "timestamp": "2025-04-10 14:28:17",
+    "test/test1/inference/accuracy": -1.3665004968643188,
+    "test/test2/inference/accuracy": -2.0404553413391113,
+    "test/test3/inference/accuracy": -2.7116036415100098
+  },
+  {
+    "step": 10099,
+    "timestamp": "2025-04-10 14:32:16",
+    "test/test1/inference/accuracy": -1.5007712841033936,
+    "test/test2/inference/accuracy": -1.994894027709961,
+    "test/test3/inference/accuracy": -2.2670981884002686
+  },
+  {
+    "step": 10199,
+    "timestamp": "2025-04-10 14:36:19",
+    "test/test1/inference/accuracy": -1.0661591291427612,
+    "test/test2/inference/accuracy": -2.3680145740509033,
+    "test/test3/inference/accuracy": -91.63492584228516
+  },
+  {
+    "step": 10299,
+    "timestamp": "2025-04-10 14:40:22",
+    "test/test1/inference/accuracy": -1.051249384880066,
+    "test/test2/inference/accuracy": -1.4292123317718506,
+    "test/test3/inference/accuracy": -2.2121148109436035
+  },
+  {
+    "step": 10399,
+    "timestamp": "2025-04-10 14:44:23",
+    "test/test1/inference/accuracy": -1.3019006252288818,
+    "test/test2/inference/accuracy": -2.5616815090179443,
+    "test/test3/inference/accuracy": -2.345952272415161
+  },
+  {
+    "step": 10499,
+    "timestamp": "2025-04-10 14:48:28",
+    "test/test1/inference/accuracy": -1.783003807067871,
+    "test/test2/inference/accuracy": -1.7868187427520752,
+    "test/test3/inference/accuracy": -2.7947945594787598
+  },
+  {
+    "step": 10599,
+    "timestamp": "2025-04-10 14:52:33",
+    "test/test1/inference/accuracy": -1.4698033332824707,
+    "test/test2/inference/accuracy": -2.108485221862793,
+    "test/test3/inference/accuracy": -2.8919925689697266
+  },
+  {
+    "step": 10699,
+    "timestamp": "2025-04-10 14:56:36",
+    "test/test1/inference/accuracy": -2.7470192909240723,
+    "test/test2/inference/accuracy": -2.0552263259887695,
+    "test/test3/inference/accuracy": -2.07003116607666
+  },
+  {
+    "step": 10799,
+    "timestamp": "2025-04-10 15:00:40",
+    "test/test1/inference/accuracy": -6.887753963470459,
+    "test/test2/inference/accuracy": -24.76849937438965,
+    "test/test3/inference/accuracy": -65.56655883789062
+  },
+  {
+    "step": 10899,
+    "timestamp": "2025-04-10 15:04:43",
+    "test/test1/inference/accuracy": -2.2059988975524902,
+    "test/test2/inference/accuracy": -2.7919840812683105,
+    "test/test3/inference/accuracy": -2.9002203941345215
+  },
+  {
+    "step": 10999,
+    "timestamp": "2025-04-10 15:08:47",
+    "test/test1/inference/accuracy": -1.7487090826034546,
+    "test/test2/inference/accuracy": -1.7144521474838257,
+    "test/test3/inference/accuracy": -1.937034010887146
+  },
+  {
+    "step": 11099,
+    "timestamp": "2025-04-10 15:12:51",
+    "test/test1/inference/accuracy": -1.7822679281234741,
+    "test/test2/inference/accuracy": -1.7689272165298462,
+    "test/test3/inference/accuracy": -2.140247344970703
+  },
+  {
+    "step": 11199,
+    "timestamp": "2025-04-10 15:16:56",
+    "test/test1/inference/accuracy": -1.7376415729522705,
+    "test/test2/inference/accuracy": -1.3586589097976685,
+    "test/test3/inference/accuracy": -1.740844488143921
+  },
+  {
+    "step": 11299,
+    "timestamp": "2025-04-10 15:20:56",
+    "test/test1/inference/accuracy": -1.2359089851379395,
+    "test/test2/inference/accuracy": -1.604029655456543,
+    "test/test3/inference/accuracy": -1.6302127838134766
+  },
+  {
+    "step": 11399,
+    "timestamp": "2025-04-10 15:24:59",
+    "test/test1/inference/accuracy": -1.596489429473877,
+    "test/test2/inference/accuracy": -1.2608667612075806,
+    "test/test3/inference/accuracy": -1.6676104068756104
   }
 ]

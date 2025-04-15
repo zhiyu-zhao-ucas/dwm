@@ -93,7 +93,6 @@ class VQVAEGumbelMatrixLatent(torch.nn.Module):
         self.action_dim = action_dim
         self.num_action_var = num_action_var
         self.num_state_var = num_state_var
-        # logger.info(f"num_state_var: {self.num_state_var}, num_action_var: {self.num_action_var}")
         final_dim = feature_dim + 1
         self.final_dim = final_dim
         self.device = device
@@ -101,6 +100,7 @@ class VQVAEGumbelMatrixLatent(torch.nn.Module):
         self.learn_action = params.inference_params.learn_action # Chemical: False, Magnetic: True
         self.learn_upper = params.inference_params.learn_upper # Chemical: False, Magnetic: True
         self.lcm_dim_1 = self.num_state_var
+        logger.info(f"self.num_state_var: {self.num_state_var}, self.num_action_var: {self.num_action_var}")
         self.lcm_dim_2 = self.num_state_var + self.num_action_var
         
         self.lcm_dim_2 = self.lcm_dim_2 - 1
@@ -130,7 +130,6 @@ class VQVAEGumbelMatrixLatent(torch.nn.Module):
             
             encs = nn.Sequential()
             in_dim = self.input_dim
-            # logger.info(f"input_dim: {self.input_dim}, code_dim: {self.code_dim}")
             for idx, out_dim in enumerate(enc_fc_dims):
                 encs.add_module(f"fc_{idx}", nn.Linear(in_dim, out_dim, bias=False))
                 encs.add_module(f"bn_{idx}", nn.BatchNorm1d(out_dim))
@@ -234,14 +233,15 @@ class VQVAEGumbelMatrixLatent(torch.nn.Module):
     def preprocess_ours_mask(self, feature, action):
         # logger.info(f"feature: {feature.shape}, action: {action.shape}")
         x = torch.cat([feature, action], dim=0)
-        # logger.info(f"x: {x.shape}")
+        # logger.info(f"state action cat: {x.shape}")
         x = x.permute(1, 0, 2)
+        # logger.info(f"state action permute: {x.shape}")
         x = x.reshape(x.size(0), -1)
+        # logger.info(f"state action reshape: {x.shape}")
         return x
 
     def forward_fcs(self, feature, action):
         x = self.preprocess(feature, action)
-        # logger.info(f"x: {x.shape}")
         z_e = self.encode(x)
         if self.ema:
             z_q, code_index = self.emb(z_e)
@@ -266,7 +266,6 @@ class VQVAEGumbelMatrixLatent(torch.nn.Module):
             assert self.emb.training is False
         if pred_step == 0: 
             self.reset_loss()
-        # logger.info(f"feature: {feature.shape}, action: {action.shape}")
         log_alpha, z_e, emb = self.forward_fcs(feature, action)
         prob = torch.sigmoid(log_alpha)
         if training and not self.is_freeze:
@@ -275,7 +274,6 @@ class VQVAEGumbelMatrixLatent(torch.nn.Module):
             sample = (prob > 0.5).float().unsqueeze(0)
         
         self.loss_function(prob, z_e, emb)
-        # logger.info(f"prob grad: {prob.requires_grad}, z_e grad: {z_e.requires_grad}, emb grad: {emb.requires_grad}")
         return sample, prob
 
 class GumbelMatrix_NCD(VQVAEGumbelMatrixLatent):

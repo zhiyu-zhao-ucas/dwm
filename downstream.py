@@ -36,6 +36,8 @@ def ood_evaluation(params, inference, obs_batch, actions_batch, next_obses_batch
     with torch.no_grad():
         if params.env_params.env_name == 'Chemical':
             ood_evaluation_chemical(params, inference, obs_batch, actions_batch, next_obses_batch, info_batch, step)
+        elif params.env_params.env_name == 'Causal':
+            ood_evaluation_causal(params, inference, obs_batch, actions_batch, next_obses_batch, info_batch, step)
         else:
             pass
 
@@ -66,16 +68,16 @@ def ood_evaluation_chemical(params, inference, obs_batch, actions_batch, next_ob
     
     # Create ood_data directory if it doesn't exist
     if params.training_params.zero_shot:
-        os.makedirs("downstream/zero_shot/ood_eval", exist_ok=True)
+        os.makedirs(f"downstream/zero_shot/ood_eval/{params.env_params.env_name}", exist_ok=True)
     else:
-        os.makedirs("downstream/ood_eval", exist_ok=True)
+        os.makedirs(f"downstream/ood_eval/{params.env_params.env_name}", exist_ok=True)
     
     algo = params.training_params.inference_algo
     seed = params.seed
     if params.training_params.zero_shot:
-        filename = f"downstream/zero_shot/ood_eval/{algo}-{seed}.json"
+        filename = f"downstream/zero_shot/ood_eval/{params.env_params.env_name}/{algo}-{seed}.json"
     else:
-        filename = f"downstream/ood_eval/{algo}-{seed}.json"
+        filename = f"downstream/ood_eval/{params.env_params.env_name}/{algo}-{seed}.json"
     
     # Create a record with step information
     record = {
@@ -104,6 +106,7 @@ def ood_evaluation_chemical(params, inference, obs_batch, actions_batch, next_ob
     if not getattr(params, "mute_wandb", False):
         wandb.log(test_detail, step+1)
     inference.encoder.chemical_train = True
+
 
 def test_policy_evaluation(params, inference, policy, step):
     inference.eval()
