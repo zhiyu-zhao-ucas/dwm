@@ -207,9 +207,9 @@ def test_policy_evaluation_causal(params, inference, policy, step):
     seed = params.seed
     load_inference = getattr(params.training_params, "load_inference", "none")
     if zero_shot:
-        filename = f"downstream/Causal/reward/{algo}-{seed}.json"
+        filename = f"downstream/Causal/reward/{algo}-{seed}-zero_shot.json"
     else:
-        filename = f"downstream/Causal/reward/{algo}-{seed}.json"
+        filename = f"downstream/Causal/reward/{algo}-{seed}-zero_shot.json"
     
     # Create a record with step information
     record = {

@@ -217,10 +217,10 @@ def plot_per_test_rewards(all_metrics, save_dir="figures/downstream"):
         bars = ax.bar(x, test_rewards, yerr=test_std_rewards, width=0.6, color=colors, capsize=5)
         
         # Add values on top of bars
-        # for i, bar in enumerate(bars):
-        #     height = bar.get_height()
-        #     ax.text(bar.get_x() + bar.get_width()/2., height + 0.3,
-        #            f'{test_rewards[i]:.2f}', ha='center', va='bottom', fontsize=10)
+        for i, bar in enumerate(bars):
+            height = bar.get_height()
+            ax.text(bar.get_x() + bar.get_width()/2., height + 0.3,
+                   f'{test_rewards[i]:.2f}', ha='center', va='bottom', fontsize=10)
         
         ax.set_title(f"{test_key.upper()}")
         ax.set_xticks(x)
@@ -309,7 +309,8 @@ def plot_per_test_success_rates(all_metrics, save_dir="figures/downstream"):
     plt.close()
 
 def main():
-    data_dir = "downstream/zero_shot/reward"
+    data_dir = "downstream/Causal/reward"
+    # data_dir = "downstream/zero_shot/reward"
     save_dir = "results/downstream"
     
     # Create output directory if it doesn't exist
