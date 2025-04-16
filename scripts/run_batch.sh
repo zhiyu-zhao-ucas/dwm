@@ -10,14 +10,14 @@ fi
 echo "Detected $GPU_COUNT GPUs"
 
 # Create a single session
-SESSION_NAME="ncd_gnn_mlp"
+SESSION_NAME="dwm_ours_ncd"
 tmux new-session -d -s "$SESSION_NAME" -n "init" "echo 'Initializing session'; read"
 
 window_index=0
 gpu_index=0
 
-for algo in ncd gnn mlp; do
-    for seed in 1 2 3; do
+for algo in dwm ncd ours; do
+    for seed in 4 5 6 7 8; do
         # Create a unique window name
         WINDOW_NAME="${algo}_${seed}"
         window_index=$((window_index + 1))
