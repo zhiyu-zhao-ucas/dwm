@@ -16,8 +16,8 @@ tmux new-session -d -s "$SESSION_NAME" -n "init" "echo 'Initializing session'; r
 window_index=0
 gpu_index=0
 
-for algo in dwm_fix; do
-    for seed in 1 2 3; do
+for algo in dwm ncd ours; do
+    for seed in 4 5 6 7 8; do
         # Create a unique window name
         WINDOW_NAME="${algo}_${seed}"
         window_index=$((window_index + 1))

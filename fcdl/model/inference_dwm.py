@@ -46,8 +46,8 @@ class InferenceDWM(InferenceOursMask):
             diff = torch.abs(next_features_stack_single - torch.stack(features)).sum(dim=-1)
         else:
             diff = torch.abs(next_features_stack_single - features)
-        logger.info(f"next_features_stack_single: {next_features_stack_single.shape}")
-        logger.info(f"diff: {diff.shape}")
+        # logger.info(f"next_features_stack_single: {next_features_stack_single.shape}")
+        # logger.info(f"diff: {diff.shape}")
         # logger.info(f"diff: {diff}")
         logger.info(f"log_probs: {log_probs.shape}")
         changed_nodes = (diff < 1e-6).nonzero(as_tuple=True)
