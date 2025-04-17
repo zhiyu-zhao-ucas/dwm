@@ -752,6 +752,6 @@ def train(params):
     inference.save(os.path.join(model_dir, "inference_final"))
 
 if __name__ == "__main__":
-    params = TrainingParams(training_params_fname="policy_params.json", train=True)
+    params = TrainingParams(training_params_fname="causal_params.json", train=True)
     override_params_from_cli_args(params)
     train(params)

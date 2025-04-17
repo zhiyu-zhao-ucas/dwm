@@ -718,5 +718,55 @@
     "test/test2/inference/distance": 0.5800319910049438,
     "test/test3/inference/accuracy": -3.331450939178467,
     "test/test3/inference/distance": 0.6204585433006287
+  },
+  {
+    "step": 2499,
+    "timestamp": "2025-04-17 08:15:27",
+    "test/test1/inference/accuracy": -3.974486827850342,
+    "test/test1/inference/distance": 6.703971862792969,
+    "test/test2/inference/accuracy": -10.632259368896484,
+    "test/test2/inference/distance": 7.217933654785156,
+    "test/test3/inference/accuracy": -10.990276336669922,
+    "test/test3/inference/distance": 7.405571937561035
+  },
+  {
+    "step": 2999,
+    "timestamp": "2025-04-17 08:21:14",
+    "test/test1/inference/accuracy": -5.682095527648926,
+    "test/test1/inference/distance": 5.575857162475586,
+    "test/test2/inference/accuracy": -11.183981895446777,
+    "test/test2/inference/distance": 6.032490253448486,
+    "test/test3/inference/accuracy": -17.920509338378906,
+    "test/test3/inference/distance": 6.429108142852783
+  },
+  {
+    "step": 3499,
+    "timestamp": "2025-04-17 08:27:01",
+    "test/test1/inference/accuracy": -3.611815929412842,
+    "test/test1/inference/distance": 4.8327765464782715,
+    "test/test2/inference/accuracy": -4.838269233703613,
+    "test/test2/inference/distance": 5.036522388458252,
+    "test/test3/inference/accuracy": -9.762893676757812,
+    "test/test3/inference/distance": 5.489178657531738
+  },
+  {
+    "step": 3999,
+    "timestamp": "2025-04-17 08:32:47",
+    "test/test1/inference/accuracy": -15.275187492370605,
+    "test/test1/inference/distance": 4.780481338500977,
+    "test/test2/inference/accuracy": -6.987252712249756,
+    "test/test2/inference/distance": 4.714825630187988,
+    "test/test3/inference/accuracy": -19.087753295898438,
+    "test/test3/inference/distance": 5.497289657592773
+  },
+  {
+    "step": 4499,
+    "timestamp": "2025-04-17 08:40:25",
+    "test/test1/inference/accuracy": -4.652210235595703,
+    "test/test1/inference/distance": 4.216143608093262,
+    "test/test2/inference/accuracy": -13.659952163696289,
+    "test/test2/inference/distance": 4.814387321472168,
+    "test/test3/inference/accuracy": -18.3880672454834,
+    "test/test3/inference/distance": 5.233083724975586
   }
 ]
