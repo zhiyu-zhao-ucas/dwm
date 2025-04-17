@@ -10,14 +10,14 @@ fi
 echo "Detected $GPU_COUNT GPUs"
 
 # Create a single session
-SESSION_NAME="gnn_robo_test"
+SESSION_NAME="causal_update"
 tmux new-session -d -s "$SESSION_NAME" -n "init" "echo 'Initializing session'; read"
 
 window_index=0
 gpu_index=0
 
-for algo in gnn; do
-    for seed in 1 2 3; do
+for algo in dwm ours mlp; do
+    for seed in 1; do
         # Create a unique window name
         WINDOW_NAME="${algo}_${seed}"
         window_index=$((window_index + 1))

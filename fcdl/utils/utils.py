@@ -243,7 +243,7 @@ def get_single_env(params, load_dir=None, test_idx=None, env_idx=None):
         env = Physical(copied_params)
     elif env_name == "Causal":
         causal_env_params = env_params.causal_env_params
-        env = suite.make(env_name="CausalMagneticTest",
+        env = suite.make(env_name="CausalMagnetic",
                 robots="UR5e",
                 controller_configs=load_controller_config(default_controller="OSC_POSITION"),
                 gripper_types="RethinkGripper",

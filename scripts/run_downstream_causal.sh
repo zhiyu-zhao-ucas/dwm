@@ -10,13 +10,13 @@ fi
 echo "Detected $GPU_COUNT GPUs"
 
 # Create a single session
-SESSION_NAME="downstream_causal"
+SESSION_NAME="downstream_causal_new"
 tmux new-session -d -s "$SESSION_NAME" -n "init" "echo 'Initializing session'; read"
 
 window_index=0
 gpu_index=0
 
-for algo in dwm ours; do
+for algo in mlp gnn; do
     for seed in 1 2 3; do
         # Create a unique window name
         WINDOW_NAME="${algo}_${seed}"
@@ -28,7 +28,7 @@ for algo in dwm ours; do
         
         # Create a new window in the existing session
         tmux new-window -t "$SESSION_NAME:$window_index" -n "$WINDOW_NAME" \
-            "python downstream_causal.py \
+            "source $(conda info --base)/etc/profile.d/conda.sh && conda activate robo && python downstream_causal.py \
             --training_params.inference_algo=$algo --cuda_id=$current_gpu --seed=$seed \
             --training_params.mute_wandb=true \
             --training_params.load_inference=\"data3/iwhwang/causal_rl/Causal/${algo}-${seed}/trained_models/inference_final\" \
