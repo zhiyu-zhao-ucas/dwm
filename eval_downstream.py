@@ -308,6 +308,46 @@ def plot_per_test_success_rates(all_metrics, save_dir="figures/downstream"):
     plt.savefig(f"{save_dir}/success_rates_all_tests.pdf")
     plt.close()
 
+def save_rewards_summary(all_metrics, save_dir="results/downstream"):
+    """Save test rewards and standard deviations to a markdown file."""
+    os.makedirs(save_dir, exist_ok=True)
+    
+    env_names = list(all_metrics.keys())
+    env_names = sorted(env_names)  # Sort environment names
+    
+    test_keys = set()
+    for metrics in all_metrics.values():
+        test_keys.update(metrics.keys())
+    test_keys = sorted(list(test_keys))  # Sort test keys (test1, test2, test3, etc.)
+    
+    # Generate the markdown table
+    with open(f"{save_dir}/rewards_summary.md", 'w') as f:
+        # Write header row
+        header = "| Algorithm | " + " | ".join(test_keys) + " |\n"
+        f.write(header)
+        
+        # Write separator row
+        separator = "| --- | " + " | ".join(["---"] * len(test_keys)) + " |\n"
+        f.write(separator)
+        
+        # Write data rows for each algorithm
+        for env_name in env_names:
+            metrics = all_metrics[env_name]
+            row = f"| {env_name} |"
+            
+            for test_key in test_keys:
+                if test_key in metrics and metrics[test_key]["reward"]:
+                    rewards = metrics[test_key]["reward"]
+                    mean_reward = np.mean(rewards)
+                    std_reward = np.std(rewards) if len(rewards) > 1 else 0
+                    row += f" {mean_reward:.3f} ± {std_reward:.3f} |"
+                else:
+                    row += " N/A |"
+            
+            f.write(row + "\n")
+    
+    print(f"Rewards summary saved to {save_dir}/rewards_summary.md")
+
 def main():
     data_dir = "downstream/Causal/reward"
     # data_dir = "downstream/zero_shot/reward"
@@ -342,10 +382,13 @@ def main():
     plot_aggregate_metrics(algo_metrics, save_dir=save_dir)
     
     # Plot per test rewards as subplots in a single figure
-    plot_per_test_rewards(algo_metrics, save_dir=save_dir)
+    # plot_per_test_rewards(algo_metrics, save_dir=save_dir)
 
     # Plot per test success rates as subplots in a single figure
-    plot_per_test_success_rates(algo_metrics, save_dir=save_dir)
+    # plot_per_test_success_rates(algo_metrics, save_dir=save_dir)
+    
+    # Save rewards summary to markdown file
+    save_rewards_summary(algo_metrics, save_dir=save_dir)
     
     print(f"Plots saved to {save_dir}")
 

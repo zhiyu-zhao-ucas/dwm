@@ -59,6 +59,10 @@ class IdentityEncoder(nn.Module):
                     for i in noise_variable_list:
                         # logger.info(f"i: {i}, noise_variable_list: {noise_variable_list}, obs[i]: {obs[i]}")
                         obs[i] = obs[i] * torch.randn_like(obs[i]) * test_scale
+                    if test_level == 0:
+                        obs[0] = obs[0] * 0
+                        obs[1] = obs[1] * 1
+                        obs[7:10] = obs[7:10] * 0
             return obs
 
         else:
