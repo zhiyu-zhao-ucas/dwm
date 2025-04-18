@@ -1,0 +1,9 @@
+[
+  {
+    "step": 6999,
+    "timestamp": "2025-04-18 11:06:42",
+    "test/test1/inference/accuracy": 0.7061767578125,
+    "test/test2/inference/accuracy": 0.5564778645833334,
+    "test/test3/inference/accuracy": 0.560546875
+  }
+]

@@ -1,12 +1,8 @@
 [
   {
     "step": 0,
-    "timestamp": "2025-04-17 11:50:27",
-    "test/test1/policy/episode_reward_mean": 2.0396794320181266,
-    "test/test1/policy/success_ratio": 0.0,
-    "test/test2/policy/episode_reward_mean": 2.124694031147608,
-    "test/test2/policy/success_ratio": 0.0,
-    "test/test3/policy/episode_reward_mean": 2.0549898156183133,
-    "test/test3/policy/success_ratio": 0.0
+    "timestamp": "2025-04-18 13:09:38",
+    "test/test1/policy/episode_reward_mean": 2.4836980434156204,
+    "test/test1/policy/success_ratio": 0.029411764705882353
   }
 ]

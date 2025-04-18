@@ -48,6 +48,7 @@ def ood_evaluation_causal(params, inference, obs_batch, actions_batch, next_obse
     for i, test_param in enumerate(test_params):
         test_env_name = test_param.name
         inference.encoder.chemical_test_level = i
+        logger.info(f"Testing {i}")
         for test_scale in test_scales:
             inference.encoder.chemical_test_scale = test_scale
             ood_eval_detail = inference.ood_prediction(obs_batch, actions_batch, next_obses_batch, info_batch)
@@ -125,6 +126,7 @@ def test_policy_evaluation_causal(params, inference, policy, step):
     for i, test_param in enumerate(test_params):
         test_env_name = test_param.name
         logging.info("Testing %s", test_env_name)
+        logger.info(f"Testing: {i}")
         env = get_env(params, test_idx=i)
         inference.encoder.chemical_test_level = i
         for test_scale in test_scales:
