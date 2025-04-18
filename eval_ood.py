@@ -251,7 +251,7 @@ def main():
     plots_dir.mkdir(exist_ok=True)
     
     # Load data from JSON files
-    results = load_data_from_json_files('ood_data1')
+    results = load_data_from_json_files('ood_data')
     
     if not results:
         print("No data found in the ood_data directory.")

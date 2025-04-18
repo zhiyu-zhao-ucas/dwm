@@ -1,0 +1,79 @@
+[
+  {
+    "step": 1499,
+    "timestamp": "2025-04-18 06:55:29",
+    "test/test1/inference/accuracy": 0.4002685546875,
+    "test/test2/inference/accuracy": 0.3684895833333333,
+    "test/test3/inference/accuracy": 0.443115234375
+  },
+  {
+    "step": 1999,
+    "timestamp": "2025-04-18 07:18:19",
+    "test/test1/inference/accuracy": 0.41259765625,
+    "test/test2/inference/accuracy": 0.3479817708333333,
+    "test/test3/inference/accuracy": 0.42041015625
+  },
+  {
+    "step": 2499,
+    "timestamp": "2025-04-18 07:41:09",
+    "test/test1/inference/accuracy": 0.3309326171875,
+    "test/test2/inference/accuracy": 0.3507486979166667,
+    "test/test3/inference/accuracy": 0.4150390625
+  },
+  {
+    "step": 2999,
+    "timestamp": "2025-04-18 08:04:11",
+    "test/test1/inference/accuracy": 0.351806640625,
+    "test/test2/inference/accuracy": 0.3772786458333333,
+    "test/test3/inference/accuracy": 0.4189453125
+  },
+  {
+    "step": 3499,
+    "timestamp": "2025-04-18 08:26:53",
+    "test/test1/inference/accuracy": 0.42236328125,
+    "test/test2/inference/accuracy": 0.390625,
+    "test/test3/inference/accuracy": 0.423583984375
+  },
+  {
+    "step": 3999,
+    "timestamp": "2025-04-18 08:49:29",
+    "test/test1/inference/accuracy": 0.44091796875,
+    "test/test2/inference/accuracy": 0.4088541666666667,
+    "test/test3/inference/accuracy": 0.421875
+  },
+  {
+    "step": 4499,
+    "timestamp": "2025-04-18 09:12:12",
+    "test/test1/inference/accuracy": 0.4302978515625,
+    "test/test2/inference/accuracy": 0.404296875,
+    "test/test3/inference/accuracy": 0.41162109375
+  },
+  {
+    "step": 4999,
+    "timestamp": "2025-04-18 09:35:17",
+    "test/test1/inference/accuracy": 0.434326171875,
+    "test/test2/inference/accuracy": 0.4075520833333333,
+    "test/test3/inference/accuracy": 0.428955078125
+  },
+  {
+    "step": 5499,
+    "timestamp": "2025-04-18 09:58:06",
+    "test/test1/inference/accuracy": 0.4666748046875,
+    "test/test2/inference/accuracy": 0.4176432291666667,
+    "test/test3/inference/accuracy": 0.42626953125
+  },
+  {
+    "step": 5999,
+    "timestamp": "2025-04-18 10:20:46",
+    "test/test1/inference/accuracy": 0.4307861328125,
+    "test/test2/inference/accuracy": 0.4049479166666667,
+    "test/test3/inference/accuracy": 0.421142578125
+  },
+  {
+    "step": 6499,
+    "timestamp": "2025-04-18 10:43:29",
+    "test/test1/inference/accuracy": 0.44580078125,
+    "test/test2/inference/accuracy": 0.4176432291666667,
+    "test/test3/inference/accuracy": 0.436767578125
+  }
+]
