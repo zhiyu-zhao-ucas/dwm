@@ -10,13 +10,13 @@ fi
 echo "Detected $GPU_COUNT GPUs"
 
 # Create a single session
-SESSION_NAME="_chemical"
+SESSION_NAME="ncd_chemical_policy"
 tmux new-session -d -s "$SESSION_NAME" -n "init" "echo 'Initializing session'; read"
 
 window_index=0
 gpu_index=0
 
-for algo in ours; do
+for algo in ncd; do
     for seed in 1 2 3 4 5 6 7 8; do
         # Create a unique window name
         WINDOW_NAME="${algo}_${seed}"
