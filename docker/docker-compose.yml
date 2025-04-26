@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  fcdl:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: fcdl:latest
+    container_name: fcdl-container
+    volumes:
+      - .:/app
+      - ~/.cache:/root/.cache  # Cache PyTorch models
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - WANDB_API_KEY=${WANDB_API_KEY}  # Pass wandb API key if needed
+    # Interactive mode
+    stdin_open: true
+    tty: true 

@@ -67,7 +67,10 @@ class InferenceDWM(InferenceOursMask):
         # if self.params.inference_params.causal_coef == 0.0 or (self.count / self.params.training_params.total_steps < -1):
         #     selected_log_probs = torch.zeros_like(selected_log_probs)
         #     logger.info(f"self.params.inference_params.causal_coef: {self.params.inference_params.causal_coef}")
-        log_probs_mean = self.params.inference_params.causal_coef * selected_log_probs.mean()
+        if self.count < 0.5 * self.params.training_params.total_steps:
+            log_probs_mean = self.params.inference_params.causal_coef * selected_log_probs.mean()
+        else:
+            log_probs_mean = 0.0
         loss_detail['log_probs_mean'] = log_probs_mean / (self.params.inference_params.causal_coef + 1e-8)
         
         if self.learn_codebook:
