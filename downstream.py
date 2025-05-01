@@ -66,9 +66,9 @@ def ood_evaluation_chemical(params, inference, obs_batch, actions_batch, next_ob
     
     # Create ood_data directory if it doesn't exist
     if params.training_params.zero_shot:
-        os.makedirs("downstream/zero_shot/ood_eval", exist_ok=True)
+        os.makedirs(f"downstream/{params.env_params.chemical_env_params.local_causal_rule}/zero_shot/ood_eval", exist_ok=True)
     else:
-        os.makedirs("downstream/ood_eval", exist_ok=True)
+        os.makedirs(f"downstream/{params.env_params.chemical_env_params.local_causal_rule}/ood_eval", exist_ok=True)
     
     algo = params.training_params.inference_algo
     seed = params.seed
@@ -200,17 +200,17 @@ def test_policy_evaluation_chemical(params, inference, policy, step):
     # Create directory if it doesn't exist
     zero_shot = getattr(params.training_params, "zero_shot", False)
     if zero_shot:
-        os.makedirs("downstream/zero_shot/reward", exist_ok=True)
+        os.makedirs(f"downstream/{params.env_params.chemical_env_params.local_causal_rule}/zero_shot/reward", exist_ok=True)
     else:
-        os.makedirs("downstream/reward", exist_ok=True)
+        os.makedirs(f"downstream/{params.env_params.chemical_env_params.local_causal_rule}/reward", exist_ok=True)
     
     algo = params.training_params.inference_algo
     seed = params.seed
     load_inference = getattr(params.training_params, "load_inference", "none")
     if zero_shot:
-        filename = f"downstream/zero_shot/reward/{algo}-{seed}-zero_shot.json"
+        filename = f"downstream/{params.env_params.chemical_env_params.local_causal_rule}/zero_shot/reward/{algo}-{seed}-zero_shot.json"
     else:
-        filename = f"downstream/reward/{algo}-{seed}-.json"
+        filename = f"downstream/{params.env_params.chemical_env_params.local_causal_rule}/reward/{algo}-{seed}-.json"
     
     # Create a record with step information
     record = {

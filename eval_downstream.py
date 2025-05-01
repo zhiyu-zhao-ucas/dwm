@@ -181,6 +181,12 @@ def plot_per_test_rewards(all_metrics, save_dir="figures/downstream"):
     # Create a single figure with subplots for each test
     fig, axes = plt.subplots(1, len(test_keys), figsize=(18, 6), sharey=True)
     
+    # Dictionary to store all test rewards and std data
+    results_data = {
+        "environments": transformed_env_names,
+        "tests": {}
+    }
+    
     for idx, test_key in enumerate(test_keys):
         test_rewards = []
         test_std_rewards = []
@@ -194,6 +200,12 @@ def plot_per_test_rewards(all_metrics, save_dir="figures/downstream"):
             else:
                 test_rewards.append(0)  # No data for this test
                 test_std_rewards.append(0)
+        
+        # Store the data for this test
+        results_data["tests"][test_key] = {
+            "rewards": test_rewards,
+            "std_rewards": test_std_rewards
+        }
         
         # Plot rewards bar chart for this test in the corresponding subplot
         ax = axes[idx]
@@ -219,10 +231,30 @@ def plot_per_test_rewards(all_metrics, save_dir="figures/downstream"):
     plt.subplots_adjust(top=0.88, bottom=0.2)
     plt.savefig(f"{save_dir}/rewards_all_tests.pdf")
     plt.close()
+    
+    # Save the test rewards and std data to JSON file
+    with open(f"{save_dir}/test_rewards_data.json", 'w') as f:
+        json.dump(results_data, f, indent=2)
+    
+    # Also save as CSV for easy viewing in spreadsheets
+    with open(f"{save_dir}/test_rewards_data.csv", 'w') as f:
+        # Write header
+        f.write("Test,Metric," + ",".join(transformed_env_names) + "\n")
+        
+        # Write data for each test
+        for test_key in test_keys:
+            rewards = results_data["tests"][test_key]["rewards"]
+            stds = results_data["tests"][test_key]["std_rewards"]
+            
+            # Write rewards row
+            f.write(f"{test_key},rewards," + ",".join([f"{r:.4f}" for r in rewards]) + "\n")
+            
+            # Write std row
+            f.write(f"{test_key},std_rewards," + ",".join([f"{s:.4f}" for s in stds]) + "\n")
 
 def main():
     data_dir = "downstream/zero_shot/reward"
-    save_dir = "results/downstream"
+    save_dir = "results/downstream/chain"
     
     # Create output directory if it doesn't exist
     os.makedirs(save_dir, exist_ok=True)

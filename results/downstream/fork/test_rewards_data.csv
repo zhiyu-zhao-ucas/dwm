@@ -1,0 +1,7 @@
+Test,Metric,FCDL,DWM (ours)
+test1,rewards,13.9768,14.6549
+test1,std_rewards,2.0054,2.7541
+test2,rewards,13.3580,14.0604
+test2,std_rewards,2.1388,2.6438
+test3,rewards,12.9076,13.2750
+test3,std_rewards,2.4035,2.0384

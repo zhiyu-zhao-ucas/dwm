@@ -50,7 +50,7 @@ class TrainingParams(AttrDict):
         training_params = self.training_params
 
         if train:
-            if training_params_fname == "policy_params.json":
+            if training_params_fname == "policy_params.json" or training_params_fname == "policy_params_chain.json":
                 sub_dirname = "task" if training_params.rl_algo == "model_based" else "dynamics"
             else:
                 raise NotImplementedError
