@@ -20,12 +20,15 @@ if not os.getcwd() in sys.path:
 from fcdl.env.chemical_env import Chemical
 from fcdl.model.encoder import make_encoder
 from fcdl.model.inference_dwm import InferenceDWM
+from fcdl.model.inference_ours_masking import InferenceOursMask
 from fcdl.utils.utils import TrainingParams, get_env, update_obs_act_spec
 from fcdl.utils.replay_buffer import ReplayBuffer
 
 def process_model(name, device):
     # 设置模型路径
+    reference_model_name = name.replace("dwm", "ours")
     model_path = f"data_new/iwhwang/causal_rl/Chemical/{name}/trained_models/inference_final"
+    reference_model_path = f"data_new/iwhwang/causal_rl/Chemical/{reference_model_name}/trained_models/inference_final"
     params_path = f"data_new/iwhwang/causal_rl/Chemical/{name}/params"
     env_params_path = f"data_new/iwhwang/causal_rl/Chemical/{name}/params"
 
@@ -59,10 +62,13 @@ def process_model(name, device):
     # 创建编码器和推理模型
     encoder = make_encoder(params)
     inference = InferenceDWM(encoder, params)
+    reference_inference = InferenceOursMask(encoder, params)
 
     # 加载保存的模型
     inference.load(model_path, device)
     inference.eval()
+    reference_inference.load(reference_model_path, device)
+    reference_inference.eval()
     logger.info(f"推理模型 {name} 加载完成")
 
     # 创建缓冲区来收集样本
@@ -95,10 +101,14 @@ def process_model(name, device):
     # 使用推理模型进行预测
     with torch.no_grad():
         pred_results = inference.eval_local_mask(obs_batch, actions_batch)
+        reference_pred_results = reference_inference.eval_local_mask(obs_batch, actions_batch)
         pred_local_mask, pred_log_probs = pred_results
+        reference_pred_local_mask, reference_pred_log_probs = reference_pred_results
 
         norm_list = []
         best_results = []
+        high_mean_results = []  # mean > 0.5的结果
+        low_mean_results = []   # mean <= 0.3的结果
 
         for sample_idx in range(batch_size):
             mask_shape = pred_log_probs[0][sample_idx, :, :].shape
@@ -109,70 +119,135 @@ def process_model(name, device):
             if torch.sum(ground_truth_mask[action, : action + 1]) > 3 or torch.sum(ground_truth_mask[-1, :]) > 7:
                 ground_truth_mask[action, : action + 1] = 1.0
             else:
-                ground_truth_mask[action, 0] = 1.0
+                # ground_truth_mask[action, 0] = 1.0
                 ground_truth_mask[action, action] = 1.0
             
             ground_truth_mask[torch.arange(mask_shape[0]), torch.arange(mask_shape[1])] = 1.0
             
             pred_log_probs_mask = pred_log_probs[0][sample_idx, :, :-1]
             norm = torch.abs(pred_log_probs_mask.exp() - ground_truth_mask[:, :-1]).sum()
+            # torch.abs((pred_log_probs_mask.exp() > 0.5).float() / ((ground_truth_mask[:, :-1] > 0.5).float() + 1e-6) - 1).sum()
+            # + torch.abs((ground_truth_mask[:, :-1] > 0.5).float() / ((pred_log_probs_mask.exp() > 0.5).float() + 1e-6) - 1).sum()
             norm_list.append(norm)
 
+            # 计算ground truth的mean值
+            gt_mean = ground_truth_mask[:, :-1].mean().item()
+
             # 保存当前样本的结果
-            best_results.append({
+            result = {
                 'model_name': name,
                 'sample_idx': sample_idx,
                 'norm': norm.item(),
+                'gt_mean': gt_mean,
                 'obs': obs_batch,
                 'action': action.item(),
                 'pred_log_probs': pred_log_probs_mask,
-                'ground_truth_mask': ground_truth_mask[:, :-1]
-            })
+                'ground_truth_mask': ground_truth_mask[:, :-1],
+                'reference_pred_log_probs': reference_pred_log_probs[0][sample_idx, :, :-1]
+            }
 
-        # 找到norm最小的样本
-        min_norm_idx = torch.argmin(torch.tensor(norm_list)).item()
-        best_result = best_results[min_norm_idx]
+            # 根据mean值分类
+            if gt_mean > 0.5:
+                high_mean_results.append(result)
+            elif gt_mean <= 0.3:
+                low_mean_results.append(result)
+
+            best_results.append(result)
+
+        # 找到每个类别中norm最小的3个样本
+        high_mean_results.sort(key=lambda x: x['norm'])
+        low_mean_results.sort(key=lambda x: x['norm'])
+        best_high_mean = high_mean_results[:3] if high_mean_results else []
+        best_low_mean = low_mean_results[:3] if low_mean_results else []
 
         # 保存结果
         results_dir = f"dwm_local_mask_analysis_results/{name}"
         os.makedirs(results_dir, exist_ok=True)
 
-        # 保存预测结果和ground truth的对比图
-        fig, axes = plt.subplots(1, 2, figsize=(13, 6))
-        sns.heatmap(best_result['pred_log_probs'].exp().cpu().numpy(), ax=axes[0], annot=True, fmt=".2f", cmap="YlGnBu",
-                    xticklabels=[f"Obj {i}" for i in range(mask_shape[1])],
-                    yticklabels=[f"Obj {i}" for i in range(mask_shape[0])])
-        axes[0].set_title("Predicted Log Probabilities")
-        
-        sns.heatmap(best_result['ground_truth_mask'].cpu().numpy(), ax=axes[1], annot=True, fmt=".2f", cmap="YlGnBu",
-                    xticklabels=[f"Obj {i}" for i in range(mask_shape[1])],
-                    yticklabels=[f"Obj {i}" for i in range(mask_shape[0])])
-        axes[1].set_title("Ground Truth Mask")
-        
-        plt.tight_layout()
-        plt.savefig(f"{results_dir}/best_sample_comparison.png")
-        plt.close()
+        # 保存high mean的结果
+        for idx, result in enumerate(best_high_mean):
+            fig, axes = plt.subplots(1, 3, figsize=(18, 6))
+            
+            # DWM预测结果
+            sns.heatmap(result['pred_log_probs'].exp().cpu().numpy(), ax=axes[0], annot=True, fmt=".2f", cmap="YlGnBu",
+                        xticklabels=[f"Obj {i}" for i in range(mask_shape[1])],
+                        yticklabels=[f"Obj {i}" for i in range(mask_shape[0])])
+            axes[0].set_title("DWM Prediction")
+            
+            # Reference模型预测结果
+            sns.heatmap(result['reference_pred_log_probs'].exp().cpu().numpy(), ax=axes[1], annot=True, fmt=".2f", cmap="YlGnBu",
+                        xticklabels=[f"Obj {i}" for i in range(mask_shape[1])],
+                        yticklabels=[f"Obj {i}" for i in range(mask_shape[0])])
+            axes[1].set_title("Reference Prediction")
+            
+            # Ground Truth
+            sns.heatmap(result['ground_truth_mask'].cpu().numpy(), ax=axes[2], annot=True, fmt=".2f", cmap="YlGnBu",
+                        xticklabels=[f"Obj {i}" for i in range(mask_shape[1])],
+                        yticklabels=[f"Obj {i}" for i in range(mask_shape[0])])
+            axes[2].set_title("Ground Truth")
+            
+            plt.tight_layout()
+            plt.savefig(f"{results_dir}/best_high_mean_comparison_{idx+1}_all.png")
+            plt.close()
 
-        # 保存数据
-        # 将数据转换为DataFrame格式
-        data_dict = {
-            'model_name': [name],
-            'sample_idx': [best_result['sample_idx']],
-            'norm': [best_result['norm']],
-            'action': [best_result['action']]
-        }
+        # 保存high mean的数据
+        if best_high_mean:
+            data_dict = {
+                'model_name': [r['model_name'] for r in best_high_mean],
+                'sample_idx': [r['sample_idx'] for r in best_high_mean],
+                'norm': [r['norm'] for r in best_high_mean],
+                'gt_mean': [r['gt_mean'] for r in best_high_mean],
+                'action': [r['action'] for r in best_high_mean]
+            }
+            df = pd.DataFrame(data_dict)
+            df.to_csv(f"{results_dir}/best_high_mean_data.csv", index=False)
+
+        # 保存low mean的结果
+        for idx, result in enumerate(best_low_mean):
+            fig, axes = plt.subplots(1, 3, figsize=(18, 6))
+            
+            # DWM预测结果
+            sns.heatmap(result['pred_log_probs'].exp().cpu().numpy(), ax=axes[0], annot=True, fmt=".2f", cmap="YlGnBu",
+                        xticklabels=[f"Obj {i}" for i in range(mask_shape[1])],
+                        yticklabels=[f"Obj {i}" for i in range(mask_shape[0])])
+            axes[0].set_title("DWM Prediction")
+            
+            # Reference模型预测结果
+            sns.heatmap(result['reference_pred_log_probs'].exp().cpu().numpy(), ax=axes[1], annot=True, fmt=".2f", cmap="YlGnBu",
+                        xticklabels=[f"Obj {i}" for i in range(mask_shape[1])],
+                        yticklabels=[f"Obj {i}" for i in range(mask_shape[0])])
+            axes[1].set_title("Reference Prediction")
+            
+            # Ground Truth
+            sns.heatmap(result['ground_truth_mask'].cpu().numpy(), ax=axes[2], annot=True, fmt=".2f", cmap="YlGnBu",
+                        xticklabels=[f"Obj {i}" for i in range(mask_shape[1])],
+                        yticklabels=[f"Obj {i}" for i in range(mask_shape[0])])
+            axes[2].set_title("Ground Truth")
+            
+            plt.tight_layout()
+            plt.savefig(f"{results_dir}/best_low_mean_comparison_{idx+1}_all.png")
+            plt.close()
+
+        # 保存low mean的数据
+        if best_low_mean:
+            data_dict = {
+                'model_name': [r['model_name'] for r in best_low_mean],
+                'sample_idx': [r['sample_idx'] for r in best_low_mean],
+                'norm': [r['norm'] for r in best_low_mean],
+                'gt_mean': [r['gt_mean'] for r in best_low_mean],
+                'action': [r['action'] for r in best_low_mean]
+            }
+            df = pd.DataFrame(data_dict)
+            df.to_csv(f"{results_dir}/best_low_mean_data.csv", index=False)
         
-        # 保存为CSV
-        df = pd.DataFrame(data_dict)
-        df.to_csv(f"{results_dir}/best_sample_data.csv", index=False)
-        
-        return best_result
+        return best_high_mean, best_low_mean
 
 def main():
     set_seed_everywhere(0)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
-    all_best_results = []
+    all_high_mean_results = []
+    all_low_mean_results = []
     
     # 遍历所有模型版本
     for i in range(1, 9):
@@ -180,27 +255,48 @@ def main():
         logger.info(f"处理模型 {name}")
         result = process_model(name, device)
         if result is not None:
-            all_best_results.append(result)
+            high_mean, low_mean = result
+            all_high_mean_results.extend(high_mean)
+            all_low_mean_results.extend(low_mean)
     
-    # 找到所有模型中norm最小的结果
-    if all_best_results:
-        best_overall = min(all_best_results, key=lambda x: x['norm'])
-        logger.info(f"所有模型中最好的结果来自模型 {best_overall['model_name']}")
-        logger.info(f"最小norm值: {best_overall['norm']}")
+    # 找到所有模型中每个类别norm最小的3个结果
+    if all_high_mean_results:
+        all_high_mean_results.sort(key=lambda x: x['norm'])
+        best_high_mean = all_high_mean_results[:3]
+        logger.info(f"High mean类别中最好的3个结果:")
+        for idx, result in enumerate(best_high_mean):
+            logger.info(f"Rank {idx+1}: 模型 {result['model_name']}, norm值: {result['norm']}, mean值: {result['gt_mean']}")
         
-        # 保存最佳结果
-        # 将数据转换为DataFrame格式
+        # 保存high mean的最佳结果
         data_dict = {
-            'model_name': [best_overall['model_name']],
-            'sample_idx': [best_overall['sample_idx']],
-            'norm': [best_overall['norm']],
-            'action': [best_overall['action']]
+            'model_name': [r['model_name'] for r in best_high_mean],
+            'sample_idx': [r['sample_idx'] for r in best_high_mean],
+            'norm': [r['norm'] for r in best_high_mean],
+            'gt_mean': [r['gt_mean'] for r in best_high_mean],
+            'action': [r['action'] for r in best_high_mean]
         }
-        
-        # 保存为CSV
         df = pd.DataFrame(data_dict)
-        df.to_csv("dwm_local_mask_analysis_results/best_overall_result.csv", index=False)
-    else:
+        df.to_csv("dwm_local_mask_analysis_results/best_high_mean_overall.csv", index=False)
+    
+    if all_low_mean_results:
+        all_low_mean_results.sort(key=lambda x: x['norm'])
+        best_low_mean = all_low_mean_results[:3]
+        logger.info(f"Low mean类别中最好的3个结果:")
+        for idx, result in enumerate(best_low_mean):
+            logger.info(f"Rank {idx+1}: 模型 {result['model_name']}, norm值: {result['norm']}, mean值: {result['gt_mean']}")
+        
+        # 保存low mean的最佳结果
+        data_dict = {
+            'model_name': [r['model_name'] for r in best_low_mean],
+            'sample_idx': [r['sample_idx'] for r in best_low_mean],
+            'norm': [r['norm'] for r in best_low_mean],
+            'gt_mean': [r['gt_mean'] for r in best_low_mean],
+            'action': [r['action'] for r in best_low_mean]
+        }
+        df = pd.DataFrame(data_dict)
+        df.to_csv("dwm_local_mask_analysis_results/best_low_mean_overall.csv", index=False)
+    
+    if not all_high_mean_results and not all_low_mean_results:
         logger.warning("没有找到任何有效的结果")
 
 if __name__ == "__main__":
