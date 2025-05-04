@@ -64,5 +64,17 @@
     "timestamp": "2025-05-04 14:23:10",
     "test/test1/inference/accuracy": -0.9906468391418457,
     "test/test1/inference/distance": 1.5494704246520996
+  },
+  {
+    "step": 7999,
+    "timestamp": "2025-05-04 14:35:12",
+    "test/test1/inference/accuracy": -0.991432785987854,
+    "test/test1/inference/distance": 1.5494375228881836
+  },
+  {
+    "step": 8499,
+    "timestamp": "2025-05-04 14:47:17",
+    "test/test1/inference/accuracy": -0.9900340437889099,
+    "test/test1/inference/distance": 1.5330474376678467
   }
 ]
