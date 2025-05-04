@@ -67,6 +67,8 @@ class TrainingParams(AttrDict):
                 sub_dirname = "physical" if training_params.rl_algo == "model_based" else "dynamics"
             elif training_params_fname == "causal_params.json":
                 sub_dirname = "causal" if training_params.rl_algo == "model_based" else "dynamics"
+            elif training_params_fname == "causal_video_params.json":
+                sub_dirname = "causal_video"
             else:
                 raise NotImplementedError
 
@@ -203,9 +205,15 @@ def update_obs_act_spec(env, params):
     
     params.action_dim = env.action_dim
     # params.action_inner_dim = env.action_inner_dim
-    params.feature_inner_dim = env.feature_inner_dim
+    try:
+        params.feature_inner_dim = env.feature_inner_dim
+    except:
+        params.feature_inner_dim = None
     params.obs_spec = obs_spec = preprocess_obs(env.observation_spec(), params)
-    params.num_action_variable = env.num_action_variable
+    try:
+        params.num_action_variable = env.num_action_variable
+    except:
+        params.num_action_variable = None
         
     if params.continuous_factor:
         params.obs_dims = None
@@ -243,7 +251,8 @@ def get_single_env(params, load_dir=None, test_idx=None, env_idx=None):
         env = Physical(copied_params)
     elif env_name == "Causal":
         causal_env_params = env_params.causal_env_params
-        env = suite.make(env_name="CausalMagnetic",
+        if env_params.num_env > 1:
+            env = suite.make(env_name="CausalMagnetic",
                 robots="UR5e",
                 controller_configs=load_controller_config(default_controller="OSC_POSITION"),
                 gripper_types="RethinkGripper",
@@ -251,26 +260,27 @@ def get_single_env(params, load_dir=None, test_idx=None, env_idx=None):
                 has_offscreen_renderer=False,
                 use_camera_obs=False,
                 ignore_done=False,
-                control_freq=1,
+                control_freq=10,
                 horizon=25,
                 reward_scale=1.0,
                 num_movable_objects=1,
-                num_unmovable_objects=1)
-        # env = suite.make(env_name="CausalMagnetic",
-        #                 robots="UR5e",
-        #                 controller_configs=load_controller_config(default_controller="OSC_POSITION"),
-        #                 gripper_types="RethinkGripper",
-        #                 has_renderer=False,
-        #                 has_offscreen_renderer=False,
-        #                 use_camera_obs=False,
-        #                 ignore_done=False,
-        #                 control_freq=10,
-        #                 horizon=250,
-        #                 reward_scale=1.0,
-        #                 num_movable_objects=1,
-        #                 num_unmovable_objects=1,
-        #                 num_random_objects=1,
-        #                 num_markers=3)
+                num_unmovable_objects=1,
+                test_mode=True)
+        else:
+            env = suite.make(env_name="CausalMagnetic",
+                robots="UR5e",
+                controller_configs=load_controller_config(default_controller="OSC_POSITION"),
+                gripper_types="RethinkGripper",
+                has_renderer=False,
+                has_offscreen_renderer=True,
+                use_camera_obs=True,
+                ignore_done=False,
+                control_freq=10,
+                horizon=25,
+                reward_scale=1.0,
+                num_movable_objects=1,
+                num_unmovable_objects=1,
+                test_mode=True)
     else:
         raise ValueError(f"Unknown env_name: {env_name}")
 

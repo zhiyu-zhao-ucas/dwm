@@ -1,0 +1,68 @@
+[
+  {
+    "step": 2499,
+    "timestamp": "2025-05-04 12:21:16",
+    "test/test1/inference/accuracy": -1.050669550895691,
+    "test/test1/inference/distance": 2.1132445335388184
+  },
+  {
+    "step": 2999,
+    "timestamp": "2025-05-04 12:33:27",
+    "test/test1/inference/accuracy": -1.0405446290969849,
+    "test/test1/inference/distance": 2.0235915184020996
+  },
+  {
+    "step": 3499,
+    "timestamp": "2025-05-04 12:45:37",
+    "test/test1/inference/accuracy": -1.0280081033706665,
+    "test/test1/inference/distance": 1.922370433807373
+  },
+  {
+    "step": 3999,
+    "timestamp": "2025-05-04 12:57:50",
+    "test/test1/inference/accuracy": -1.019595742225647,
+    "test/test1/inference/distance": 1.8455147743225098
+  },
+  {
+    "step": 4499,
+    "timestamp": "2025-05-04 13:10:02",
+    "test/test1/inference/accuracy": -1.0113446712493896,
+    "test/test1/inference/distance": 1.7712533473968506
+  },
+  {
+    "step": 4999,
+    "timestamp": "2025-05-04 13:22:17",
+    "test/test1/inference/accuracy": -1.0064387321472168,
+    "test/test1/inference/distance": 1.7196671962738037
+  },
+  {
+    "step": 5499,
+    "timestamp": "2025-05-04 13:34:29",
+    "test/test1/inference/accuracy": -1.0015640258789062,
+    "test/test1/inference/distance": 1.6689777374267578
+  },
+  {
+    "step": 5999,
+    "timestamp": "2025-05-04 13:46:40",
+    "test/test1/inference/accuracy": -0.9973052740097046,
+    "test/test1/inference/distance": 1.6276699304580688
+  },
+  {
+    "step": 6499,
+    "timestamp": "2025-05-04 13:58:55",
+    "test/test1/inference/accuracy": -0.9953503608703613,
+    "test/test1/inference/distance": 1.602090835571289
+  },
+  {
+    "step": 6999,
+    "timestamp": "2025-05-04 14:11:04",
+    "test/test1/inference/accuracy": -0.9927278757095337,
+    "test/test1/inference/distance": 1.5768122673034668
+  },
+  {
+    "step": 7499,
+    "timestamp": "2025-05-04 14:23:10",
+    "test/test1/inference/accuracy": -0.9906468391418457,
+    "test/test1/inference/distance": 1.5494704246520996
+  }
+]

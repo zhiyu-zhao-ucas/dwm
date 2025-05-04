@@ -1,0 +1,68 @@
+[
+  {
+    "step": 2499,
+    "timestamp": "2025-05-04 12:21:04",
+    "test/test1/inference/accuracy": -1.0512044429779053,
+    "test/test1/inference/distance": 2.1158933639526367
+  },
+  {
+    "step": 2999,
+    "timestamp": "2025-05-04 12:33:09",
+    "test/test1/inference/accuracy": -1.040252923965454,
+    "test/test1/inference/distance": 2.020923614501953
+  },
+  {
+    "step": 3499,
+    "timestamp": "2025-05-04 12:45:15",
+    "test/test1/inference/accuracy": -1.0288951396942139,
+    "test/test1/inference/distance": 1.9275537729263306
+  },
+  {
+    "step": 3999,
+    "timestamp": "2025-05-04 12:57:22",
+    "test/test1/inference/accuracy": -1.0191192626953125,
+    "test/test1/inference/distance": 1.8423267602920532
+  },
+  {
+    "step": 4499,
+    "timestamp": "2025-05-04 13:09:32",
+    "test/test1/inference/accuracy": -1.012956142425537,
+    "test/test1/inference/distance": 1.7817940711975098
+  },
+  {
+    "step": 4999,
+    "timestamp": "2025-05-04 13:21:43",
+    "test/test1/inference/accuracy": -1.006115198135376,
+    "test/test1/inference/distance": 1.717029333114624
+  },
+  {
+    "step": 5499,
+    "timestamp": "2025-05-04 13:33:56",
+    "test/test1/inference/accuracy": -1.0019149780273438,
+    "test/test1/inference/distance": 1.6738576889038086
+  },
+  {
+    "step": 5999,
+    "timestamp": "2025-05-04 13:46:02",
+    "test/test1/inference/accuracy": -0.996684193611145,
+    "test/test1/inference/distance": 1.6226247549057007
+  },
+  {
+    "step": 6499,
+    "timestamp": "2025-05-04 13:58:03",
+    "test/test1/inference/accuracy": -0.9941339492797852,
+    "test/test1/inference/distance": 1.5954387187957764
+  },
+  {
+    "step": 6999,
+    "timestamp": "2025-05-04 14:10:07",
+    "test/test1/inference/accuracy": -0.991942286491394,
+    "test/test1/inference/distance": 1.569944977760315
+  },
+  {
+    "step": 7499,
+    "timestamp": "2025-05-04 14:22:14",
+    "test/test1/inference/accuracy": -0.991858959197998,
+    "test/test1/inference/distance": 1.5605345964431763
+  }
+]

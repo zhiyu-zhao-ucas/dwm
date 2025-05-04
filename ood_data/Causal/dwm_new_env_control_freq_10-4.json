@@ -1,0 +1,68 @@
+[
+  {
+    "step": 2499,
+    "timestamp": "2025-05-04 12:21:07",
+    "test/test1/inference/accuracy": -1.0502901077270508,
+    "test/test1/inference/distance": 2.1110434532165527
+  },
+  {
+    "step": 2999,
+    "timestamp": "2025-05-04 12:33:18",
+    "test/test1/inference/accuracy": -1.038821816444397,
+    "test/test1/inference/distance": 2.0135912895202637
+  },
+  {
+    "step": 3499,
+    "timestamp": "2025-05-04 12:45:27",
+    "test/test1/inference/accuracy": -1.029237985610962,
+    "test/test1/inference/distance": 1.928743600845337
+  },
+  {
+    "step": 3999,
+    "timestamp": "2025-05-04 12:57:37",
+    "test/test1/inference/accuracy": -1.018843650817871,
+    "test/test1/inference/distance": 1.8396397829055786
+  },
+  {
+    "step": 4499,
+    "timestamp": "2025-05-04 13:09:52",
+    "test/test1/inference/accuracy": -1.0124099254608154,
+    "test/test1/inference/distance": 1.7756233215332031
+  },
+  {
+    "step": 4999,
+    "timestamp": "2025-05-04 13:22:05",
+    "test/test1/inference/accuracy": -1.0068087577819824,
+    "test/test1/inference/distance": 1.7212289571762085
+  },
+  {
+    "step": 5499,
+    "timestamp": "2025-05-04 13:34:15",
+    "test/test1/inference/accuracy": -1.0013660192489624,
+    "test/test1/inference/distance": 1.6690791845321655
+  },
+  {
+    "step": 5999,
+    "timestamp": "2025-05-04 13:46:26",
+    "test/test1/inference/accuracy": -0.9999768137931824,
+    "test/test1/inference/distance": 1.6433734893798828
+  },
+  {
+    "step": 6499,
+    "timestamp": "2025-05-04 13:58:35",
+    "test/test1/inference/accuracy": -0.9950188994407654,
+    "test/test1/inference/distance": 1.6002024412155151
+  },
+  {
+    "step": 6999,
+    "timestamp": "2025-05-04 14:10:39",
+    "test/test1/inference/accuracy": -0.993728756904602,
+    "test/test1/inference/distance": 1.58399498462677
+  },
+  {
+    "step": 7499,
+    "timestamp": "2025-05-04 14:22:45",
+    "test/test1/inference/accuracy": -0.9933245778083801,
+    "test/test1/inference/distance": 1.5716301202774048
+  }
+]

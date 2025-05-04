@@ -1,0 +1,26 @@
+[
+  {
+    "step": 0,
+    "timestamp": "2025-05-04 09:47:10",
+    "test/test1/policy/episode_reward_mean": 3.264680207898163,
+    "test/test1/policy/success_ratio": 0.0
+  },
+  {
+    "step": 0,
+    "timestamp": "2025-05-04 10:42:23",
+    "test/test1/policy/episode_reward_mean": 3.5492452649998056,
+    "test/test1/policy/success_ratio": 0.0
+  },
+  {
+    "step": 0,
+    "timestamp": "2025-05-04 10:52:50",
+    "test/test1/policy/episode_reward_mean": 3.5492452649998056,
+    "test/test1/policy/success_ratio": 0.0
+  },
+  {
+    "step": 0,
+    "timestamp": "2025-05-04 11:50:40",
+    "test/test1/policy/episode_reward_mean": 3.5492452649998056,
+    "test/test1/policy/success_ratio": 0.0
+  }
+]

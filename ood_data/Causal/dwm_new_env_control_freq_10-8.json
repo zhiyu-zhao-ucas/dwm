@@ -1,0 +1,68 @@
+[
+  {
+    "step": 2499,
+    "timestamp": "2025-05-04 12:21:12",
+    "test/test1/inference/accuracy": -1.053283929824829,
+    "test/test1/inference/distance": 2.1265509128570557
+  },
+  {
+    "step": 2999,
+    "timestamp": "2025-05-04 12:33:25",
+    "test/test1/inference/accuracy": -1.0386121273040771,
+    "test/test1/inference/distance": 2.013686418533325
+  },
+  {
+    "step": 3499,
+    "timestamp": "2025-05-04 12:45:33",
+    "test/test1/inference/accuracy": -1.0292158126831055,
+    "test/test1/inference/distance": 1.930287480354309
+  },
+  {
+    "step": 3999,
+    "timestamp": "2025-05-04 12:57:39",
+    "test/test1/inference/accuracy": -1.0193321704864502,
+    "test/test1/inference/distance": 1.843495488166809
+  },
+  {
+    "step": 4499,
+    "timestamp": "2025-05-04 13:09:48",
+    "test/test1/inference/accuracy": -1.0157718658447266,
+    "test/test1/inference/distance": 1.7954481840133667
+  },
+  {
+    "step": 4999,
+    "timestamp": "2025-05-04 13:21:52",
+    "test/test1/inference/accuracy": -1.0068243741989136,
+    "test/test1/inference/distance": 1.7205358743667603
+  },
+  {
+    "step": 5499,
+    "timestamp": "2025-05-04 13:33:59",
+    "test/test1/inference/accuracy": -1.0038801431655884,
+    "test/test1/inference/distance": 1.6828992366790771
+  },
+  {
+    "step": 5999,
+    "timestamp": "2025-05-04 13:46:07",
+    "test/test1/inference/accuracy": -0.9971859455108643,
+    "test/test1/inference/distance": 1.6263465881347656
+  },
+  {
+    "step": 6499,
+    "timestamp": "2025-05-04 13:58:10",
+    "test/test1/inference/accuracy": -0.994852602481842,
+    "test/test1/inference/distance": 1.6016240119934082
+  },
+  {
+    "step": 6999,
+    "timestamp": "2025-05-04 14:10:16",
+    "test/test1/inference/accuracy": -0.9941034317016602,
+    "test/test1/inference/distance": 1.5834259986877441
+  },
+  {
+    "step": 7499,
+    "timestamp": "2025-05-04 14:22:19",
+    "test/test1/inference/accuracy": -0.9916024208068848,
+    "test/test1/inference/distance": 1.559985637664795
+  }
+]
