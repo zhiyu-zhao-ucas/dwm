@@ -16,12 +16,23 @@ except ImportError:
     ROBOSUITE_AVAILABLE = False
     print("Warning: robosuite not installed. Causal environment will not be available.")
 
+from loguru import logger
+
+try:
+    import robosuite as suite
+    from robosuite.controllers import load_controller_config
+    ROBOSUITE_AVAILABLE = True
+except ImportError:
+    ROBOSUITE_AVAILABLE = False
+    print("Warning: robosuite not installed. Causal environment will not be available.")
+
 
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
 
 from ..env.chemical_env import Chemical
+from ..env.physical_env import Physical
 from ..env.physical_env import Physical
 from .multiprocessing_env import SubprocVecEnv
 
@@ -77,6 +88,9 @@ class TrainingParams(AttrDict):
 
             self.replay_buffer_dir = None
             if training_params_fname == "policy_params.json" and training_params.replay_buffer_params.saving_freq:
+                self.replay_buffer_dir = os.path.join(repo_path, "replay_buffer", experiment_dirname)
+                os.makedirs(self.replay_buffer_dir)
+            elif training_params_fname == "physical_params.json" and training_params.replay_buffer_params.saving_freq:
                 self.replay_buffer_dir = os.path.join(repo_path, "replay_buffer", experiment_dirname)
                 os.makedirs(self.replay_buffer_dir)
             elif training_params_fname == "physical_params.json" and training_params.replay_buffer_params.saving_freq:
@@ -283,6 +297,7 @@ def get_single_env(params, load_dir=None, test_idx=None, env_idx=None):
                 test_mode=True)
     else:
         raise ValueError(f"Unknown env_name: {env_name}")
+        raise ValueError(f"Unknown env_name: {env_name}")
 
     return env
 
@@ -299,6 +314,11 @@ def get_env(params, load_dir=None, test_idx=None):
     if num_env == 1:
         return get_single_env(params, load_dir, test_idx)
     else:
+        if env_name == "Causal":
+            return SubprocVecEnv([get_subproc_env(params, load_dir, test_idx, env_idx) for env_idx in range(num_env)])
+        # Support vectorized environments for both Chemical and Physical
+        elif env_name not in ["Chemical", "Physical"]:
+            raise ValueError(f"Vectorized environment not supported for: {env_name}")
         if env_name == "Causal":
             return SubprocVecEnv([get_subproc_env(params, load_dir, test_idx, env_idx) for env_idx in range(num_env)])
         # Support vectorized environments for both Chemical and Physical
@@ -331,6 +351,15 @@ def get_start_step_from_model_loading(params):
     else:
         start_step = 0
     return start_step
+
+def calculate_entropy(inference, obs, action):
+    obs_processed = postprocess_obs(obs)
+    obs_proceseed_dict = {k: torch.from_numpy(v).to(inference.device) for k, v in obs_processed.items()}
+    action_tensor = torch.from_numpy(np.array(action)).to(inference.device)
+    with torch.no_grad():
+        local_mask, log_prob = inference.eval_local_mask(obs_proceseed_dict, action_tensor)
+    entropy = -torch.sum(torch.exp(log_prob) * log_prob, dim=(-1, -2)).squeeze()
+    return entropy
 
 def calculate_entropy(inference, obs, action):
     obs_processed = postprocess_obs(obs)
