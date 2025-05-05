@@ -50,3 +50,72 @@ class InferenceOursMask(InferenceOursBase):
         mean_dist = self.mean_dist(sampled_dist)
 
         return mean_dist
+    
+    def get_local_mask(self, feature, actions, training=True):
+        # logger.info(f"features: {len(feature)}, features[0]: {feature[0].shape}")
+        # logger.info(f"actions: {actions.shape}")
+        if not self.continuous_action:
+            actions = F.one_hot(actions.squeeze(dim=-1), self.action_dim).float()
+            actions = torch.unbind(actions, dim=-2)
+        
+        local_masks = []
+        log_probs = []
+        current_pred_step = 0
+        if "Causal" in self.params.env_params.env_name:
+            action_feature = self.extract_action_feature(actions)
+            state_feature = self.extract_state_feature(feature)
+
+            # logger.info(f"action_feature: {action_feature.shape}")
+            # logger.info(f"state_feature: {state_feature.shape}")
+            bs = state_feature.size(1)
+            local_mask, prob = self.local_causal_model(state_feature, action_feature, current_pred_step, training=training)
+            # backup_training = deepcopy(self.training)
+            # self.training = False
+            # dist = self.forward_step(feature, action, current_pred_step)
+            # feature = self.sample_from_distribution(dist)
+            # self.training = backup_training
+            if current_pred_step == 0:
+                local_masks.append(local_mask)
+                log_probs.append(torch.log(prob + 1e-3))
+            else:
+                local_masks.append(torch.zeros_like(local_mask))
+                log_probs.append(torch.zeros_like(prob))
+            current_pred_step += 1
+            local_masks = torch.stack(local_masks)
+            log_probs = torch.stack(log_probs)
+            
+            return local_masks, log_probs
+        else:
+            for action in actions:
+                action_feature = self.extract_action_feature(action)
+                state_feature = self.extract_state_feature(feature)
+
+                # logger.info(f"action_feature: {action_feature.shape}")
+                # logger.info(f"state_feature: {state_feature.shape}")
+                bs = state_feature.size(1)
+                local_mask, prob = self.local_causal_model(state_feature, action_feature, current_pred_step, training=training)
+                # backup_training = deepcopy(self.training)
+                # self.training = False
+                # dist = self.forward_step(feature, action, current_pred_step)
+                # feature = self.sample_from_distribution(dist)
+                # self.training = backup_training
+                # if current_pred_step == 0:
+                local_masks.append(local_mask)
+                log_probs.append(torch.log(prob + 1e-3))
+                # else:
+                #     local_masks.append(torch.zeros_like(local_mask))
+                #     log_probs.append(torch.zeros_like(prob))
+                current_pred_step += 1
+            local_masks = torch.stack(local_masks)
+            log_probs = torch.stack(log_probs)
+            
+            return local_masks, log_probs
+
+    def eval_local_mask(self, obses, actions):
+        features = self.encoder(obses)
+        if len(actions.shape) < 2:
+            actions = actions.view(-1, 1, 1)
+        # logger.info(f"actions in eval_local_mask: {actions}")
+        # logger.info(f"features: {len(features)}, features[0]: {features[0].shape}")
+        local_masks, log_probs = self.get_local_mask(features, actions, training=False)
+        return local_masks, log_probs

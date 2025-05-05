@@ -1,0 +1,4 @@
+model_name,sample_idx,norm,gt_mean
+dwm_new_env_control_freq_10-5,0,340.0169982910156,0.0476190485060215
+dwm_new_env_control_freq_10-5,1,340.0169982910156,0.0476190485060215
+dwm_new_env_control_freq_10-5,2,340.0169982910156,0.0476190485060215
