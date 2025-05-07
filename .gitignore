@@ -6,3 +6,6 @@ data2
 data3
 eval_result
 data_new
+# Large model files
+dwm_models_all.tar.gz
+ours_models_all.tar.gz
