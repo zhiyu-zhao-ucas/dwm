@@ -80,6 +80,8 @@ class TrainingParams(AttrDict):
                 sub_dirname = "causal" if training_params.rl_algo == "model_based" else "dynamics"
             elif training_params_fname == "causal_video_params.json":
                 sub_dirname = "causal_video"
+            elif training_params_fname == "policy_params_chain.json":
+                sub_dirname = "chain"
             else:
                 raise NotImplementedError
 

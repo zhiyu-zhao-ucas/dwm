@@ -16,8 +16,8 @@ tmux new-session -d -s "$SESSION_NAME" -n "init" "echo 'Initializing session'; r
 window_index=0
 gpu_index=0
 
-for algo in dwm; do
-    for seed in 1 2 3; do
+for algo in dwm_code_size_1 dwm_code_size_2 dwm_code_size_4 dwm_code_size_8 dwm_code_size_16; do
+    for seed in 0; do
         # Create a unique window name
         WINDOW_NAME="${algo}_${seed}"
         window_index=$((window_index + 1))
@@ -28,10 +28,10 @@ for algo in dwm; do
         
         # Create a new window in the existing session
         tmux new-window -t "$SESSION_NAME:$window_index" -n "$WINDOW_NAME" \
-            "python downstream.py \
+            "python downstream_code_size.py \
             --training_params.inference_algo=$algo --cuda_id=$current_gpu --seed=$seed \
             --training_params.mute_wandb=true \
-            --training_params.load_inference=\"data3/iwhwang/causal_rl/Chemical/${algo}-${seed}/trained_models/inference_final\" \
+            --training_params.load_inference=\"data3/iwhwang/causal_rl/chain/compressed_dwm_models/${algo}-${seed}/trained_models/inference_final\" \
             --training_params.zero_shot=true;
             echo \"Finished $WINDOW_NAME\"; read"
         
