@@ -10,13 +10,13 @@ fi
 echo "Detected $GPU_COUNT GPUs"
 
 # Create a single session
-SESSION_NAME="causal_update_control_freq_10"
+SESSION_NAME="causal_update_control_freq_10_00001_bidirectional"
 tmux new-session -d -s "$SESSION_NAME" -n "init" "echo 'Initializing session'; read"
 
 window_index=0
 gpu_index=0
 
-for algo in dwm_new_env_control_freq_10; do
+for algo in dwm_new_env_control_freq_10_00001_bidirectional; do
     for seed in 1 2 3 4 5 6 7 8; do
         # Create a unique window name
         WINDOW_NAME="${algo}_${seed}"
@@ -31,7 +31,7 @@ for algo in dwm_new_env_control_freq_10; do
             "source $(conda info --base)/etc/profile.d/conda.sh && conda activate robo && python main_policy.py \
             --training_params.inference_algo=$algo --cuda_id=$current_gpu --seed=$seed \
             --training_params.mute_wandb=false \
-            --inference_params.causal_coef=0.001
+            --inference_params.causal_coef=0.0001
             echo \"Finished $WINDOW_NAME\"; read"
         
         echo "Started window: $WINDOW_NAME in session $SESSION_NAME on GPU $current_gpu"

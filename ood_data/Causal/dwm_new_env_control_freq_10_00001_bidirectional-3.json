@@ -1,0 +1,14 @@
+[
+  {
+    "step": 2499,
+    "timestamp": "2025-05-05 11:34:13",
+    "test/test1/inference/accuracy": -1.0519897937774658,
+    "test/test1/inference/distance": 2.119999408721924
+  },
+  {
+    "step": 2999,
+    "timestamp": "2025-05-05 11:49:14",
+    "test/test1/inference/accuracy": -1.0401451587677002,
+    "test/test1/inference/distance": 2.020481586456299
+  }
+]

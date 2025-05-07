@@ -51,7 +51,8 @@ class InferenceDWM(InferenceOursMask):
         # logger.info(f"diff: {diff}")
         logger.info(f"log_probs: {log_probs.shape}")
         changed_nodes = (diff < 1e-6).nonzero(as_tuple=True)
-        logger.info(f"changed_nodes: {changed_nodes}")
+        unchanged_nodes = (diff >= 1e-3).nonzero(as_tuple=True)
+        # logger.info(f"changed_nodes: {changed_nodes}")
         if not "Causal" in self.params.env_params.env_name:
             batch_indices = changed_nodes[0]
             node_indices = changed_nodes[1]
@@ -62,8 +63,9 @@ class InferenceDWM(InferenceOursMask):
             selected_log_probs = log_probs[0, node_indices, batch_indices, action_taken.squeeze(dim=-1)]
             log_probs_mean = self.params.inference_params.causal_coef * selected_log_probs.mean()
         else:
-            selected_log_probs = log_probs[0, changed_nodes[0], changed_nodes[1], -4:]
-            log_probs_mean = self.params.inference_params.causal_coef * selected_log_probs.mean()
+            selected_log_probs_changed = log_probs[0, changed_nodes[0], changed_nodes[1], -4:]
+            selected_log_probs_unchanged = log_probs[0, unchanged_nodes[0], unchanged_nodes[1], -4:]
+            log_probs_mean = self.params.inference_params.causal_coef * (selected_log_probs_changed.mean() - selected_log_probs_unchanged.mean())
         loss_detail['log_probs_mean'] = log_probs_mean / (self.params.inference_params.causal_coef + 1e-8)
         
         if self.learn_codebook:
