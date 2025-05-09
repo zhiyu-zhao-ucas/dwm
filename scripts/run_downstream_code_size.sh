@@ -10,13 +10,13 @@ fi
 echo "Detected $GPU_COUNT GPUs"
 
 # Create a single session
-SESSION_NAME="downstream"
+SESSION_NAME="downstream_code_size"
 tmux new-session -d -s "$SESSION_NAME" -n "init" "echo 'Initializing session'; read"
 
 window_index=0
 gpu_index=0
 
-for algo in dwm_code_size_1 dwm_code_size_2 dwm_code_size_4 dwm_code_size_8 dwm_code_size_16; do
+for algo in dwm_fork_code_size_1 dwm_fork_code_size_2 dwm_fork_code_size_4 dwm_fork_code_size_8 dwm_fork_code_size_16; do
     for seed in 0; do
         # Create a unique window name
         WINDOW_NAME="${algo}_${seed}"
@@ -28,10 +28,10 @@ for algo in dwm_code_size_1 dwm_code_size_2 dwm_code_size_4 dwm_code_size_8 dwm_
         
         # Create a new window in the existing session
         tmux new-window -t "$SESSION_NAME:$window_index" -n "$WINDOW_NAME" \
-            "python downstream_code_size.py \
+            "source $(conda info --base)/etc/profile.d/conda.sh && conda activate robo && python downstream_code_size.py \
             --training_params.inference_algo=$algo --cuda_id=$current_gpu --seed=$seed \
             --training_params.mute_wandb=true \
-            --training_params.load_inference=\"data3/iwhwang/causal_rl/chain/compressed_dwm_models/${algo}-${seed}/trained_models/inference_final\" \
+            --training_params.load_inference=\"dwm_fork_code_size/${algo}/trained_models/inference_final\" \
             --training_params.zero_shot=true;
             echo \"Finished $WINDOW_NAME\"; read"
         
