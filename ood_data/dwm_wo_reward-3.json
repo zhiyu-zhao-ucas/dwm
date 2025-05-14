@@ -376,5 +376,12 @@
     "test/test1/inference/accuracy": 0.8463134765625,
     "test/test2/inference/accuracy": 0.7815755208333334,
     "test/test3/inference/accuracy": 0.813232421875
+  },
+  {
+    "step": 14999,
+    "timestamp": "2025-05-14 02:55:03",
+    "test/test1/inference/accuracy": 0.8756103515625,
+    "test/test2/inference/accuracy": 0.7247721354166666,
+    "test/test3/inference/accuracy": 0.7490234375
   }
 ]

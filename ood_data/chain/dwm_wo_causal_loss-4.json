@@ -61,5 +61,138 @@
     "test/test1/inference/accuracy": 0.3978271484375,
     "test/test2/inference/accuracy": 0.38134765625,
     "test/test3/inference/accuracy": 0.41015625
+  },
+  {
+    "step": 5999,
+    "timestamp": "2025-05-14 03:00:46",
+    "test/test1/inference/accuracy": 0.4024658203125,
+    "test/test2/inference/accuracy": 0.3873697916666667,
+    "test/test3/inference/accuracy": 0.425048828125
+  },
+  {
+    "step": 6499,
+    "timestamp": "2025-05-14 03:27:37",
+    "test/test1/inference/accuracy": 0.39599609375,
+    "test/test2/inference/accuracy": 0.3948567708333333,
+    "test/test3/inference/accuracy": 0.423583984375
+  },
+  {
+    "step": 6999,
+    "timestamp": "2025-05-14 03:54:30",
+    "test/test1/inference/accuracy": 0.3800048828125,
+    "test/test2/inference/accuracy": 0.3723958333333333,
+    "test/test3/inference/accuracy": 0.415283203125
+  },
+  {
+    "step": 7499,
+    "timestamp": "2025-05-14 04:21:22",
+    "test/test1/inference/accuracy": 0.37744140625,
+    "test/test2/inference/accuracy": 0.3753255208333333,
+    "test/test3/inference/accuracy": 0.41064453125
+  },
+  {
+    "step": 7999,
+    "timestamp": "2025-05-14 04:48:04",
+    "test/test1/inference/accuracy": 0.34375,
+    "test/test2/inference/accuracy": 0.3533528645833333,
+    "test/test3/inference/accuracy": 0.4033203125
+  },
+  {
+    "step": 8499,
+    "timestamp": "2025-05-14 05:14:32",
+    "test/test1/inference/accuracy": 0.3399658203125,
+    "test/test2/inference/accuracy": 0.36474609375,
+    "test/test3/inference/accuracy": 0.40869140625
+  },
+  {
+    "step": 8999,
+    "timestamp": "2025-05-14 05:41:03",
+    "test/test1/inference/accuracy": 0.357421875,
+    "test/test2/inference/accuracy": 0.3564453125,
+    "test/test3/inference/accuracy": 0.409912109375
+  },
+  {
+    "step": 9499,
+    "timestamp": "2025-05-14 06:07:44",
+    "test/test1/inference/accuracy": 0.3443603515625,
+    "test/test2/inference/accuracy": 0.3590494791666667,
+    "test/test3/inference/accuracy": 0.400146484375
+  },
+  {
+    "step": 9999,
+    "timestamp": "2025-05-14 06:34:30",
+    "test/test1/inference/accuracy": 0.3427734375,
+    "test/test2/inference/accuracy": 0.3616536458333333,
+    "test/test3/inference/accuracy": 0.404296875
+  },
+  {
+    "step": 10499,
+    "timestamp": "2025-05-14 07:01:13",
+    "test/test1/inference/accuracy": 0.35595703125,
+    "test/test2/inference/accuracy": 0.3522135416666667,
+    "test/test3/inference/accuracy": 0.412353515625
+  },
+  {
+    "step": 10999,
+    "timestamp": "2025-05-14 07:28:01",
+    "test/test1/inference/accuracy": 0.3245849609375,
+    "test/test2/inference/accuracy": 0.3450520833333333,
+    "test/test3/inference/accuracy": 0.40966796875
+  },
+  {
+    "step": 11499,
+    "timestamp": "2025-05-14 07:54:39",
+    "test/test1/inference/accuracy": 0.34375,
+    "test/test2/inference/accuracy": 0.3636067708333333,
+    "test/test3/inference/accuracy": 0.421142578125
+  },
+  {
+    "step": 11999,
+    "timestamp": "2025-05-14 08:21:27",
+    "test/test1/inference/accuracy": 0.346435546875,
+    "test/test2/inference/accuracy": 0.3544921875,
+    "test/test3/inference/accuracy": 0.411376953125
+  },
+  {
+    "step": 12499,
+    "timestamp": "2025-05-14 08:47:59",
+    "test/test1/inference/accuracy": 0.370361328125,
+    "test/test2/inference/accuracy": 0.3634440104166667,
+    "test/test3/inference/accuracy": 0.4189453125
+  },
+  {
+    "step": 12999,
+    "timestamp": "2025-05-14 09:14:30",
+    "test/test1/inference/accuracy": 0.358642578125,
+    "test/test2/inference/accuracy": 0.3733723958333333,
+    "test/test3/inference/accuracy": 0.414794921875
+  },
+  {
+    "step": 13499,
+    "timestamp": "2025-05-14 09:41:13",
+    "test/test1/inference/accuracy": 0.3531494140625,
+    "test/test2/inference/accuracy": 0.3653971354166667,
+    "test/test3/inference/accuracy": 0.42138671875
+  },
+  {
+    "step": 13999,
+    "timestamp": "2025-05-14 10:07:45",
+    "test/test1/inference/accuracy": 0.3372802734375,
+    "test/test2/inference/accuracy": 0.3634440104166667,
+    "test/test3/inference/accuracy": 0.415283203125
+  },
+  {
+    "step": 14499,
+    "timestamp": "2025-05-14 10:34:33",
+    "test/test1/inference/accuracy": 0.3499755859375,
+    "test/test2/inference/accuracy": 0.3570963541666667,
+    "test/test3/inference/accuracy": 0.42041015625
+  },
+  {
+    "step": 14999,
+    "timestamp": "2025-05-14 11:01:04",
+    "test/test1/inference/accuracy": 0.3367919921875,
+    "test/test2/inference/accuracy": 0.3624674479166667,
+    "test/test3/inference/accuracy": 0.41552734375
   }
 ]
