@@ -13,3 +13,4 @@ dwm_fork_code_size
 dwm_local_mask_analysis_results
 dwm_local_mask_analysis_results_code_size
 dwm_mask_metrics
+*.tar.gz
