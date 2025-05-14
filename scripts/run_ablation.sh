@@ -10,14 +10,14 @@ fi
 echo "Detected $GPU_COUNT GPUs"
 
 # Create a single session
-SESSION_NAME="dwm_wo_causal_loss"
+SESSION_NAME="dwm_wo_causal_loss_chain"
 tmux new-session -d -s "$SESSION_NAME" -n "init" "echo 'Initializing session'; read"
 
 window_index=0
 gpu_index=0
 
 for algo in dwm_wo_causal_loss; do
-    for seed in 1 2 3; do
+    for seed in 1 2 3 4 5 6 7 8; do
         # Create a unique window name
         WINDOW_NAME="${algo}_${seed}"
         window_index=$((window_index + 1))

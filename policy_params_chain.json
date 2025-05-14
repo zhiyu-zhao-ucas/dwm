@@ -4,7 +4,7 @@
     "goal_keys": ["target_obj0", "target_obj1", "target_obj2", "target_obj3", "target_obj4", "target_obj5", "target_obj6", "target_obj7", "target_obj8", "target_obj9"],
     "seed": -1,
     "cuda_id": 0,
-    "wandb_dir": "./data_new/iwhwang/causal_rl/",
+    "wandb_dir": "./data_new/iwhwang/causal_rl/Chain",
     "loglevel": "WARNING",
     "ours_params": {
         "feature_fc_dims": [128, 128],

@@ -9,3 +9,7 @@ data_new
 # Large model files
 dwm_models_all.tar.gz
 ours_models_all.tar.gz
+dwm_fork_code_size
+dwm_local_mask_analysis_results
+dwm_local_mask_analysis_results_code_size
+dwm_mask_metrics

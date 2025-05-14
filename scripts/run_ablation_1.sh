@@ -10,14 +10,14 @@ fi
 echo "Detected $GPU_COUNT GPUs"
 
 # Create a single session
-SESSION_NAME="ablation_1"
+SESSION_NAME="ablation_1_chain"
 tmux new-session -d -s "$SESSION_NAME" -n "init" "echo 'Initializing session'; read"
 
 window_index=0
 gpu_index=0
 
 for algo in dwm_wo_reward; do
-    for seed in 1 2 3; do
+    for seed in 1 2 3 4 5 6 7 8; do
         # Create a unique window name
         WINDOW_NAME="${algo}_${seed}"
         window_index=$((window_index + 1))
@@ -28,7 +28,7 @@ for algo in dwm_wo_reward; do
         
         # Create a new window in the existing session
         tmux new-window -t "$SESSION_NAME:$window_index" -n "$WINDOW_NAME" \
-            "python main_policy.py \
+            "source $(conda info --base)/etc/profile.d/conda.sh && conda activate fcdl && python main_policy.py \
             --training_params.inference_algo=$algo --cuda_id=$current_gpu --seed=$seed \
             --training_params.mute_wandb=false \
             --policy_params.reward_coef=0.0 \

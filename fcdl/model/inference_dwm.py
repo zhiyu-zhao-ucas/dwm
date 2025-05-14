@@ -51,7 +51,7 @@ class InferenceDWM(InferenceOursMask):
         # logger.info(f"torch.stack(features): {torch.stack(features).shape}")
         # logger.info(f"next_features_stack_single: {next_features_stack_single}")
         # logger.info(f"diff: {diff}")
-        changed_nodes = (diff < 1e-3).nonzero(as_tuple=True)
+        changed_nodes = (diff > 1e-3).nonzero(as_tuple=True)
         # logger.info(f"changed_nodes: {changed_nodes}")
         # logger.info(f"diff: {diff.shape}")
         # logger.info(f"changed_nodes: {changed_nodes}")
@@ -67,10 +67,11 @@ class InferenceDWM(InferenceOursMask):
         # if self.params.inference_params.causal_coef == 0.0 or (self.count / self.params.training_params.total_steps < -1):
         #     selected_log_probs = torch.zeros_like(selected_log_probs)
         #     logger.info(f"self.params.inference_params.causal_coef: {self.params.inference_params.causal_coef}")
-        if self.count < 0.5 * self.params.training_params.total_steps:
-            log_probs_mean = self.params.inference_params.causal_coef * selected_log_probs.mean()
-        else:
-            log_probs_mean = 0.0
+        # if self.count < 0.5 * self.params.training_params.total_steps:
+        #     log_probs_mean = self.params.inference_params.causal_coef * selected_log_probs.mean()
+        # else:
+        #     log_probs_mean = 0.0
+        log_probs_mean = - self.params.inference_params.causal_coef * selected_log_probs.mean()
         loss_detail['log_probs_mean'] = log_probs_mean / (self.params.inference_params.causal_coef + 1e-8)
         
         if self.learn_codebook:

@@ -64,11 +64,11 @@ def ood_evaluation_chemical(params, inference, obs_batch, actions_batch, next_ob
     import json
     
     # Create ood_data directory if it doesn't exist
-    os.makedirs("ood_data", exist_ok=True)
+    os.makedirs("ood_data/chain", exist_ok=True)
     
     algo = params.training_params.inference_algo
     seed = params.seed
-    filename = f"ood_data/{algo}-{seed}.json"
+    filename = f"ood_data/chain/{algo}-{seed}.json"
     
     # Create a record with step information
     record = {
@@ -216,7 +216,8 @@ def train(params):
         wandb.init(project=f'{env_name}-{env_specific_type}',
                 name=f'{params.training_params.inference_algo}-{params.seed}',
                 config=dict(params),
-                dir=params.wandb_dir)
+                dir=params.wandb_dir,
+                id=f"{params.training_params.inference_algo}-{params.seed}",)
     else:
         # Create a dummy run ID for directory naming when wandb is muted
         class DummyRun:
@@ -460,6 +461,6 @@ def train(params):
     inference.save(os.path.join(model_dir, "inference_final"))
 
 if __name__ == "__main__":
-    params = TrainingParams(training_params_fname="policy_params.json", train=True)
+    params = TrainingParams(training_params_fname="policy_params_chain.json", train=True)
     override_params_from_cli_args(params)
     train(params)

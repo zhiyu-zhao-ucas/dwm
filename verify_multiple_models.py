@@ -95,7 +95,7 @@ def process_model(name, device):
     logger.info(f"收集了 {current_samples} 个样本")
 
     # 从缓冲区获取样本
-    batch_size = 13
+    batch_size = 64
     obs_batch, actions_batch, next_obses_batch, info_batch = buffer.sample_inference(batch_size, "all")
 
     # 使用推理模型进行预测
@@ -125,7 +125,7 @@ def process_model(name, device):
             ground_truth_mask[torch.arange(mask_shape[0]), torch.arange(mask_shape[1])] = 1.0
             
             pred_log_probs_mask = pred_log_probs[0][sample_idx, :, :-1]
-            norm = torch.abs(pred_log_probs_mask.exp() - ground_truth_mask[:, :-1]).sum()
+            norm = torch.abs((ground_truth_mask[:, :-1] > 0.5).float() / ((pred_log_probs_mask.exp() > 0.5).float() + 1e-6) - 1).sum()
             # torch.abs((pred_log_probs_mask.exp() > 0.5).float() / ((ground_truth_mask[:, :-1] > 0.5).float() + 1e-6) - 1).sum()
             # + torch.abs((ground_truth_mask[:, :-1] > 0.5).float() / ((pred_log_probs_mask.exp() > 0.5).float() + 1e-6) - 1).sum()
             norm_list.append(norm)
@@ -172,7 +172,7 @@ def process_model(name, device):
             sns.heatmap(result['pred_log_probs'].exp().cpu().numpy(), ax=axes[0], annot=True, fmt=".2f", cmap="YlGnBu",
                         xticklabels=[f"Obj {i}" for i in range(mask_shape[1])],
                         yticklabels=[f"Obj {i}" for i in range(mask_shape[0])])
-            axes[0].set_title("DWM Prediction")
+            axes[0].set_title("MCG Prediction")
             
             # Reference模型预测结果
             sns.heatmap(result['reference_pred_log_probs'].exp().cpu().numpy(), ax=axes[1], annot=True, fmt=".2f", cmap="YlGnBu",
@@ -187,7 +187,7 @@ def process_model(name, device):
             axes[2].set_title("Ground Truth")
             
             plt.tight_layout()
-            plt.savefig(f"{results_dir}/best_high_mean_comparison_{idx+1}_all.png")
+            plt.savefig(f"{results_dir}/best_high_mean_comparison_{idx+1}_all.pdf")
             plt.close()
 
         # 保存high mean的数据
@@ -210,7 +210,7 @@ def process_model(name, device):
             sns.heatmap(result['pred_log_probs'].exp().cpu().numpy(), ax=axes[0], annot=True, fmt=".2f", cmap="YlGnBu",
                         xticklabels=[f"Obj {i}" for i in range(mask_shape[1])],
                         yticklabels=[f"Obj {i}" for i in range(mask_shape[0])])
-            axes[0].set_title("DWM Prediction")
+            axes[0].set_title("MCG Prediction")
             
             # Reference模型预测结果
             sns.heatmap(result['reference_pred_log_probs'].exp().cpu().numpy(), ax=axes[1], annot=True, fmt=".2f", cmap="YlGnBu",
@@ -225,7 +225,7 @@ def process_model(name, device):
             axes[2].set_title("Ground Truth")
             
             plt.tight_layout()
-            plt.savefig(f"{results_dir}/best_low_mean_comparison_{idx+1}_all.png")
+            plt.savefig(f"{results_dir}/best_low_mean_comparison_{idx+1}_all.pdf")
             plt.close()
 
         # 保存low mean的数据

@@ -1,0 +1,65 @@
+[
+  {
+    "step": 1499,
+    "timestamp": "2025-05-13 18:56:07",
+    "test/test1/inference/accuracy": 0.41552734375,
+    "test/test2/inference/accuracy": 0.396484375,
+    "test/test3/inference/accuracy": 0.471435546875
+  },
+  {
+    "step": 1999,
+    "timestamp": "2025-05-13 19:50:31",
+    "test/test1/inference/accuracy": 0.4266357421875,
+    "test/test2/inference/accuracy": 0.3896484375,
+    "test/test3/inference/accuracy": 0.432373046875
+  },
+  {
+    "step": 2499,
+    "timestamp": "2025-05-13 20:44:00",
+    "test/test1/inference/accuracy": 0.4378662109375,
+    "test/test2/inference/accuracy": 0.3839518229166667,
+    "test/test3/inference/accuracy": 0.4306640625
+  },
+  {
+    "step": 2999,
+    "timestamp": "2025-05-13 21:37:39",
+    "test/test1/inference/accuracy": 0.4425048828125,
+    "test/test2/inference/accuracy": 0.4173177083333333,
+    "test/test3/inference/accuracy": 0.42529296875
+  },
+  {
+    "step": 3499,
+    "timestamp": "2025-05-13 22:31:38",
+    "test/test1/inference/accuracy": 0.451171875,
+    "test/test2/inference/accuracy": 0.4239908854166667,
+    "test/test3/inference/accuracy": 0.43017578125
+  },
+  {
+    "step": 3999,
+    "timestamp": "2025-05-13 23:25:15",
+    "test/test1/inference/accuracy": 0.43701171875,
+    "test/test2/inference/accuracy": 0.4435221354166667,
+    "test/test3/inference/accuracy": 0.4404296875
+  },
+  {
+    "step": 4499,
+    "timestamp": "2025-05-14 00:18:51",
+    "test/test1/inference/accuracy": 0.450439453125,
+    "test/test2/inference/accuracy": 0.4318033854166667,
+    "test/test3/inference/accuracy": 0.43994140625
+  },
+  {
+    "step": 4999,
+    "timestamp": "2025-05-14 01:12:51",
+    "test/test1/inference/accuracy": 0.429931640625,
+    "test/test2/inference/accuracy": 0.4210611979166667,
+    "test/test3/inference/accuracy": 0.43896484375
+  },
+  {
+    "step": 5499,
+    "timestamp": "2025-05-14 02:06:22",
+    "test/test1/inference/accuracy": 0.4542236328125,
+    "test/test2/inference/accuracy": 0.4562174479166667,
+    "test/test3/inference/accuracy": 0.447021484375
+  }
+]
