@@ -5,15 +5,16 @@ import os
 
 # Define file paths for the different code sizes
 code_sizes = [1, 2, 4, 8, 16]
-file_paths = [f"downstream/zero_shot/reward/dwm_fork_code_size_{size}-0-zero_shot.json" for size in code_sizes]
+file_paths = [f"downstream/zero_shot/reward/dwm_code_size_{size}-0-zero_shot.json" for size in code_sizes]
+# file_paths = [f"downstream/zero_shot/reward/dwm_fork_code_size_{size}-0-zero_shot.json" for size in code_sizes]
 
 # Define a color map for different code sizes
 color_map = {
-    '1': '#1f77b4',  # blue
-    '2': '#ff7f0e',  # orange
-    '4': '#2ca02c',  # green
-    '8': '#d62728',  # red
-    '16': '#9467bd'  # purple
+    '1': '#8B4513',  # saddle brown
+    '2': '#696969',  # dim gray  
+    '4': '#A9A9A9',  # dark gray
+    '8': '#2F4F4F',  # dark slate gray
+    '16': '#000000'  # black
 }
 
 # Data structures to store results
@@ -69,27 +70,27 @@ bar_width = 0.6
 # Test 1 subplot (bar chart)
 for i, size in enumerate(code_sizes_str):
     ax1.bar(i, reward_means["test1"][i], width=bar_width, color=color_map[size], alpha=0.8, label=f'Size {size}')
-ax1.set_title('Test 1', fontsize=72)
+ax1.set_title('n = 2', fontsize=72)
 ax1.grid(True, linestyle='--', alpha=0.7, axis='y')
-ax1.set_xlabel('Code Size', fontsize=64)
+ax1.set_xlabel('Number of Meta States', fontsize=64)
 ax1.set_xticks(range(len(code_sizes_str)))
 ax1.set_xticklabels(code_sizes_str)
 
 # Test 2 subplot (bar chart)
 for i, size in enumerate(code_sizes_str):
     ax2.bar(i, reward_means["test2"][i], width=bar_width, color=color_map[size], alpha=0.8)
-ax2.set_title('Test 2', fontsize=72)
+ax2.set_title('n = 4', fontsize=72)
 ax2.grid(True, linestyle='--', alpha=0.7, axis='y')
-ax2.set_xlabel('Code Size', fontsize=64)
+ax2.set_xlabel('Number of Meta States', fontsize=64)
 ax2.set_xticks(range(len(code_sizes_str)))
 ax2.set_xticklabels(code_sizes_str)
 
 # Test 3 subplot (bar chart)
 for i, size in enumerate(code_sizes_str):
     ax3.bar(i, reward_means["test3"][i], width=bar_width, color=color_map[size], alpha=0.8)
-ax3.set_title('Test 3', fontsize=72)
+ax3.set_title('n = 6', fontsize=72)
 ax3.grid(True, linestyle='--', alpha=0.7, axis='y')
-ax3.set_xlabel('Code Size', fontsize=64)
+ax3.set_xlabel('Number of Meta States', fontsize=64)
 ax3.set_xticks(range(len(code_sizes_str)))
 ax3.set_xticklabels(code_sizes_str)
 
@@ -120,27 +121,27 @@ fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(42, 15), sharex=False)
 # Test 1 subplot (bar chart)
 for i, size in enumerate(code_sizes_str):
     ax1.bar(i, success_ratios["test1"][i], width=bar_width, color=color_map[size], alpha=0.8, label=f'Size {size}')
-ax1.set_title('Test 1', fontsize=72)
+ax1.set_title('n = 2', fontsize=72)
 ax1.grid(True, linestyle='--', alpha=0.7, axis='y')
-ax1.set_xlabel('Code Size', fontsize=64)
+ax1.set_xlabel('Number of Meta States', fontsize=64)
 ax1.set_xticks(range(len(code_sizes_str)))
 ax1.set_xticklabels(code_sizes_str)
 
 # Test 2 subplot (bar chart)
 for i, size in enumerate(code_sizes_str):
     ax2.bar(i, success_ratios["test2"][i], width=bar_width, color=color_map[size], alpha=0.8)
-ax2.set_title('Test 2', fontsize=72)
+ax2.set_title('n = 4', fontsize=72)
 ax2.grid(True, linestyle='--', alpha=0.7, axis='y')
-ax2.set_xlabel('Code Size', fontsize=64)
+ax2.set_xlabel('Number of Meta States', fontsize=64)
 ax2.set_xticks(range(len(code_sizes_str)))
 ax2.set_xticklabels(code_sizes_str)
 
 # Test 3 subplot (bar chart)
 for i, size in enumerate(code_sizes_str):
     ax3.bar(i, success_ratios["test3"][i], width=bar_width, color=color_map[size], alpha=0.8)
-ax3.set_title('Test 3', fontsize=72)
+ax3.set_title('n = 6', fontsize=72)
 ax3.grid(True, linestyle='--', alpha=0.7, axis='y')
-ax3.set_xlabel('Code Size', fontsize=64)
+ax3.set_xlabel('Number of Meta States', fontsize=64)
 ax3.set_xticks(range(len(code_sizes_str)))
 ax3.set_xticklabels(code_sizes_str)
 

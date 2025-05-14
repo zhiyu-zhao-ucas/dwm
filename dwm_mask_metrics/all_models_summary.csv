@@ -1,0 +1,6 @@
+model_name,avg_shd,avg_l1,num_samples
+dwm_fork_code_size/dwm_fork_code_size_1,21.87268161201477,21.87268161201477,1000
+dwm_fork_code_size/dwm_fork_code_size_2,15.167843168258667,15.167843168258667,1000
+dwm_fork_code_size/dwm_fork_code_size_4,14.502763322353363,14.502763322353363,1000
+dwm_fork_code_size/dwm_fork_code_size_8,16.148793857574464,16.148793857574464,1000
+dwm_fork_code_size/dwm_fork_code_size_16,21.94886574268341,21.94886574268341,1000

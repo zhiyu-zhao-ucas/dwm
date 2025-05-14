@@ -1,0 +1,4 @@
+model_name,sample_idx,norm,gt_mean,action
+dwm_fork_code_size_16,6,12000036.0,0.5199999809265137,3
+dwm_fork_code_size_16,23,12000036.0,0.5199999809265137,3
+dwm_fork_code_size_16,47,12000036.0,0.5199999809265137,3

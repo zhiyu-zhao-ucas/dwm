@@ -285,7 +285,8 @@ def main():
     plots_dir.mkdir(exist_ok=True)
     
     # Define data directory
-    data_dir = 'ood_data/Causal'
+    data_dir = 'ood_data'
+    # data_dir = 'ood_data/Causal'
     
     # Load data from JSON files
     results = load_data_from_json_files(data_dir)
