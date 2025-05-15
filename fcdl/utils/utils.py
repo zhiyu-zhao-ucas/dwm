@@ -269,5 +269,7 @@ def calculate_entropy(inference, obs, action):
     action_tensor = torch.from_numpy(np.array(action)).to(inference.device)
     with torch.no_grad():
         local_mask, log_prob = inference.eval_local_mask(obs_proceseed_dict, action_tensor)
-    entropy = -torch.sum(torch.exp(log_prob) * log_prob, dim=(-1, -2)).squeeze()
+    probs = torch.exp(log_prob)
+    entropy = -torch.nn.functional.binary_cross_entropy(probs, probs, reduction='none').sum(dim=(-1, -2)).squeeze()
+    # entropy = -torch.sum(torch.exp(log_prob) * log_prob, dim=(-1, -2)).squeeze()
     return entropy

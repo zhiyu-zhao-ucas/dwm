@@ -481,5 +481,7 @@ class ModelBasedEntropy(ModelBased):
         # logger.info(f"obs_proceseed_dict: {obs_proceseed_dict['obj0'].shape}")
         with torch.no_grad():
             local_mask, log_prob = self.inference.eval_local_mask(obs_proceseed_dict, action_tensor)
-        entropy = -torch.sum(torch.exp(log_prob) * log_prob, dim=(-1, -2)).squeeze()
+        probs = torch.exp(log_prob)
+        entropy = -torch.nn.functional.binary_cross_entropy(probs, probs, reduction='none').sum(dim=(-1, -2)).squeeze()
+        # entropy = -torch.sum(torch.exp(log_prob) * log_prob, dim=(-1, -2)).squeeze()
         return entropy
